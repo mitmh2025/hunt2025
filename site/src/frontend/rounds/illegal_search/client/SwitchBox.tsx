@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { css, styled } from "styled-components";
-import globalDatasetManager from "../../../client/DatasetManager";
 import switch_off from "../assets/audio/switch_off.mp3";
 import switch_on from "../assets/audio/switch_on.mp3";
 import switch_left from "../assets/fuse_box/fusebox_draft5_switch_pressed_left.svg";
@@ -9,6 +8,7 @@ import cubby_open from "../assets/fuse_box/fusebox_draft6_cubby_open_zarvox.svg"
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
+import { submitLock } from "./clientState";
 import { default_cursor } from "./cursors";
 
 // 40 switches
@@ -149,15 +149,15 @@ function printable(data: boolean[]): string {
   return data.map((b) => (b ? "1" : "0")).join("");
 }
 
-function parse40bools(data: string): boolean[] | undefined {
-  if (data.length !== 40) return undefined;
-  const bools = [];
-  for (let i = 0; i < 40; i++) {
-    const on = data[i] === "1";
-    bools.push(on);
-  }
-  return bools;
-}
+// function parse40bools(data: string): boolean[] | undefined {
+//   if (data.length !== 40) return undefined;
+//   const bools = [];
+//   for (let i = 0; i < 40; i++) {
+//     const on = data[i] === "1";
+//     bools.push(on);
+//   }
+//   return bools;
+// }
 
 const Wall = styled.div`
   width: 1920px;
@@ -212,12 +212,12 @@ const SwitchBox = ({
     return ALL_ON;
   });
 
-  const setSwitchesFromString = useCallback((state: string) => {
-    const newState = parse40bools(state);
-    if (newState) {
-      setSwitchState(newState);
-    }
-  }, []);
+  // const setSwitchesFromString = useCallback((state: string) => {
+  //   const newState = parse40bools(state);
+  //   if (newState) {
+  //     setSwitchState(newState);
+  //   }
+  // }, []);
 
   const toggleSwitch = useCallback((i: number) => {
     setSwitchState((prevState) => {
@@ -231,45 +231,32 @@ const SwitchBox = ({
 
   useEffect(() => {
     if (!opened) {
-      fetch("/rounds/illegal_search/locks/painting2", {
-        method: "POST",
-        body: JSON.stringify({ switches: printable(switchState) }),
-        headers: {
-          "Content-Type": "application/json", // This body is JSON
-          Accept: "application/json", // Indicate that we want to receive JSON back
-        },
-      })
-        .then(async (result) => {
-          if (result.ok) {
-            console.log("Correct:", printable(switchState));
-            const json = (await result.json()) as Node;
-            console.log("Response:", json);
-            setNode(json);
-          } else {
-            console.log("Incorrect:", printable(switchState));
-          }
-        })
-        .catch(() => {
-          // Quietly ignore HTTP failures
-          console.log("Network error");
-        });
+      const result = submitLock("painting2", printable(switchState));
+      if (result) {
+        console.log("Correct:", printable(switchState));
+        console.log("Response:", result);
+        setNode(result);
+      } else {
+        console.log("Incorrect:", printable(switchState));
+      }
     }
   }, [opened, setNode, switchState]);
 
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "illegal_search_painting2",
-      undefined,
-      { epoch: -1 },
-      (value: object) => {
-        const castvalue = value as { switches?: string };
-        if (castvalue.switches) {
-          setSwitchesFromString(castvalue.switches);
-        }
-      },
-    );
-    return stop;
-  }, [setSwitchesFromString]);
+  // Disabled for now; could bring back if we implement full team state client-side
+  // useEffect(() => {
+  //   const stop = globalDatasetManager.watch(
+  //     "illegal_search_painting2",
+  //     undefined,
+  //     { epoch: -1 },
+  //     (value: object) => {
+  //       const castvalue = value as { switches?: string };
+  //       if (castvalue.switches) {
+  //         setSwitchesFromString(castvalue.switches);
+  //       }
+  //     },
+  //   );
+  //   return stop;
+  // }, [setSwitchesFromString]);
 
   const leftColumnRows = switchState
     .slice(0, 20)

@@ -84,7 +84,3 @@ export default function DeskDrawer({
     </>
   );
 }
-
-if (typeof window !== "undefined") {
-  window.illegalSearchInteractions.deskdrawer = DeskDrawer;
-}

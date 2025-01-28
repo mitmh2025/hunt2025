@@ -15,7 +15,6 @@ import blacklight_off from "../assets/blacklight/blacklight_off.svg";
 import blacklight_on from "../assets/blacklight/blacklight_on.svg";
 import {
   type Modal,
-  type PostcodeResponse,
   hasExtraPuzzleFields,
   hasExtraPostCode,
   type Node,
@@ -35,6 +34,7 @@ import {
   ModalBackdrop,
   PuzzleLinkBackdrop,
 } from "./SearchEngine";
+import { fetchModal } from "./clientState";
 import { zoom_cursor, default_cursor } from "./cursors";
 
 // This is a copy of ModalTrigger, but using the "extra" fields that return
@@ -48,7 +48,6 @@ function ExtraModalTrigger({
   showModal: ({ modal }: { modal: ModalWithExtraPuzzleFields }) => void;
   backgroundColor?: string;
 }) {
-  const [loading, setLoading] = useState<boolean>(false);
   const initialTitle = hasExtraPuzzleFields(modal)
     ? modal.extra?.title
     : undefined;
@@ -66,52 +65,32 @@ function ExtraModalTrigger({
   const onAreaClicked: MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
       e.preventDefault();
-      // Don't double-fetch.
-      if (loading) return;
       // If there is a postCode set, we need to make the fetch so we can
       // 1) notify the backend we found the thing to click on, so it unlocks the associated puzzle
       // 2) in the response to that POST, get (and save) the title and slug that we need to display
       if (postCode !== undefined && title === undefined && slug === undefined) {
         console.log("POSTing extra code", postCode);
-        setLoading(true);
-        fetch("/rounds/illegal_search/modal", {
-          method: "POST",
-          body: JSON.stringify({
-            postCode,
-          }),
-          headers: {
-            "Content-Type": "application/json", // This body is JSON
-            Accept: "application/json", // Indicate that we want to receive JSON back
-          },
-        })
-          .then(async (result) => {
-            setLoading(false);
-            const json = (await result.json()) as PostcodeResponse;
-            // Save the title and slug returned in case the modal is displayed again
-            setTitle(json.title);
-            setSlug(json.slug);
-            setDesc(json.desc);
 
-            const modalWithExtraPuzzleFields = {
-              area: modal.area,
-              asset: modal.asset,
-              altText: modal.altText,
-              extra: modal.extra
-                ? {
-                    asset: modal.extra.asset,
-                    altText: modal.extra.altText,
-                    title: json.title,
-                    slug: json.slug,
-                    desc: json.desc,
-                  }
-                : undefined,
-            };
-            showModal({ modal: modalWithExtraPuzzleFields });
-          })
-          .catch((error: unknown) => {
-            setLoading(false);
-            console.log(error);
-          });
+        const json = fetchModal(postCode);
+        setTitle(json.title);
+        setSlug(json.slug);
+        setDesc(json.desc);
+
+        const modalWithExtraPuzzleFields = {
+          area: modal.area,
+          asset: modal.asset,
+          altText: modal.altText,
+          extra: modal.extra
+            ? {
+                asset: modal.extra.asset,
+                altText: modal.extra.altText,
+                title: json.title,
+                slug: json.slug,
+                desc: json.desc,
+              }
+            : undefined,
+        };
+        showModal({ modal: modalWithExtraPuzzleFields });
       } else if (title && slug) {
         const modalWithExtraPuzzleFields = {
           area: modal.area,
@@ -132,7 +111,7 @@ function ExtraModalTrigger({
 
       // If we already have the title and slug, no need to POST again; we can immediately show the popover.
     },
-    [loading, modal, postCode, showModal, slug, title, desc],
+    [modal, postCode, showModal, slug, title, desc],
   );
 
   const style = {
@@ -279,7 +258,18 @@ const ToggleOff = styled(ToggleOn)`
   background: url(${blacklight_off});
 `;
 
-const OtherModalBackdrop = styled(ModalBackdrop)`
+const OtherModalBackdrop = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   pointer-events: none;
   background: #00000033;
 `;
@@ -404,7 +394,6 @@ export default function Extra({
   // Render blacklight modal if it's been triggered
   let modalOverlay = undefined;
   if (modalShown && modalShown.extra) {
-    const puzzleState = teamState.puzzles[modalShown.extra.slug];
     modalOverlay = (
       <ModalBackdrop onClick={dismissModal}>
         <div style={{ position: "relative" }}>
@@ -430,9 +419,9 @@ export default function Extra({
 
         <PuzzleLinkBackdrop>
           <PuzzleLink
-            epoch={teamState.epoch}
-            lockState={puzzleState?.locked ?? "locked"}
-            answer={puzzleState?.answer}
+            epoch={1}
+            lockState={"unlocked"}
+            answer={undefined}
             currency={teamState.currency}
             title={modalShown.extra.title}
             slug={modalShown.extra.slug}
@@ -456,8 +445,4 @@ export default function Extra({
       {active && mousePos ? <Pointer pos={mousePos} /> : null}
     </>
   );
-}
-
-if (typeof window !== "undefined") {
-  window.illegalSearchInteractions.extra = Extra;
 }

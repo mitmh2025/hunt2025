@@ -11,6 +11,7 @@ import cryptex_base from "../assets/cryptex/cryptex_base.svg";
 import unlock from "../assets/cryptex/unlock.mp3";
 import { type Node } from "../types";
 import { ScreenScaleFactor } from "./ScreenScaleFactor";
+import { submitLock } from "./clientState";
 import { draggable_cursor, dragging_cursor } from "./cursors";
 import playSound from "./playSound";
 
@@ -326,26 +327,13 @@ export default function InteractiveCryptex({
         const newLetters = [...letters];
         newLetters[index] = letter;
 
-        fetch("/rounds/illegal_search/locks/cryptex", {
-          method: "POST",
-          body: JSON.stringify({ code: newLetters.join("") }),
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-          .then(async (result) => {
-            if (result.ok) {
-              const json = (await result.json()) as Node;
-              playSound(unlock);
-              setSolved(true);
-              setGateOpen(true);
-              setNode(json);
-            }
-          })
-          .catch(() => {
-            console.log("network error");
-          });
+        const result = submitLock("cryptex", newLetters.join(""));
+        if (result) {
+          playSound(unlock);
+          setSolved(true);
+          setGateOpen(true);
+          setNode(result);
+        }
 
         return newLetters;
       });

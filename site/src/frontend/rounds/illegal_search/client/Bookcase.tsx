@@ -7,6 +7,7 @@ import dark_wood_texture from "../assets/bookcase/dark_wood_texture.jpg";
 import unlock from "../assets/bookcase/unlock.mp3";
 import { type Node } from "../types";
 import bookcaseData from "./bookcaseData";
+import { submitLock } from "./clientState";
 import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
 
@@ -397,31 +398,18 @@ export default function Bookcase({
         .map((row) => row.map((book) => (book ? 1 : 0)).join(""))
         .join("");
 
-      fetch("/rounds/illegal_search/locks/bookcase", {
-        method: "POST",
-        body: JSON.stringify({ code }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-        .then(async (result) => {
-          if (result.ok) {
-            const json = (await result.json()) as Node;
-            setGateOpen(true);
-            playSound(unlock);
-            setNode(json);
+      const result = submitLock("bookcase", code);
+      if (result) {
+        setGateOpen(true);
+        playSound(unlock);
+        setNode(result);
 
-            // Allow time for the books to slide back into place and the
-            // unlock sound to play before zooming back out
-            setTimeout(() => {
-              navigate("main_north");
-            }, 2000);
-          }
-        })
-        .catch(() => {
-          console.log("network error");
-        });
+        // Allow time for the books to slide back into place and the
+        // unlock sound to play before zooming back out
+        setTimeout(() => {
+          navigate("main_north");
+        }, 2000);
+      }
     },
     [gateOpen, state, setNode, navigate],
   );
@@ -435,8 +423,4 @@ export default function Bookcase({
       />
     </>
   );
-}
-
-if (typeof window !== "undefined") {
-  window.illegalSearchInteractions.bookcase = Bookcase;
 }

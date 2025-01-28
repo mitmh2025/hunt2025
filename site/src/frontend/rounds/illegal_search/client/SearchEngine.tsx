@@ -5,13 +5,13 @@ import React, {
   useEffect,
   useMemo,
   useLayoutEffect,
-  useRef,
 } from "react";
 import { styled } from "styled-components";
-import { type TeamHuntState } from "../../../../../lib/api/client";
+import HUNT from "../../../../huntdata";
 import billie from "../../../assets/billie.png";
-import useDataset from "../../../client/useDataset";
+import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
 import PuzzleLink from "../../../components/PuzzleLink";
+import { Button } from "../../../components/StyledUI";
 import {
   type ScreenArea,
   type Node,
@@ -20,17 +20,34 @@ import {
   type Modal,
   type ModalWithPuzzleFields,
   type PlacedAsset,
-  type PostcodeResponse,
   type InteractionComponent,
   type Escape,
 } from "../types";
+import Bookcase from "./Bookcase";
+import Cryptex from "./Cryptex";
+import DeskDrawer from "./DeskDrawer";
+import Extra from "./Extra";
 import { ExtraModalRendererProvider } from "./ExtraModalRenderer";
+import PaintingOne from "./PaintingOne";
+import PaintingTwo from "./PaintingTwo";
+import Rug from "./Rug";
+import Safe from "./Safe";
 import { ScreenScaleFactor } from "./ScreenScaleFactor";
+import Telephone from "./Telephone";
+import { fetchModal, fetchNode, illegalSearchTeamState } from "./clientState";
 import { default_cursor, zoom_cursor } from "./cursors";
 
-if (typeof window !== "undefined") {
-  window.illegalSearchInteractions = {};
-}
+const plugins: Record<string, InteractionComponent> = {
+  bookcase: Bookcase,
+  cryptex: Cryptex,
+  deskdrawer: DeskDrawer,
+  extra: Extra,
+  painting1: PaintingOne,
+  painting2: PaintingTwo,
+  rug: Rug,
+  safe: Safe,
+  telephone: Telephone,
+};
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
 const ENABLE_DEVTOOLS = false as boolean; // type loosened to avoid always-truthy lints firing
@@ -142,7 +159,6 @@ export const ModalTrigger = ({
   showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
   backgroundColor?: string;
 }) => {
-  const [loading, setLoading] = useState<boolean>(false);
   const initialTitle = hasPuzzleFields(modal) ? modal.title : undefined;
   const initialSlug = hasPuzzleFields(modal) ? modal.slug : undefined;
   const initialDesc = hasPuzzleFields(modal) ? modal.desc : undefined;
@@ -154,47 +170,27 @@ export const ModalTrigger = ({
   const onAreaClicked: MouseEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
       e.preventDefault();
-      // Don't double-fetch.
-      if (loading) return;
       // If there is a postCode set, we need to make the fetch so we can
       // 1) notify the backend we found the thing to click on, so it unlocks the associated puzzle
       // 2) in the response to that POST, get (and save) the title and slug that we need to display
       if (postCode !== undefined && title === undefined && slug === undefined) {
         console.log("POSTing code", postCode);
-        setLoading(true);
-        fetch("/rounds/illegal_search/modal", {
-          method: "POST",
-          body: JSON.stringify({
-            postCode,
-          }),
-          headers: {
-            "Content-Type": "application/json", // This body is JSON
-            Accept: "application/json", // Indicate that we want to receive JSON back
-          },
-        })
-          .then(async (result) => {
-            setLoading(false);
-            const json = (await result.json()) as PostcodeResponse;
-            // Save the title and slug returned in case the modal is displayed again
-            setTitle(json.title);
-            setSlug(json.slug);
-            setDesc(json.desc);
+        const json = fetchModal(postCode);
 
-            const { area, asset, altText } = modal;
-            const modalWithPuzzleFields = {
-              area,
-              asset,
-              altText,
-              title: json.title,
-              slug: json.slug,
-              desc: json.desc,
-            };
-            showModal({ modal: modalWithPuzzleFields });
-          })
-          .catch((error: unknown) => {
-            setLoading(false);
-            console.log(error);
-          });
+        setTitle(json.title);
+        setSlug(json.slug);
+        setDesc(json.desc);
+
+        const { area, asset, altText } = modal;
+        const modalWithPuzzleFields = {
+          area,
+          asset,
+          altText,
+          title: json.title,
+          slug: json.slug,
+          desc: json.desc,
+        };
+        showModal({ modal: modalWithPuzzleFields });
       } else {
         const modalWithPuzzleFields = {
           area: modal.area,
@@ -209,7 +205,7 @@ export const ModalTrigger = ({
 
       // If we already have the title and slug, no need to POST again; we can immediately show the popover.
     },
-    [loading, modal, postCode, showModal, slug, title, desc],
+    [modal, postCode, showModal, slug, title, desc],
   );
 
   const style = {
@@ -275,6 +271,7 @@ const SpeechBubble = styled.div`
   z-index: 1;
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   color: black;
   font-family: "EB Garamond", serif;
@@ -299,20 +296,75 @@ const Billie = styled.img`
 `;
 
 const BillieSpeech = () => {
+  function handleReset() {
+    const hasLocalState = !!window.localStorage.getItem("illegalSearchGates");
+    const confirmed =
+      !hasLocalState ||
+      confirm(
+        "Are you sure you want to reset The Illegal Search and lose your progress?",
+      );
+    if (confirmed) {
+      localStorage.setItem("haveShownSearchIntro", "true");
+
+      window.localStorage.removeItem("illegalSearchGates");
+
+      document.location.reload();
+    }
+  }
+
+  function handleGoToUnlocked() {
+    const hasLocalState = !!window.localStorage.getItem("illegalSearchGates");
+    const confirmed =
+      !hasLocalState ||
+      confirm(
+        "Are you sure you want to skip to the fully-unlocked state and lose your progress?",
+      );
+    if (confirmed) {
+      localStorage.setItem("haveShownSearchIntro", "true");
+
+      const illegalSearchGates =
+        HUNT.rounds.find((r) => r.slug === "illegal_search")?.gates ?? [];
+
+      window.localStorage.setItem(
+        "illegalSearchGates",
+        illegalSearchGates.map((g) => g.id).join(","),
+      );
+
+      document.location.reload();
+    }
+  }
+
   return (
     <BillieSpeechContainer>
       <SpeechBubble>
-        For this investigation we want to lay out important ground rules.
-        Normally for this type of search, I’d want to get in and escape within
-        one hour, but fortunately Papa is tied up at the Gala, so you should
-        have until Sunday evening to complete the search. Each code is only used
-        once, and once you’ve opened a lock, leave it where you found it to make
-        it easier to reset the room, I mean, cover our tracks. You won’t need to
-        climb on the furniture. If something doesn’t move with two fingers of
-        force, you probably haven’t opened it yet. And remember—the front door
-        will remain unlocked the entire time if you feel the need to investigate
-        other locations.{"\n\n"}Now don’t just stand there, team. Go find out
-        what Papa’s hiding!
+        <div>
+          For this investigation we want to lay out important ground rules.
+          Normally for this type of search, I’d want to get in and escape within
+          one hour, but fortunately Papa is tied up at the Gala, so you should
+          have until Sunday evening to complete the search. Each code is only
+          used once, and once you’ve opened a lock, leave it where you found it
+          to make it easier to reset the room, I mean, cover our tracks. You
+          won’t need to climb on the furniture. If something doesn’t move with
+          two fingers of force, you probably haven’t opened it yet. And
+          remember—the front door will remain unlocked the entire time if you
+          feel the need to investigate other locations.{"\n\n"}Now don’t just
+          stand there, team. Go find out what Papa’s hiding!
+        </div>
+        <AuthorsNoteBlock style={{ marginTop: "1rem", fontSize: "24px" }}>
+          <p>
+            During the hunt, teams advanced through this round with state
+            persisted to the server. For this archival version, we save your
+            progress in-browser. You can start from the beginning, or jump to
+            the fully-unlocked state revealed after solving the second
+            metapuzzle.
+          </p>
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <Button onClick={handleReset}>Start from Beginning</Button>
+            <Button onClick={handleGoToUnlocked}>
+              Explore From After Second Metapuzzle
+            </Button>
+          </div>
+        </AuthorsNoteBlock>
       </SpeechBubble>
       <Billie src={billie} alt="Billie" />
     </BillieSpeechContainer>
@@ -376,94 +428,39 @@ const SearchEngineSurface = styled.div<{
 `;
 
 const Interaction = ({
-  scriptSrc,
   pluginName,
   node,
   showModal,
   setNode,
-  teamState,
   navigate,
 }: {
-  scriptSrc: string[];
   pluginName: string;
   node: Node;
   showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
   setNode: (node: Node) => void;
-  teamState: TeamHuntState;
   navigate: (destId: string) => void;
 }) => {
-  const [component, setComponent] = useState<{
-    component: InteractionComponent;
-  } | null>(null);
+  const Component = plugins[pluginName];
 
-  const lastLoadedPlugin = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (lastLoadedPlugin.current === pluginName) {
-      return;
-    }
-    lastLoadedPlugin.current = pluginName;
-
-    function loadScript(src: string): Promise<void> {
-      const existingScript = document.querySelector(`script[src="${src}"]`);
-      if (existingScript) {
-        return Promise.resolve();
-      }
-
-      return new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = src;
-        script.async = true;
-        script.onload = () => {
-          resolve();
-        };
-        script.onerror = reject;
-        document.body.appendChild(script);
-      });
-    }
-
-    setComponent(null);
-
-    Promise.all(scriptSrc.map(loadScript))
-      .then(() => {
-        const component = window.illegalSearchInteractions[pluginName];
-        if (!component) {
-          console.error(`Plugin ${pluginName} not found in global scope`);
-          return;
-        }
-
-        setComponent({ component });
-      })
-      .catch((error: unknown) => {
-        console.error(error);
-      });
-  }, [scriptSrc, pluginName]);
-
-  if (!component) {
+  if (!Component) {
     return null;
   }
 
-  const Component = component.component;
   return (
     <Component
       node={node}
       showModal={showModal}
       setNode={setNode}
-      teamState={teamState}
       navigate={navigate}
+      teamState={illegalSearchTeamState()}
     />
   );
 };
 
-const SearchEngine = ({
-  initialNode,
-  initialTeamState,
-}: {
-  initialNode: Node;
-  initialTeamState: TeamHuntState;
-}) => {
+const SearchEngine = () => {
   const haveShownIntro =
     localStorage.getItem("haveShownSearchIntro") === "true";
+  console.log(window.localStorage);
   const [introModalShown, setShownIntroModal] =
     useState<boolean>(!haveShownIntro);
   const setShowIntroModal = useCallback(() => {
@@ -472,10 +469,14 @@ const SearchEngine = ({
   const dismissIntroModal = useCallback(() => {
     setShownIntroModal(false);
     localStorage.setItem("haveShownSearchIntro", "true");
+    console.log(window.localStorage);
   }, []);
 
-  const [node, setNode] = useState<Node>(initialNode);
-  const [loading, setLoading] = useState<boolean>(false);
+  const urlParams = new URLSearchParams(window.location.search);
+  const [node, setNode] = useState<Node>(
+    fetchNode(urlParams.get("node") ?? "main_north"),
+  );
+  console.log("NODE", node);
   const [modalShown, setModalShown] = useState<
     ModalWithPuzzleFields | undefined
   >(undefined);
@@ -563,11 +564,6 @@ const SearchEngine = ({
 
   const handleNavClick = useCallback(
     ({ destId, sound }: { destId: string; sound?: string }) => {
-      // Avoid doing anything if we are already attempting to load a destination.
-      if (loading) return;
-
-      // Disable other interactive elements while loading progresses.
-      setLoading(true);
       setModalShown(undefined);
 
       // start playing sound, if requested
@@ -577,29 +573,11 @@ const SearchEngine = ({
         void elem.play();
       }
 
-      // start fetching info for `destId`
-      fetch(`/rounds/illegal_search/node/${destId}`, {
-        headers: {
-          "Content-Type": "application/json", // This body is JSON
-          Accept: "application/json", // Indicate that we want to receive JSON back
-        },
-      })
-        .then(async (result) => {
-          const json = (await result.json()) as Node;
-          history.pushState(
-            { node },
-            "",
-            `/rounds/illegal_search?node=${destId}`,
-          );
-          setNode(json);
-          setLoading(false);
-        })
-        .catch((error: unknown) => {
-          console.error(error);
-          setLoading(false);
-        });
+      setNode(fetchNode(destId));
+
+      history.pushState({ node }, "", `/rounds/illegal_search?node=${destId}`);
     },
-    [loading, node],
+    [node],
   );
 
   const onGoBack = useCallback((e: PopStateEvent) => {
@@ -608,30 +586,10 @@ const SearchEngine = ({
     console.log(e.state);
     const prevState = e.state as { node: Node };
     const prevNode = prevState.node;
-    setNode(prevNode);
     setModalShown(undefined);
 
     // refetch the node in case it's changed
-    fetch(`/rounds/illegal_search/node/${prevNode.id}`, {
-      headers: {
-        "Content-Type": "application/json", // This body is JSON
-        Accept: "application/json", // Indicate that we want to receive JSON back
-      },
-    })
-      .then(async (result) => {
-        const json = (await result.json()) as Node;
-        setNode((currentNode) => {
-          if (currentNode.id === json.id) {
-            return json;
-          }
-
-          // node has changed since we started fetching
-          return currentNode;
-        });
-      })
-      .catch((error: unknown) => {
-        console.error(error);
-      });
+    setNode(fetchNode(prevNode.id));
   }, []);
 
   const showModal = useCallback(
@@ -652,8 +610,6 @@ const SearchEngine = ({
       window.removeEventListener("popstate", onGoBack);
     };
   }, [node, onGoBack]);
-
-  const teamState = useDataset("team_state", undefined, initialTeamState);
 
   const assets = node.placedAssets
     .map((placedAsset) => {
@@ -704,13 +660,11 @@ const SearchEngine = ({
   node.interactions.forEach((interaction) => {
     const jsx = (
       <Interaction
-        scriptSrc={interaction.scriptSrc}
         pluginName={interaction.plugin}
         key={`interaction-${interaction.plugin}`}
         node={node}
         showModal={showModal}
         setNode={setNode}
-        teamState={teamState}
         navigate={(dest) => {
           handleNavClick({ destId: dest });
         }}
@@ -745,7 +699,6 @@ const SearchEngine = ({
       </ModalBackdrop>
     );
   } else if (modalShown) {
-    const puzzleState = teamState.puzzles[modalShown.slug];
     modalOverlay = (
       <ModalBackdrop onClick={dismissModal}>
         <img
@@ -757,10 +710,10 @@ const SearchEngine = ({
         />
         <PuzzleLinkBackdrop>
           <PuzzleLink
-            epoch={teamState.epoch}
-            lockState={puzzleState?.locked ?? "locked"}
-            answer={puzzleState?.answer}
-            currency={teamState.currency}
+            epoch={1}
+            lockState={"unlocked"}
+            answer={undefined}
+            currency={1}
             title={modalShown.title}
             slug={modalShown.slug}
             desc={modalShown.desc}

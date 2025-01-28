@@ -10,6 +10,7 @@ import knob from "../assets/desk_drawer/knob.svg";
 import unlock from "../assets/desk_drawer/unlock.mp3";
 import { type Node } from "../types";
 import clamp from "./clamp";
+import { submitLock } from "./clientState";
 import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
 
@@ -88,31 +89,18 @@ export default function DirectionalLock({
       const code = newCodeBuffer.join("");
       console.log(code);
 
-      fetch("/rounds/illegal_search/locks/deskdrawer", {
-        method: "POST",
-        body: JSON.stringify({ code }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-        .then(async (result) => {
-          if (result.ok) {
-            const json = (await result.json()) as Node;
-            playSound(unlock);
-            setSolved(true);
-            setDragging(false);
-            setKnobPosition(0);
+      const result = submitLock("deskdrawer", code);
+      if (result) {
+        playSound(unlock);
+        setSolved(true);
+        setDragging(false);
+        setKnobPosition(0);
 
-            // Allow time for the knob to return to the center before updating the code
-            setTimeout(() => {
-              setNode(json);
-            }, 100);
-          }
-        })
-        .catch(() => {
-          console.log("network error");
-        });
+        // Allow time for the knob to return to the center before updating the code
+        setTimeout(() => {
+          setNode(result);
+        }, 100);
+      }
     },
     [setNode],
   );

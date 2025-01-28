@@ -23,6 +23,7 @@ import {
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
+import { submitSafe } from "./clientState";
 import { default_cursor, draggable_cursor, dragging_cursor } from "./cursors";
 import playSound from "./playSound";
 
@@ -326,30 +327,17 @@ const Safe = ({
       // just do it
       openDoor();
     } else {
-      fetch("/rounds/illegal_search/locks/safe", {
-        method: "POST",
-        body: JSON.stringify({ tumblers }),
-        headers: {
-          "Content-Type": "application/json", // This body is JSON
-          Accept: "application/json", // Indicate that we want to receive JSON back
-        },
-      })
-        .then(async (result) => {
-          if (result.ok) {
-            console.log("Correct:", tumblers);
-            const json = (await result.json()) as Node;
-            console.log("Response:", json);
-            setNode(json);
-            openDoor();
-          } else {
-            console.log("Incorrect:", tumblers);
-            playSound(stuck);
-          }
-        })
-        .catch(() => {
-          // Quietly ignore HTTP failures
-          console.log("Network error");
-        });
+      const result = submitSafe(tumblers);
+
+      if (result) {
+        console.log("Correct:", tumblers);
+        console.log("Response:", result);
+        setNode(result);
+        openDoor();
+      } else {
+        console.log("Incorrect:", tumblers);
+        playSound(stuck);
+      }
     }
   }, [gateOpen, setNode, tumblers, openDoor]);
 
@@ -418,7 +406,3 @@ const Safe = ({
 };
 
 export default Safe;
-
-if (typeof window !== "undefined") {
-  window.illegalSearchInteractions.safe = Safe;
-}
