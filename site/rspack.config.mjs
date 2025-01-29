@@ -44,6 +44,9 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/colorless-china/assets/eponymous-forensic-accountant.pdf",
   "src/frontend/puzzles/confused-antarctica/assets/networking-event.pdf",
   "src/frontend/puzzles/hideous-theater/assets/do-the-manual-calculations-dont-try-monte-carlo.pdf",
+  "src/frontend/puzzles/kooky-light/assets/its-not-clear-paper.pdf",
+  "src/frontend/puzzles/kooky-light/assets/its-not-clear-transparencies.pdf",
+  "src/frontend/puzzles/kooky-light/assets/its-not-clear.xcf",
   "src/frontend/puzzles/pricey-robot/assets/making-contact-with-an-informant.pdf",
   "src/frontend/puzzles/regal-knife/assets/a.mp3",
   "src/frontend/puzzles/regal-knife/assets/d.mp3",
@@ -327,6 +330,16 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const psdRule = {
+    test: /\.psd$/,
+    type: "asset/resource",
+  };
+
+  const xcfRule = {
+    test: /\.xcf$/,
+    type: "asset/resource",
+  };
+
   const stlRule = {
     test: /\.stl$/,
     type: "asset/resource",
@@ -422,6 +435,8 @@ export default function createConfigs(_env, argv) {
         opusRule,
         fontRule,
         pdfRule,
+        psdRule,
+        xcfRule,
         stlRule,
         threemfRule,
         xlsxRule,
