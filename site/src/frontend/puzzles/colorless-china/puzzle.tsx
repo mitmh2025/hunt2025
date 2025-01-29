@@ -6,11 +6,14 @@ import {
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import { Errata, MailtoLink } from "../../components/StyledUI";
+import captions from "./assets/captions.vtt";
+import pdf from "./assets/eponymous-forensic-accountant.pdf";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
+import video from "./assets/video.mp4";
 
 const SUSPECTS_BLANKS: {
   structure: string;
@@ -111,7 +114,35 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           },
         ]}
       />
-      <ArchivalNotice />
+      <AuthorsNoteBlock>
+        <p>
+          During Hunt, solvers were instructed to come to the Gala to pick up
+          this puzzle, and to bring a bag. When they arrived, bartenders
+          provided them with the physical component of this puzzle—56
+          receipts—all in rapid succession, without much regard to whether
+          solvers had brought a bag and whether that bag was appropriately
+          sized. This resulted in some entertaining moments:
+        </p>
+        <p>
+          <video controls>
+            <source src={video} type="video/mp4" />
+            <track
+              label="English"
+              kind="captions"
+              srcLang="en"
+              src={captions}
+              default
+            />
+          </video>
+        </p>
+        <p>
+          You may download a PDF of the contents of these receipts{" "}
+          <a href={pdf} target="_blank" rel="noreferrer">
+            here
+          </a>
+          .
+        </p>
+      </AuthorsNoteBlock>
       <p className="puzzle-flavor">
         To solve the case, narrow down to only the fraudulent receipts.
       </p>

@@ -41,6 +41,7 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.stl",
   "src/frontend/puzzles/circular-greece/assets/rod-sticker.pdf",
   "src/frontend/puzzles/clean-ivory/assets/the-inspectre.pdf",
+  "src/frontend/puzzles/colorless-china/assets/eponymous-forensic-accountant.pdf",
   "src/frontend/puzzles/confused-antarctica/assets/networking-event.pdf",
   "src/frontend/puzzles/hideous-theater/assets/do-the-manual-calculations-dont-try-monte-carlo.pdf",
   "src/frontend/puzzles/pricey-robot/assets/making-contact-with-an-informant.pdf",
