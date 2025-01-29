@@ -1,5 +1,4 @@
 import React from "react";
-import type { TeamHuntState } from "../../../../lib/api/client";
 import { CopyableBlanks } from "../../components/Blanks";
 import {
   COPY_ONLY_CLASS,
@@ -7,7 +6,7 @@ import {
 } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
-import { Errata, MailtoLink } from "../../components/StyledUI";
+import { Errata } from "../../components/StyledUI";
 import captions from "./assets/captions.vtt";
 import pdf from "./assets/eponymous-forensic-accountant.pdf";
 import image1 from "./assets/image1.png";
@@ -99,10 +98,7 @@ const VICTIMS_BLANKS: {
   { structure: "_______", highlightIndices: [2] },
 ];
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const pickupCompleted =
-    teamState.rounds.paper_trail?.gates?.includes("ptg01") ?? false;
-
+const Puzzle = (): JSX.Element => {
   return (
     <>
       <Errata
@@ -148,34 +144,6 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
       <p className="puzzle-flavor">
         To solve the case, narrow down to only the fraudulent receipts.
       </p>
-      {pickupCompleted ? (
-        <>
-          <p className={NO_COPY_CLASS}>
-            Our records show you have picked up your copy of this puzzle.
-          </p>
-          <p className={NO_COPY_CLASS}>
-            You should have received a stack of 56 receipts. Please contact us
-            at{" "}
-            <MailtoLink
-              subject={"Missing pieces for Eponymous Forensic Accountant"}
-            />{" "}
-            if it seems that you are missing pieces.
-          </p>
-        </>
-      ) : (
-        <>
-          <p className={NO_COPY_CLASS}>
-            Please come to the Gala to pick up your copy of this puzzle.
-          </p>
-          <p className={NO_COPY_CLASS}>
-            You should receive a stack of 56 receipts. Please contact us at{" "}
-            <MailtoLink
-              subject={"Missing pieces for Eponymous Forensic Accountant"}
-            />{" "}
-            if it seems that you are missing pieces.
-          </p>
-        </>
-      )}
       <LinkedImage
         className={NO_COPY_CLASS}
         src={image1}
