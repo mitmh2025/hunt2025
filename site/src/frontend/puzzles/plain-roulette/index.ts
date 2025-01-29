@@ -10,7 +10,7 @@ const puzzle: PuzzleDefinition = {
   code_name: "plain-roulette",
   initial_description: "Knitting instructions",
   answer: "PEARL STREET",
-  authors: ["Kate Lynn", "Ariel Schwartz", "Kat Allen"],
+  authors: ["Kate Hart", "Ariel Schwartz", "Kat Allen"],
   editors: ["Henry Wong", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [],
   content: {
