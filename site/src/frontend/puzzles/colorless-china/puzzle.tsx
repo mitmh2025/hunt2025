@@ -141,7 +141,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <a href={pdf} target="_blank" rel="noreferrer">
             here
           </a>
-          .
+          . Each page of this PDF has four receipts that you will need to cut
+          out.
         </p>
       </AuthorsNoteBlock>
       <p className="puzzle-flavor">
