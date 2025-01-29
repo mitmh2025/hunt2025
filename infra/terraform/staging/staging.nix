@@ -10,7 +10,7 @@
       "media.staging"
       "ops.staging"
     ];
-    machineType = "e2-standard-4"; # 4 vCPU, 16 GB RAM
+    machineType = "e2-small"; # 0.5 vCPU, 2 GB RAM
     bootDisk.size = 100;
     firewall.allowedTCPPorts = [
       22 # SSH
