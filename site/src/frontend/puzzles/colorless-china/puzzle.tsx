@@ -136,7 +136,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           </video>
         </p>
         <p>
-          You may download a PDF of the contents of these receipts{" "}
+          Regardless of whether you remembered to bring a bag, you may download
+          a PDF of the contents of these receipts{" "}
           <a href={pdf} target="_blank" rel="noreferrer">
             here
           </a>
