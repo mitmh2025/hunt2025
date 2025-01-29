@@ -38,6 +38,14 @@ declare module "*.pdf" {
   const value: string;
   export default value;
 }
+declare module "*.psd" {
+  const value: string;
+  export default value;
+}
+declare module "*.xcf" {
+  const value: string;
+  export default value;
+}
 declare module "*.stl" {
   const value: string;
   export default value;
