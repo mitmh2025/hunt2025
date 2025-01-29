@@ -6,7 +6,6 @@
     ../../services/postgres.nix
     ../../services/redis.nix
     ../../services/authentik
-    ../../services/k3s.nix
   ];
   config = lib.mkMerge [
     {
