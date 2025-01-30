@@ -12,7 +12,7 @@ const Puzzle = (): JSX.Element => {
       <AuthorsNoteBlock>
         <p>
           Successfully performing this task will not give you an answer used in
-          any metapuzzle. Instead, you will receive one Key 🔑.
+          any metapuzzle. Instead, you will receive one Key 🗝️.
         </p>
         <p>
           Judging will occur at the Gala. When you are ready for your spotlight

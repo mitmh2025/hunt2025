@@ -8,7 +8,7 @@ const Solution = (): JSX.Element => {
         Upon successfully performing a the Star-Spangled Banner{" "}
         <a href="/puzzles/songs_on_the_radio/solution">on their radios</a>,
         teams were told to call in <PuzzleAnswer>A TRUE VIRTUOSO</PuzzleAnswer>,
-        which rewarded them with a Key 🔑.
+        which rewarded them with a Key 🗝️.
       </p>
     </>
   );
