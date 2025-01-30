@@ -8,7 +8,7 @@ const Solution = (): JSX.Element => {
         This was a scavenger hunt. If the judges determined a team had earned
         sufficient street cred, they were told to call in{" "}
         <PuzzleAnswer>I KNEW YOU WERE TROUBLE</PuzzleAnswer>, which awarded them
-        a 🔍 Clue (free answer).
+        a 🔎 Clue (free answer).
       </p>
     </>
   );

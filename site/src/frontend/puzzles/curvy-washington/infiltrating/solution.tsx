@@ -7,7 +7,7 @@ const Solution = (): JSX.Element => {
       <p>
         This was a scavenger hunt. If the judges determined a team had earned
         sufficient street cred, they were told to call in{" "}
-        <PuzzleAnswer>MISCHIEF MANAGED</PuzzleAnswer>, which awarded them a 🔍
+        <PuzzleAnswer>MISCHIEF MANAGED</PuzzleAnswer>, which awarded them a 🔎
         Clue (free answer).
       </p>
     </>

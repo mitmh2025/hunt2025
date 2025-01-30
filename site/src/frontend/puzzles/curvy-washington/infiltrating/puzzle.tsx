@@ -287,7 +287,7 @@ const Puzzle = (): JSX.Element => {
           This is a scavenger hunt, which requires solvers to acquire materials
           and demonstrate skills for our judges. Successfully completing this
           will not award an answer used in any metapuzzle, but will award 1
-          🔍Clue.
+          🔎Clue.
         </p>
         <p>
           Judging will occur in person in your team’s headquarters. To request

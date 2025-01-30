@@ -379,7 +379,7 @@ const Puzzle = (): JSX.Element => {
           This is a scavenger hunt, which requires solvers to acquire materials
           and demonstrate skills for our judges. Successfully completing this
           will not award an answer used in any metapuzzle, but will award 1
-          🔍Clue.
+          🔎Clue.
         </p>
         <p>
           Judging will occur in person in your team’s headquarters. To request
@@ -393,7 +393,7 @@ const Puzzle = (): JSX.Element => {
         The mean streets of MITropolis may change, but the currency stays the
         same. In order to succeed, you will need to demonstrate feats of
         criminality to meet a minimum threshold of street cred. Larger P.I.
-        training firms will need more street cred to earn a 🔍 Clue.
+        training firms will need more street cred to earn a 🔎 Clue.
       </p>
       <StyledTable>
         <tr>
