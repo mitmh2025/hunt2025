@@ -8,6 +8,7 @@ import {
   PageMain,
 } from "../../../components/PageLayout";
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
+import rootUrl from "../../../utils/rootUrl";
 
 export function contactHandler(req: Request) {
   const teamState = req.teamState;
@@ -48,7 +49,7 @@ export function contactHandler(req: Request) {
               <p>
                 The Gala is located in the Stata Center 4th Floor R&amp;D
                 Commons. Detailed instructions for accessing Stata and the Gala
-                can be found <a href="/about#the-gala">here</a>.
+                can be found <a href={`${rootUrl}/about#the-gala`}>here</a>.
               </p>
             </>
           )}

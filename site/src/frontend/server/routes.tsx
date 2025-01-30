@@ -25,6 +25,7 @@ import {
 } from "../rounds/illegal_search";
 import { addParserMiddleware } from "../utils/expressMiddleware";
 import renderApp, { render404, render500 } from "../utils/renderApp";
+import rootUrl from "../utils/rootUrl";
 import { aboutHandler } from "./routes/about/about";
 import { contactHandler } from "./routes/about/contact";
 import { healthAndSafetyHandler } from "./routes/about/health_and_safety";
@@ -116,12 +117,12 @@ const loginPostHandler: RequestHandler<
     httpOnly: true,
     sameSite: "lax",
   });
-  res.redirect(`/login?next=${encodeURIComponent(target)}`);
+  res.redirect(`${rootUrl}/login?next=${encodeURIComponent(target)}`);
 });
 
 function logoutHandler(_req: Request, res: Response) {
   res.cookie("mitmh2025_auth", "", { expires: new Date(0) });
-  res.redirect("/");
+  res.redirect(`${rootUrl}/`);
 }
 
 export function getBaseRouter({
@@ -165,7 +166,7 @@ export function getAuthRouter() {
       const teamStateResp = await req.api.getMyTeamState();
       if (teamStateResp.status === 401) {
         // Unauthorized means we should prompt the user to log in
-        res.redirect(`/login?next=${encodeURIComponent(req.path)}`);
+        res.redirect(`${rootUrl}/login?next=${encodeURIComponent(req.path)}`);
         return;
       }
       if (teamStateResp.status !== 200) {
@@ -401,7 +402,7 @@ export function registerUiRoutes({
   authRouter.get(
     "/draftqueens",
     asyncHandler((_: Request, res: Response) => {
-      res.redirect("/draughtqueens");
+      res.redirect(`${rootUrl}/draughtqueens`);
     }),
   );
 

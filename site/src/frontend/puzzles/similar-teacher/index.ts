@@ -1,3 +1,4 @@
+import rootUrl from "../../utils/rootUrl";
 import { type PuzzleDefinition } from "../types";
 import Flight from "./flight";
 import Puzzle from "./puzzle";
@@ -168,7 +169,7 @@ const puzzle: PuzzleDefinition = {
         "Great, so you’re ready to move past just reading about drinks! Go to the Gala and request a flight at the bar. Please make sure to send a few team members with no food allergies and an adventurous sense of taste.\n\nDuring Mystery Hunt, solvers who arrived at the Gala and requested a flight were presented with six mystery concoctions labeled 1 through 6. If you wish to subject yourself to these, we recommend that one member of your group spoil themself on the recipes and serve them to the rest of you. The recipes, along with photos of the packaging that were presented to solvers, can be found ",
       link: {
         display: "here.",
-        href: "/buy_a_flight",
+        href: `${rootUrl}/buy_a_flight`,
       },
     },
   ],

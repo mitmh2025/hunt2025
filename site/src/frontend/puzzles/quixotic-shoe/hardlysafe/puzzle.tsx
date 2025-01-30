@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import Crossword from "../../../components/Crossword";
+import rootUrl from "../../../utils/rootUrl";
 import { HARDLYSAFE_LABELS } from "./data";
 
 const Arrow = styled.span`
@@ -12,7 +13,9 @@ const Puzzle = (): JSX.Element => {
     <>
       <p>
         <Arrow>←</Arrow>{" "}
-        <a href="/puzzles/and_now_a_puzzling_word_from_our_sponsors">
+        <a
+          href={`${rootUrl}/puzzles/and_now_a_puzzling_word_from_our_sponsors`}
+        >
           Back to main puzzle
         </a>
       </p>

@@ -4,6 +4,7 @@ import {
   ArchivalNotice,
   InteractionLinkBlock,
 } from "../../components/PuzzleLayout";
+import rootUrl from "../../utils/rootUrl";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
   const interactionState =
@@ -14,7 +15,9 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
       {interactionState !== undefined ? (
         <InteractionLinkBlock>
           Unlocked interaction:{" "}
-          <a href="/interactions/confront_katrina">Confront Katrina</a>
+          <a href={`${rootUrl}/interactions/confront_katrina`}>
+            Confront Katrina
+          </a>
         </InteractionLinkBlock>
       ) : null}
 

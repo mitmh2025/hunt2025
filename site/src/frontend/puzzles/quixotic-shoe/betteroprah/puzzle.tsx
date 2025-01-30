@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import Dropquote from "../../../components/Dropquote";
 import { HScrollTableWrapper } from "../../../components/StyledUI";
+import rootUrl from "../../../utils/rootUrl";
 import { BETTEROPRAH_LABELS } from "./data";
 
 const LETTERBANKS = [
@@ -58,7 +59,9 @@ const Puzzle = (): JSX.Element => {
     <>
       <p>
         <Arrow>←</Arrow>{" "}
-        <a href="/puzzles/and_now_a_puzzling_word_from_our_sponsors">
+        <a
+          href={`${rootUrl}/puzzles/and_now_a_puzzling_word_from_our_sponsors`}
+        >
           Back to main puzzle
         </a>
       </p>

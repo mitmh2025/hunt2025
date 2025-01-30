@@ -6,6 +6,7 @@ import {
   AuthorsNote,
   InteractionLinkBlock,
 } from "../../components/PuzzleLayout";
+import rootUrl from "../../utils/rootUrl";
 import green from "./assets/green.png";
 
 const SizedImage = styled(LinkedImage)`
@@ -23,7 +24,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
       {interactionState !== undefined ? (
         <InteractionLinkBlock>
           Unlocked interaction:{" "}
-          <a href="/interactions/the_safehouse">The Safehouse</a>
+          <a href={`${rootUrl}/interactions/the_safehouse`}>The Safehouse</a>
         </InteractionLinkBlock>
       ) : null}
 

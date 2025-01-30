@@ -17,6 +17,7 @@ import {
 import { PUZZLES, SUBPUZZLES } from "../../puzzles";
 import { NODE_IDS_BY_PUZZLE_SLUG } from "../../rounds/illegal_search/graph";
 import { missingDiamondState } from "../../rounds/missing_diamond";
+import rootUrl from "../../utils/rootUrl";
 import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "../constants";
 import {
   type ComponentManifest,
@@ -298,7 +299,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
                 This puzzle is currently locked so guess submissions will 404,
                 but it can be unlocked by spending unlock currency.
               </p>
-              <form method="POST" action={`/puzzles/${slug}/unlock`}>
+              <form method="POST" action={`${rootUrl}/puzzles/${slug}/unlock`}>
                 <button type="submit">Unlock puzzle</button>
               </form>
             </>
@@ -412,11 +413,11 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     return slotObj.slug === slug && slotObj.is_meta;
   });
   if (!isBackgroundCheckMeta) {
-    let backlinkHref = `/rounds/${puzzleState.round}`;
+    let backlinkHref = `${rootUrl}/rounds/${puzzleState.round}`;
     let backlinkRoundTitle =
       req.teamState.state.rounds[puzzleState.round]?.title;
     if (puzzleState.round === "stray_leads") {
-      backlinkHref = "/rounds/stray_leads";
+      backlinkHref = `${rootUrl}/rounds/stray_leads`;
       backlinkRoundTitle = "Stray Leads";
     } else if (puzzleState.round === "illegal_search") {
       // We want to go back to the same node we were at before.
@@ -504,7 +505,7 @@ export const puzzleGuessPostHandler: RequestHandler<
 
   if (req.headers.accept !== "application/json") {
     // Must be browser falling back to basic HTML forms.
-    res.redirect(`/puzzles/${slug}`);
+    res.redirect(`${rootUrl}/puzzles/${slug}`);
     return;
   }
 
@@ -540,7 +541,7 @@ export const subpuzzleGuessPostHandler: RequestHandler<
 
   if (req.headers.accept !== "application/json") {
     // Must be browser falling back to basic HTML forms.
-    res.redirect(`/puzzles/${slug}`);
+    res.redirect(`${rootUrl}/puzzles/${slug}`);
     return;
   }
 
@@ -572,7 +573,7 @@ export const puzzleUnlockPostHandler: RequestHandler<
 
   if (req.headers.accept !== "application/json") {
     // noscript fallback; redirect to the now-unlocked puzzle
-    res.redirect(`/puzzles/${slug}`);
+    res.redirect(`${rootUrl}/puzzles/${slug}`);
     return;
   }
 
@@ -681,7 +682,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   });
   if (!isBackgroundCheckMeta) {
     backlinkFrag = (
-      <SolutionBacklinkComponent href={`/puzzles/${slug}`}>
+      <SolutionBacklinkComponent href={`${rootUrl}/puzzles/${slug}`}>
         ← Back to puzzle
       </SolutionBacklinkComponent>
     );
@@ -833,7 +834,7 @@ export async function puzzleHintsHandler(req: Request<PuzzleParams>) {
 
   const backlinkFrag = (
     <>
-      <HintsBacklinkComponent href={`/puzzles/${slug}`}>
+      <HintsBacklinkComponent href={`${rootUrl}/puzzles/${slug}`}>
         ← Back to puzzle
       </HintsBacklinkComponent>
     </>

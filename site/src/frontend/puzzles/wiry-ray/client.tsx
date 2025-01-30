@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
+import rootUrl from "../../utils/rootUrl";
 
 const Message = styled.div`
   word-break: break-word;
@@ -53,7 +54,7 @@ const App = () => {
     async (command: string) => {
       setLoading(true);
       try {
-        const response = await fetch("/puzzles/deepfrost/command", {
+        const response = await fetch(`${rootUrl}/puzzles/deepfrost/command`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

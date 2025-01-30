@@ -7,6 +7,7 @@ import {
   type AllPuzzlesState,
 } from "../client/all_puzzles_types";
 import { deviceMax } from "../utils/breakpoints";
+import rootUrl from "../utils/rootUrl";
 import PuzzleLink, { PuzzleIcon } from "./PuzzleLink";
 
 const StyledRow = styled.tr<{ $bolded: boolean }>`
@@ -127,7 +128,9 @@ const PuzzlesTable = ({
             return (
               <StyledRow key={int.slug} $bolded={true}>
                 <td key="interaction">
-                  <a href={`/interactions/${int.slug}`}>{int.title}</a>
+                  <a href={`${rootUrl}/interactions/${int.slug}`}>
+                    {int.title}
+                  </a>
                 </td>
                 <td></td>
               </StyledRow>
@@ -151,7 +154,7 @@ const AllPuzzlesRound = ({
   return (
     <>
       <RoundHeader key={round.slug}>
-        <a href={`/rounds/${round.slug}`}>{round.title}</a>
+        <a href={`${rootUrl}/rounds/${round.slug}`}>{round.title}</a>
       </RoundHeader>
       <PuzzlesTable
         epoch={epoch}
@@ -184,7 +187,7 @@ const PuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
       {state.stray.length > 0 && (
         <>
           <RoundHeader key="stray">
-            <a href="/rounds/stray_leads">Stray Leads</a>
+            <a href={`${rootUrl}/rounds/stray_leads`}>Stray Leads</a>
           </RoundHeader>
           <PuzzlesTable
             epoch={state.epoch}
@@ -195,7 +198,7 @@ const PuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
       )}
       {endgame?.interactions?.map((int) => (
         <RoundHeader key={int.slug}>
-          <a href={`/interactions/${int.slug}`}>{int.title}</a>
+          <a href={`${rootUrl}/interactions/${int.slug}`}>{int.title}</a>
         </RoundHeader>
       ))}
     </>

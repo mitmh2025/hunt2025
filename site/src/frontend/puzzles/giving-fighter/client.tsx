@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
+import rootUrl from "../../utils/rootUrl";
 
 const Enumeration = "____ _______ ____ _____ _______ (____ ____)";
 
@@ -133,7 +134,7 @@ const App = () => {
           });
           setInputMessage("");
 
-          const resp = await fetch("/puzzles/chatgpt/chat", {
+          const resp = await fetch(`${rootUrl}/puzzles/chatgpt/chat`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

@@ -9,6 +9,7 @@ import {
   PageTitle,
   PageMain,
 } from "../../../components/PageLayout";
+import rootUrl from "../../../utils/rootUrl";
 import boxaroo from "./assets/boxaroo.png";
 import hudsonRiverTrading from "./assets/hudsonRiverTrading.png";
 import janeStreet from "./assets/janeStreet.png";
@@ -261,7 +262,7 @@ export function aboutHandler(req: Request) {
             Each on-campus team will have received a radio from Mr. Finster,
             which is critical for completing the investigation. This is a
             complex technological device, so instructions for care and use are
-            here: <a href="/radio">Radio Instruction Manual</a>
+            here: <a href={`${rootUrl}/radio`}>Radio Instruction Manual</a>
           </p>
           <p>
             The radio host, Miss Terry Hunter, and primary music stream are

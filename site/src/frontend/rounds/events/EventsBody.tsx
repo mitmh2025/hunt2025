@@ -9,6 +9,7 @@ import {
 import { PuzzleIcon } from "../../components/PuzzleLink";
 import { darkBgLinkStyles } from "../../components/StyledUI";
 import { deviceMax } from "../../utils/breakpoints";
+import rootUrl from "../../utils/rootUrl";
 import CluesManager from "./CluesManager";
 import { EventsFonts } from "./EventsFonts";
 import { type EventSlug, type EventsState } from "./types";
@@ -142,9 +143,9 @@ export default function EventsBody({ state }: { state: EventsState }) {
             At the completion of each training session, you’ll earn a{" "}
             <strong>Clue</strong>{" "}
             <span style={{ fontStyle: "normal" }}>🔎</span>, a valuable tool in
-            your investigation. Please see <a href="/about">the About page</a>{" "}
-            for more information about Clues{" "}
-            <span style={{ fontStyle: "normal" }}>🔎</span>.
+            your investigation. Please see{" "}
+            <a href={`${rootUrl}/about`}>the About page</a> for more information
+            about Clues <span style={{ fontStyle: "normal" }}>🔎</span>.
           </p>
         </EventsHeader>
 
@@ -170,7 +171,7 @@ export default function EventsBody({ state }: { state: EventsState }) {
                     </PuzzleLink>
                   ) : event.answer ? (
                     <PuzzleLink>
-                      <a href={`/puzzles/${event.slug}`}>
+                      <a href={`${rootUrl}/puzzles/${event.slug}`}>
                         <PuzzleIcon
                           lockState={event.locked}
                           answer={event.answer}
@@ -182,7 +183,7 @@ export default function EventsBody({ state }: { state: EventsState }) {
                     </PuzzleLink>
                   ) : (
                     <PuzzleLink>
-                      <a href={`/puzzles/${event.slug}`}>
+                      <a href={`${rootUrl}/puzzles/${event.slug}`}>
                         <PuzzleIcon
                           lockState={event.locked}
                           answer={event.answer}

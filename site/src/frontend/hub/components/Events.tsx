@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { type EventDataWithTime } from "../../rounds/events/types";
+import rootUrl from "../../utils/rootUrl";
 import EventScheduleBg from "../assets/events.png";
 import { defaultShadowFilter, getRelativeSizeCss } from "../constants";
 
@@ -68,7 +69,7 @@ const EventSchedule = styled.a`
 
 const Events = ({ events }: { events: EventDataWithTime[] }) => {
   return (
-    <EventSchedule href="/rounds/events">
+    <EventSchedule href={`${rootUrl}/rounds/events`}>
       <h3>Event Schedule</h3>
       <ul>
         {events.map((event) => (

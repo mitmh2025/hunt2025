@@ -3,6 +3,7 @@ import { type TeamState, type TeamHuntState } from "../../../lib/api/client";
 import virtualInteractionState from "../interactions/virtualInteractionState";
 import { eventsState } from "../rounds/events";
 import { type RenderedPage } from "../utils/renderApp";
+import rootUrl from "../utils/rootUrl";
 import NavBar, { type NavBarState } from "./NavBar";
 import Notifications from "./Notifications";
 
@@ -12,7 +13,7 @@ export function navBarState(teamState: TeamHuntState): NavBarState {
       if (slug === "endgame") return [];
       return [
         {
-          href: `/rounds/${slug}`,
+          href: `${rootUrl}/rounds/${slug}`,
           title: roundObj.title,
         },
       ];
@@ -20,13 +21,13 @@ export function navBarState(teamState: TeamHuntState): NavBarState {
   );
   if (teamState.rounds.missing_diamond?.gates?.includes("hunt_started")) {
     rounds.push({
-      href: "/rounds/stray_leads",
+      href: `${rootUrl}/rounds/stray_leads`,
       title: "Stray Leads",
     });
   }
   if (teamState.rounds.endgame?.interactions?.the_vault?.state) {
     rounds.push({
-      href: "/interactions/the_vault",
+      href: `${rootUrl}/interactions/the_vault`,
       title: "The Vault",
     });
   }

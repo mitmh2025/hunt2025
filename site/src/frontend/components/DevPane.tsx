@@ -7,6 +7,7 @@ import {
   type DevtoolsRound,
   type DevtoolsState,
 } from "../server/devtools";
+import rootUrl from "../utils/rootUrl";
 
 const bgOpacity = "0.7";
 
@@ -72,7 +73,7 @@ const PuzzleBox = ({
   );
 
   return (
-    <a key={slot} href={`/puzzles/${slug}`}>
+    <a key={slot} href={`${rootUrl}/puzzles/${slug}`}>
       {box}
     </a>
   );
@@ -98,7 +99,10 @@ const InteractionBox = styled.div<{ $state: DevtoolsInteraction["state"] }>`
 
 const Interaction = ({ interaction }: { interaction: DevtoolsInteraction }) => {
   return (
-    <a key={interaction.slug} href={`/interactions/${interaction.slug}`}>
+    <a
+      key={interaction.slug}
+      href={`${rootUrl}/interactions/${interaction.slug}`}
+    >
       <InteractionBox
         key={interaction.slug}
         $state={interaction.state}
@@ -170,7 +174,7 @@ const Round = ({ round }: { round: DevtoolsRound }) => {
   return (
     <RoundContainer key={round.slug} $state={round.state}>
       <DevPaneItemHeader>
-        <a href={`/rounds/${round.slug}`}>{round.title}</a>{" "}
+        <a href={`${rootUrl}/rounds/${round.slug}`}>{round.title}</a>{" "}
         <CountsSpan
           title={`${counts.locked} locked\n${counts.unlockable} unlockable\n${counts.unlocked} open\n${counts.solved} solved`}
         >
@@ -249,7 +253,7 @@ const DevPane = ({ state }: { state: DevtoolsState }) => {
       <h3 style={{ margin: 0, borderTop: "1px solid #888" }}>Actions</h3>
       <ul style={{ margin: 0 }}>
         <li>
-          <a href="/logout">Logout</a>
+          <a href={`${rootUrl}/logout`}>Logout</a>
         </li>
       </ul>
     </DevPaneContainer>

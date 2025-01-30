@@ -10,6 +10,7 @@ import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import useAppendDataset from "../../client/useAppendDataset";
 import { Button } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import { type LogEntryData } from "./types";
 
 const Speaker = styled.span`
@@ -150,7 +151,7 @@ const App = () => {
   const isDone = log.some((entry) => !!entry.data.isDone);
   const handleTalk: MouseEventHandler<HTMLButtonElement> = useCallback(() => {
     setState("speaking");
-    fetch("/puzzles/what_do_they_call_you/speak", {
+    fetch(`${rootUrl}/puzzles/what_do_they_call_you/speak`, {
       method: "POST",
       body: "{}",
       headers: {

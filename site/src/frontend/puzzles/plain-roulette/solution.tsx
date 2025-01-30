@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import { PuzzleAnswer } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import barcode from "./assets/barcode.png";
 import chart from "./assets/chart.jpg";
 import highlightedChart from "./assets/highlighted-chart.jpg";
@@ -28,7 +29,7 @@ const Solution = (): JSX.Element => {
         a black-and-white striped scarf. If the scarf is knit (or charted), it
         looks like a 1D Code-128 barcode. If that barcode is scanned, it reads
         to a second URL on the Hunt website:{" "}
-        <a href="/i_kid_ewe_knot" target="_blank" rel="noreferrer">
+        <a href={`${rootUrl}/i_kid_ewe_knot`} target="_blank" rel="noreferrer">
           https://two-pi-noir.agency/i_kid_ewe_knot
         </a>
         .
@@ -38,7 +39,11 @@ const Solution = (): JSX.Element => {
         black-and-white swatch. If this swatch is knit (or charted), it looks
         like a 2D QR code. If that QR code is scanned, it reads to a third URL
         on the Hunt website:{" "}
-        <a href="/stitchy_situation" target="_blank" rel="noreferrer">
+        <a
+          href={`${rootUrl}/stitchy_situation`}
+          target="_blank"
+          rel="noreferrer"
+        >
           https://two-pi-noir.agency/stitchy_situation
         </a>
         .
@@ -92,13 +97,13 @@ const Solution = (): JSX.Element => {
       <p>
         This is a Code 128 barcode, which scans with any barcode reader
         (including smartphone app barcode readers) to give a url:{" "}
-        <a href="/i_kid_ewe_knot" target="_blank" rel="noreferrer">
+        <a href={`${rootUrl}/i_kid_ewe_knot`} target="_blank" rel="noreferrer">
           https://two-pi-noir.agency/i_kid_ewe_knot
         </a>
       </p>
       <p>
         Follow that link, and you’ll find the instructions for{" "}
-        <a href="/i_kid_ewe_knot" target="_blank" rel="noreferrer">
+        <a href={`${rootUrl}/i_kid_ewe_knot`} target="_blank" rel="noreferrer">
           Doodad 2
         </a>
         .
@@ -137,7 +142,7 @@ const Solution = (): JSX.Element => {
       <SizedImage src={qrCode} alt="A 2D barcode, or QR code" />
       <p>
         Which is, of course, a QR code. Scan it, and you get:{" "}
-        <a href="/stitchy_situation">
+        <a href={`${rootUrl}/stitchy_situation`}>
           https://two-pi-noir.agency/stitchy_situation
         </a>{" "}
         where you’ll find instructions for Doodad 3.

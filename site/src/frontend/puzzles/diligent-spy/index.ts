@@ -1,3 +1,4 @@
+import rootUrl from "../../utils/rootUrl";
 import { type PuzzleDefinition } from "../types";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
@@ -90,7 +91,7 @@ const puzzle: PuzzleDefinition = {
         "Keep going!\n\nDuring Mystery Hunt, teams would have to tune their radio to some frequency that was not broadcasting on the PM band. You can ",
       link: {
         display: "simulate that experience here",
-        href: "/can_do_transmissions_static",
+        href: `${rootUrl}/can_do_transmissions_static`,
       },
     },
   ],

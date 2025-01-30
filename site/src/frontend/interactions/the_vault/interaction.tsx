@@ -1,5 +1,6 @@
 import React from "react";
 import { AuthorsNote } from "../../components/PuzzleLayout";
+import rootUrl from "../../utils/rootUrl";
 
 const Interaction = () => {
   return (
@@ -10,8 +11,8 @@ const Interaction = () => {
 
       <AuthorsNote>
         Please check one last time that your{" "}
-        <a href="/team">team contact info</a> is up to date. If the Gala is
-        currently closed, Billie’s team will reach out about next steps.
+        <a href={`${rootUrl}/team`}>team contact info</a> is up to date. If the
+        Gala is currently closed, Billie’s team will reach out about next steps.
       </AuthorsNote>
     </>
   );

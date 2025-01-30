@@ -2,6 +2,7 @@ import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import boyband from "./assets/boyband987.mp3";
 import classical from "./assets/classical905.mp3";
 import country from "./assets/country1011.mp3";
@@ -279,7 +280,8 @@ const Solution = () => {
         ))}
       </StyledTable>
       <p>
-        After solving <a href="/puzzles/papas_stash">Papa’s Stash</a>, teams
+        After solving{" "}
+        <a href={`${rootUrl}/puzzles/papas_stash`}>Papa’s Stash</a>, teams
         receive the clue phrase <Mono>SAME LOCATIONS TUNED TO PM 23pi/20</Mono>.
         After returning to the locations and tuning to{" "}
         <Math>

@@ -4,6 +4,7 @@ import LinkedImage from "../../components/LinkedImage";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import { Button, PuzzleAnswer } from "../../components/StyledUI";
 import { deviceMax } from "../../utils/breakpoints";
+import rootUrl from "../../utils/rootUrl";
 import beef from "./assets/beef.png";
 import cartel from "./assets/cartel.png";
 import hotwings from "./assets/hotwings.png";
@@ -164,7 +165,7 @@ const SubpuzzleLink = ({
   children?: React.ReactNode;
 }): JSX.Element => {
   return (
-    <SubpuzzleLinkWrapper href={`/${slug}`}>
+    <SubpuzzleLinkWrapper href={`${rootUrl}/${slug}`}>
       <div className="main-promo-contents">
         <span className="subpuzzle-name">
           <span>{answer ?? solved ? "✔️ " : "➕ "}</span>

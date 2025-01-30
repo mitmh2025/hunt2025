@@ -2,6 +2,7 @@ import React from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import LinkedImage from "../../components/LinkedImage";
 import { InteractionLinkBlock } from "../../components/PuzzleLayout";
+import rootUrl from "../../utils/rootUrl";
 import ferdinand from "./assets/Ferdinand.png";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
@@ -13,7 +14,9 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
       {interactionState !== undefined ? (
         <InteractionLinkBlock>
           Unlocked interaction:{" "}
-          <a href="/interactions/confront_carter">Confront Carter</a>
+          <a href={`${rootUrl}/interactions/confront_carter`}>
+            Confront Carter
+          </a>
         </InteractionLinkBlock>
       ) : null}
 

@@ -28,7 +28,9 @@ const swcConfig = JSON.parse(
   fs.readFileSync(path.join(currentDirname, ".swcrc"), "utf-8"),
 );
 
-const ASSET_PATH = process.env.ASSET_PATH || "/";
+const ASSET_PATH =
+  process.env.ASSET_PATH ||
+  (process.env.ARCHIVE_MODE !== undefined ? "/2025/" : "/");
 
 // A list of assets for which we wish to preserve the original filename.
 // To continue to support cache-busting, we place such assets inside a
@@ -592,6 +594,9 @@ export default function createConfigs(_env, argv) {
       },
     },
     plugins: [
+      new rspack.DefinePlugin({
+        "process.env.ARCHIVE_MODE": JSON.stringify(process.env.ARCHIVE_MODE),
+      }),
       new rspack.CssExtractRspackPlugin({
         filename: dev
           ? "static/[name].[contenthash:16].css"
@@ -670,6 +675,9 @@ export default function createConfigs(_env, argv) {
       },
     },
     plugins: [
+      new rspack.DefinePlugin({
+        "process.env.ARCHIVE_MODE": JSON.stringify(process.env.ARCHIVE_MODE),
+      }),
       new RspackManifestPlugin({
         fileName: workerManifestFilename,
         publicPath: ASSET_PATH,

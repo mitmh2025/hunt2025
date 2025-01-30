@@ -8,6 +8,7 @@ import express, {
 } from "express";
 import morgan from "morgan";
 import multer from "multer";
+import archiveMode from "./archiveMode";
 
 export function healthzHandler(_req: Request, res: Response) {
   // TODO: For API servers, check the health of our database connection?
@@ -28,7 +29,7 @@ export const addStaticMiddleware = (
   if (existsSync(staticPath)) {
     // Serve static assets from the bundle without auth
     app.use(
-      "/static",
+      `${archiveMode ? "/2025" : ""}/static`,
       express.static(staticPath, { immutable: true, maxAge: "1y" }),
     );
   }

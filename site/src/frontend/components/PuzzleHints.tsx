@@ -4,6 +4,7 @@ import { type z } from "zod";
 import { type TeamHuntState, newClient } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
 import apiUrl from "../utils/apiUrl";
+import rootUrl from "../utils/rootUrl";
 import { Button, LabeledTextAreaWithError } from "./StyledUI";
 
 type GetPuzzleStateResponse = z.infer<
@@ -239,7 +240,9 @@ const PuzzleHints = ({
     form = (
       <OutstandingHintNotice>
         You have an outstanding hint request for{" "}
-        <a href={`/puzzles/${teamState.outstanding_hint_requests[0]}/hints`}>
+        <a
+          href={`${rootUrl}/puzzles/${teamState.outstanding_hint_requests[0]}/hints`}
+        >
           another puzzle
         </a>
         . Please wait for a response to that request before submitting another

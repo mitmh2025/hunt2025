@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
+import rootUrl from "../../utils/rootUrl";
 import { type Outputs, type Color, Display } from "./shared";
 
 type NineNumberArray = [
@@ -190,7 +191,7 @@ const App = () => {
     // Only pay attention to the latest request.
     const requestId = crypto.getRandomValues(new Uint8Array(16));
     activeRequest.current = requestId;
-    fetch("/puzzles/follow_the_rules/lights", {
+    fetch(`${rootUrl}/puzzles/follow_the_rules/lights`, {
       method: "POST",
       body: JSON.stringify({ inputs }),
       headers: {

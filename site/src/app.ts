@@ -23,6 +23,7 @@ import {
   healthzHandler,
   logMiddleware,
 } from "./frontend/utils/expressMiddleware";
+import rootUrl from "./frontend/utils/rootUrl";
 import HUNT from "./huntdata";
 
 export default async function ({
@@ -157,7 +158,13 @@ export default async function ({
 
     // Forward all other requests to the UI router, which we expect to
     // handle most user requests.
-    app.use("/", uiRouter);
+    app.use(`${rootUrl}/`, uiRouter);
+
+    if (rootUrl !== "") {
+      app.get("/", (_req, res) => {
+        res.redirect(rootUrl);
+      });
+    }
   }
 
   if (enabledComponents.has("inteng")) {

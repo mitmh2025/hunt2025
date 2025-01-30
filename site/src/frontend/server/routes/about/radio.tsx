@@ -8,6 +8,7 @@ import { AuthorsNote } from "../../../components/PuzzleLayout";
 import lightIcon from "../../../puzzles/practical-fighter/assets/light.svg";
 import magnetIcon from "../../../puzzles/practical-fighter/assets/magnet.svg";
 import { deviceMax } from "../../../utils/breakpoints";
+import rootUrl from "../../../utils/rootUrl";
 import { RadioWrapper } from "./StyledRadioPage";
 import circle from "./assets/circle.svg";
 import image1 from "./assets/image1.svg";
@@ -242,7 +243,8 @@ export function radioHandler(req: Request) {
           news updates all weekend, so we encourage you to make sure to listen
           in all weekend. If for some reason you find that you need to tune your
           radio away from <TwoPi />, an{" "}
-          <a href="/virtual_radio">alternate virtual stream</a> is available.
+          <a href={`${rootUrl}/virtual_radio`}>alternate virtual stream</a> is
+          available.
         </p>
         <h3 id="station-7pi-over-5">
           Wireless Configuration: <PiFraction num={7} denom={5} />
@@ -282,7 +284,10 @@ export function radioHandler(req: Request) {
             <AuthorsNote>
               This station was originally discovered in connection with the
               puzzle{" "}
-              <a href="/puzzles/songs_on_the_radio">Songs on the Radio</a>.
+              <a href={`${rootUrl}/puzzles/songs_on_the_radio`}>
+                Songs on the Radio
+              </a>
+              .
             </AuthorsNote>
 
             <p>
@@ -347,7 +352,7 @@ export function radioHandler(req: Request) {
             </h3>
             <AuthorsNote>
               This station was originally discovered while solving{" "}
-              <a href="/puzzles/the_thief">The Thief</a>.
+              <a href={`${rootUrl}/puzzles/the_thief`}>The Thief</a>.
             </AuthorsNote>
 
             <p>
@@ -373,7 +378,8 @@ export function radioHandler(req: Request) {
 
             <AuthorsNote>
               This station was originally discovered by shining your blacklight
-              on the puzzle <a href="/puzzles/given_up_blacklight">Given Up</a>.
+              on the puzzle{" "}
+              <a href={`${rootUrl}/puzzles/given_up_blacklight`}>Given Up</a>.
             </AuthorsNote>
 
             <p>
@@ -392,7 +398,10 @@ export function radioHandler(req: Request) {
             <AuthorsNote>
               This station was originally discovered in connection with the
               puzzle{" "}
-              <a href="/puzzles/can_do_transmissions">Can Do Transmissions</a>.
+              <a href={`${rootUrl}/puzzles/can_do_transmissions`}>
+                Can Do Transmissions
+              </a>
+              .
             </AuthorsNote>
 
             <p>

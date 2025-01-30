@@ -4,6 +4,7 @@ import { type TeamHuntState } from "../../../../lib/api/client";
 import { CourierFont } from "../../assets/SharedFonts";
 import PuzzleLink from "../../components/PuzzleLink";
 import { mdBgLinkStyles } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import { StrayLeadsFonts } from "./StrayLeadsFonts";
 import Bg from "./assets/bg.jpg";
 import PaperBg from "./assets/paper.png";
@@ -183,7 +184,9 @@ const StrayLeadsBody = ({
             {lead.round && lead.roundTitle && (
               <span className="filing">
                 Filed under{" "}
-                <a href={`/rounds/${lead.round}`}>{lead.roundTitle}</a>
+                <a href={`${rootUrl}/rounds/${lead.round}`}>
+                  {lead.roundTitle}
+                </a>
               </span>
             )}
           </li>

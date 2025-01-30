@@ -1,3 +1,4 @@
+import rootUrl from "../../utils/rootUrl";
 import { type PuzzleDefinition } from "../types";
 import { HANDY_GLASS_SLUG } from "./constants";
 import CsorrowsdGird from "./csorrowsd-gird";
@@ -51,7 +52,7 @@ const puzzle: PuzzleDefinition = {
       reply: "Cgiaonrnutoltas! ",
       link: {
         display: "Cotrctinuosn inscontrutis are hree.",
-        href: "/csorrowsd_gird",
+        href: `${rootUrl}/csorrowsd_gird`,
       },
     },
   ],

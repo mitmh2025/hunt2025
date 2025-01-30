@@ -7,6 +7,7 @@ import diamondIcon from "../../assets/logo.svg";
 import { type TeamVirtualInteractionsState } from "../interactions/types";
 import type { EventsState } from "../rounds/events/types";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
+import rootUrl from "../utils/rootUrl";
 import { BuyAnswerModal, ExchangeClueModal } from "./ClueModals";
 
 const Nav = styled.nav`
@@ -319,7 +320,7 @@ const NavBar = ({
     <Nav>
       <NavItems>
         <li>
-          <NavLink href="/" id="home-md">
+          <NavLink href={`${rootUrl}/`} id="home-md">
             <img
               className="photo"
               src={diamondIcon}
@@ -334,7 +335,7 @@ const NavBar = ({
           </NavLink>
           <ul>
             <li id="home-sm">
-              <NavLink href="/">Home</NavLink>
+              <NavLink href={`${rootUrl}/`}>Home</NavLink>
             </li>
             {started && (
               <>
@@ -349,33 +350,42 @@ const NavBar = ({
                   </ul>
                 </SubDropdown>
                 <li>
-                  <NavLink href="/all_puzzles">All Puzzles</NavLink>
+                  <NavLink href={`${rootUrl}/all_puzzles`}>All Puzzles</NavLink>
                 </li>
               </>
             )}
             {started && (
               <li>
-                <NavLink href="/activity_log">Activity Log</NavLink>
+                <NavLink href={`${rootUrl}/activity_log`}>Activity Log</NavLink>
               </li>
             )}
             <SubDropdown>
               <NavLink tabIndex={0}>About</NavLink>
               <ul>
                 <li>
-                  <NavLink href="/about">How the Hunt Works</NavLink>
+                  <NavLink href={`${rootUrl}/about`}>
+                    How the Hunt Works
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink href="/radio">Radio Instruction Booklet</NavLink>
+                  <NavLink href={`${rootUrl}/radio`}>
+                    Radio Instruction Booklet
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink href="/health_and_safety">Health and Safety</NavLink>
+                  <NavLink href={`${rootUrl}/health_and_safety`}>
+                    Health and Safety
+                  </NavLink>
                 </li>
               </ul>
             </SubDropdown>
           </ul>
         </TopLevelDropdown>
         <Spacer />
-        <NavLink href="/virtual_radio" title="Virtual WDNM 2π radio stream">
+        <NavLink
+          href={`${rootUrl}/virtual_radio`}
+          title="Virtual WDNM 2π radio stream"
+        >
           📻
         </NavLink>
         {started && (
@@ -422,13 +432,13 @@ const NavBar = ({
           </TeamNameNavLink>
           <ul>
             <li>
-              <NavLink href="/team">Manage Team</NavLink>
+              <NavLink href={`${rootUrl}/team`}>Manage Team</NavLink>
             </li>
             <li>
-              <NavLink href="/contact">Contact HQ</NavLink>
+              <NavLink href={`${rootUrl}/contact`}>Contact HQ</NavLink>
             </li>
             <li>
-              <NavLink href="/logout">Log Out</NavLink>
+              <NavLink href={`${rootUrl}/logout`}>Log Out</NavLink>
             </li>
           </ul>
         </Dropdown>

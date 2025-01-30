@@ -16,6 +16,7 @@ import super_paper_top from "../rounds/background_check/assets/metas/supermeta_a
 import title_image_alias from "../rounds/background_check/assets/metas/supermeta_alias_puzzle_page_title.png";
 import paper from "../rounds/background_check/assets/puzzle_bkgd.png";
 import { deviceMax, deviceMin } from "../utils/breakpoints";
+import rootUrl from "../utils/rootUrl";
 import { PuzzleBacklink, PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
 
 export const BgColor = "#251214";
@@ -217,7 +218,7 @@ export type Setting = "puzzle" | "solution";
 
 const BACK_TO_ROUND_TEXT = "← Back to The Background Check";
 const BACK_TO_PUZZLE_TEXT = "← Back to puzzle";
-const BACK_TO_ROUND_HREF = "/rounds/background_check";
+const BACK_TO_ROUND_HREF = `${rootUrl}/rounds/background_check`;
 
 export const getBackgroundCheckManifestOverrides = (
   slot: string,
@@ -229,7 +230,9 @@ export const getBackgroundCheckManifestOverrides = (
         return (
           <BackgroundCheckMetaHead
             backlinkHref={
-              setting === "puzzle" ? BACK_TO_ROUND_HREF : "/puzzles/the_mark"
+              setting === "puzzle"
+                ? BACK_TO_ROUND_HREF
+                : `${rootUrl}/puzzles/the_mark`
             }
             magnet={magnet_meta}
             titleImage={title_image_the_mark}
@@ -256,7 +259,7 @@ export const getBackgroundCheckManifestOverrides = (
             backlinkHref={
               setting === "puzzle"
                 ? BACK_TO_ROUND_HREF
-                : "/puzzles/the_grand_illusion"
+                : `${rootUrl}/puzzles/the_grand_illusion`
             }
             magnet={magnet_meta}
             titleImage={title_image_the_grand_illusion}
@@ -285,7 +288,7 @@ export const getBackgroundCheckManifestOverrides = (
             backlinkHref={
               setting === "puzzle"
                 ? BACK_TO_ROUND_HREF
-                : "/puzzles/the_oversight"
+                : `${rootUrl}/puzzles/the_oversight`
             }
             magnet={magnet_meta}
             titleImage={title_image_the_oversight}
@@ -310,7 +313,9 @@ export const getBackgroundCheckManifestOverrides = (
         return (
           <BackgroundCheckMetaHead
             backlinkHref={
-              setting === "puzzle" ? BACK_TO_ROUND_HREF : "/puzzles/alias"
+              setting === "puzzle"
+                ? BACK_TO_ROUND_HREF
+                : `${rootUrl}/puzzles/alias`
             }
             magnet={magnet_super}
             titleImage={title_image_alias}

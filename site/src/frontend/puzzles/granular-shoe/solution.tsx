@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import left1 from "./assets/left1.png";
 import left10 from "./assets/left10.png";
 import left11 from "./assets/left11.png";
@@ -580,11 +581,16 @@ const Solution = (): JSX.Element => {
       <p>
         This puzzle was partly inspired by a few of the other excellent poetry
         puzzles in this hunt (
-        <a href="/puzzles/borderline_personality">Borderline Personality</a> and{" "}
-        <a href="/puzzles/a_puzzle_of_the_dead">A Puzzle of the Dead</a>), and
-        partly by wanting to share my delight about the LPSC abstract haiku
-        tradition. It was also just very fun to show a bunch of art and poetry,
-        and have it all actually be science.
+        <a href={`${rootUrl}/puzzles/borderline_personality`}>
+          Borderline Personality
+        </a>{" "}
+        and{" "}
+        <a href={`${rootUrl}/puzzles/a_puzzle_of_the_dead`}>
+          A Puzzle of the Dead
+        </a>
+        ), and partly by wanting to share my delight about the LPSC abstract
+        haiku tradition. It was also just very fun to show a bunch of art and
+        poetry, and have it all actually be science.
       </p>
       <h3>Full extraction</h3>
       <StyledTable>

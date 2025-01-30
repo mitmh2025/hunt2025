@@ -4,6 +4,7 @@ import { type z } from "zod";
 import { type TeamHuntState, newClient } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
 import apiUrl from "../utils/apiUrl";
+import rootUrl from "../utils/rootUrl";
 import PuzzleHintLink from "./PuzzleHintLink";
 import Stamp from "./SparkleStamps";
 import { Button, TextInput } from "./StyledUI";
@@ -187,7 +188,7 @@ const PuzzleGuessForm = ({
   return (
     <Form
       method="post"
-      action={`/${type === "puzzle" ? "puzzles" : "subpuzzles"}/${slug}/guess`}
+      action={`${rootUrl}/${type === "puzzle" ? "puzzles" : "subpuzzles"}/${slug}/guess`}
       onSubmit={onSubmit}
     >
       {formError ? <ErrorNotice>Error: {formError}</ErrorNotice> : undefined}
@@ -309,7 +310,7 @@ const PuzzleGuessSection = ({
 
       {solutionAvailable && (
         <SolutionsLink>
-          <a href={`/puzzles/${slug}/solution`}>View solution</a>
+          <a href={`${rootUrl}/puzzles/${slug}/solution`}>View solution</a>
         </SolutionsLink>
       )}
       {!solved && puzzleState && !solutionAvailable && (

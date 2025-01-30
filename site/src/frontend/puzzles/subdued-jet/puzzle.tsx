@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { InteractionLinkBlock } from "../../components/PuzzleLayout";
 import { Errata } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 
 const CenteredList = styled.ul`
   width: 100%;
@@ -19,7 +20,9 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
       {interactionState !== undefined ? (
         <InteractionLinkBlock>
           Unlocked interaction:{" "}
-          <a href="/interactions/confront_gladys">Confront Gladys</a>
+          <a href={`${rootUrl}/interactions/confront_gladys`}>
+            Confront Gladys
+          </a>
         </InteractionLinkBlock>
       ) : null}
 

@@ -6,6 +6,7 @@ import {
 } from "../../../components/CopyToClipboard";
 import LinkedImage from "../../../components/LinkedImage";
 import { AuthorsNote } from "../../../components/PuzzleLayout";
+import rootUrl from "../../../utils/rootUrl";
 import img1 from "./assets/img1.png";
 import img10 from "./assets/img10.png";
 import img11 from "./assets/img11.png";
@@ -202,7 +203,9 @@ const Puzzle = (): JSX.Element => {
     <>
       <p>
         <Arrow>←</Arrow>{" "}
-        <a href="/puzzles/and_now_a_puzzling_word_from_our_sponsors">
+        <a
+          href={`${rootUrl}/puzzles/and_now_a_puzzling_word_from_our_sponsors`}
+        >
           Back to main puzzle
         </a>
       </p>
