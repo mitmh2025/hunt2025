@@ -5,7 +5,7 @@ import {
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
 import Crossword, { filterLabelsToStructure } from "../../components/Crossword";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { Errata, HScrollTableWrapper } from "../../components/StyledUI";
 
 const GRID: string[][] = [
   [
@@ -560,7 +560,7 @@ const Across = [
   ["62", "Fifteenth widest to be trimmed down to size", "4"],
   [
     "63",
-    "Initials of the killer’s housemate put about: get working, do something about it",
+    "Initials of the killer’s best friend put about: get working, do something about it",
     "3, 4",
   ],
   [
@@ -733,6 +733,15 @@ const ClueHeader = styled.h3`
 const Puzzle = () => {
   return (
     <>
+      <Errata
+        errata={[
+          {
+            timestamp: "January 30th",
+            message:
+              "After Mystery Hunt, we edited the clue for 63 Across to replace the word “housemate” with “best friend”.",
+          },
+        ]}
+      />
       <StyledCrossword
         labels={GRID}
         labelsForEmptyCopy={filterLabelsToStructure(GRID)}
