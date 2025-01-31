@@ -153,7 +153,7 @@ const REGULAR_ANSWER_TABLE_DATA = [
   [],
   ["Researcher is after recalled cod",  "Definition",  "Filler",  "Synonym [post]",  "Reversal",  "Literal",  "",  "",  "",  "POSTDOC"],
   ["P.S.: Following retrospective yelp continues",  "Literal",  "A after B",  "Reversal",  "Synonym [eek]",  "Definition",  "",  "",  "",  "KEEPS"],
-  ["Secret toll follows greeting",  "Definition",  "Synonym [hi]",  "A after B",  "Synonym [ding]",  "",  "",  "",  "",  "HIDING"],
+  ["Secret toll follows greeting",  "Definition",  "Synonym [ding]",  "A after B",  "Synonym [hi]",  "",  "",  "",  "",  "HIDING"],
   ["Silly Lisp error",  "Anagram",  "Literal",  "Definition",  "",  "",  "",  "",  "",  "SLIP"],
 ];
 

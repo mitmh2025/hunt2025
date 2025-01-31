@@ -7,6 +7,7 @@ import {
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
 import { AuthorsNote } from "../../components/PuzzleLayout";
+import { Errata } from "../../components/StyledUI";
 import imgA from "./assets/A.png";
 import imgB from "./assets/B.png";
 import imgC from "./assets/C.png";
@@ -105,6 +106,15 @@ const Puzzle = () => {
   return (
     <>
       <CourierFont />
+      <Errata
+        errata={[
+          {
+            timestamp: "January 31st",
+            message:
+              "After Mystery Hunt, we learned that the droids for the second-to-last clue (“Secret toll follows greeting”) were not in the correct order. We have swapped the droids labeled D(2) and D(4) and believe the puzzle is now correct as written.",
+          },
+        ]}
+      />
       <p className="puzzle-flavor">
         We’ve received these cryptic messages from our rebel spies. Fortunately,
         our decryption droids are lined up to assist.
@@ -1271,8 +1281,8 @@ const Puzzle = () => {
           />
           <Droid
             className={NO_COPY_CLASS}
-            src={imgD2}
-            alt="R2-D2 with “D(2)” on its body"
+            src={imgD4}
+            alt="R2-D2 with “D(4)” on its body"
           />
           <Droid
             className={NO_COPY_CLASS}
@@ -1281,10 +1291,10 @@ const Puzzle = () => {
           />
           <Droid
             className={NO_COPY_CLASS}
-            src={imgD4}
-            alt="R2-D2 with “D(4)” on its body"
+            src={imgD2}
+            alt="R2-D2 with “D(2)” on its body"
           />
-          <CopyTable fill={["C", "D(2)", "L", "D(4)"]} />
+          <CopyTable fill={["C", "D(4)", "L", "D(2)"]} />
         </PuzzleRow>
         <PuzzleRow>
           <Clue>Silly Lisp error (4).</Clue>
