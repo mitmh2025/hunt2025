@@ -53,6 +53,15 @@
       max_unavailable = "0%";
     };
   };
+  k8s.prod.deployment.inteng = {
+    replicas = 1;
+    container.resources = {
+      limits.cpu = "1.5";
+      limits.memory = "1Gi";
+      requests.cpu = "10m";
+      requests.memory = "384Mi";
+    };
+  };
   k8s.prod.deployment.ops = {
     replicas = 1;
     container.resources = {
