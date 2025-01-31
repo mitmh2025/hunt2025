@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { CaveatFont } from "../../assets/SharedFonts";
 import { AuthorsNote } from "../../components/PuzzleLayout";
+import { Errata } from "../../components/StyledUI";
 import weatherLosAngeles from "./assets/icy-box-los-angeles.mp3";
 import weatherParis from "./assets/icy-box-paris.mp3";
 import weatherRome from "./assets/icy-box-rome.mp3";
@@ -45,6 +46,15 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <CaveatFont />
+      <Errata
+        errata={[
+          {
+            timestamp: "January 30th",
+            message:
+              "After Mystery Hunt, we learned of an error in the Los Angeles weather report. The transcript previously read a gauge reading of 1 and 6 tenths below zero; we have corrected it to a gauge reading of 0 and 6 tenths below zero. We are unable to correct the audio recording.",
+          },
+        ]}
+      />
       <AuthorsNote as="div">
         <p>
           During Mystery Hunt, after they had unlocked the Paper Trail round,
@@ -78,7 +88,7 @@ const Puzzle = (): JSX.Element => {
               the wind coming from the northwest with the precipitation measured
               at 0.44. There are low cumulus clouds covering about 2 tenths of
               the sky and coming in from the south. The Los Angeles River is
-              rising and reporting a gauge reading of 1 and 6 tenths below zero.
+              rising and reporting a gauge reading of 0 and 6 tenths below zero.
             </span>
           </p>
         </details>
@@ -176,6 +186,7 @@ const Puzzle = (): JSX.Element => {
         </details>
         {/* eslint-enable jsx-a11y/media-has-caption -- reenable */}
       </AuthorsNote>
+      <br />
       <Wrapper>
         <Paper
           src={paper}
