@@ -5,7 +5,10 @@ import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
 import Spoiler from "../../../components/Spoiler";
 import back from "./assets/back.jpg";
 import bottles from "./assets/bottles.jpg";
+import finalPackagingLaser from "./assets/final-packaging-laser.pdf";
+import finalPackagingPrint from "./assets/final-packaging-print.pdf";
 import front from "./assets/front.jpg";
+import packagingHome from "./assets/packaging-home.pdf";
 
 const ImagesWrapper = styled.p`
   display: flex;
@@ -186,6 +189,33 @@ const Puzzle = (): JSX.Element => {
               <Spoiler>Coffee: Folger’s</Spoiler>
             </li>
           </ul>
+        </p>
+
+        <p>
+          If you’d like to fully replicate the experience, we pre-mixed each
+          drink in large, 64oz batches and decanted into 4oz plastic Boston
+          round bottles, but the recipes should be tolerant to single-serving
+          production. The packaging was printed by Jam Paper on their{" "}
+          <a href="https://www.jampaper.com/metallic-stardream-105lb-13x19-cardstock-item-1319-c-m06">
+            silver metallic 105lb cardstock
+          </a>
+          . We used 13”×19” sheets so that we could fit two per sheet. Once we
+          received the packaging, we used a lasercutter to cut the outline and
+          score the fold lines, before assembling and sealing with double-sided
+          tape. We have{" "}
+          <a href={finalPackagingPrint}>
+            the 13”×19”, 2-up design as it was sent to Jam Paper for printing
+          </a>{" "}
+          and the <a href={finalPackagingLaser}>lasercutter file we used</a>{" "}
+          (red lines should cut all the way through; black lines should
+          engrave).
+        </p>
+
+        <p>
+          Alternatively, for a slightly easier manufacturing experience, you can
+          print <a href={packagingHome}>this consolidated file</a> on 8.5”×11”
+          cardstock. Once you have the printout, you can score it along the
+          green lines and then cut along the red lines.
         </p>
       </AuthorsNoteBlock>
     </>

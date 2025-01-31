@@ -1,6 +1,5 @@
 import React from "react";
 import Blanks from "../../components/Blanks";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
 
 const Ladders: [start: number, end: number, length: number][] = [
   [24, 31, 8],
@@ -46,7 +45,6 @@ const Ladder = ({
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <ArchivalNotice />
       <p className="puzzle-flavor">
         One connected source will be very helpful, but its similarities may not
         represent all the right differences. You don’t need to be too specific,
