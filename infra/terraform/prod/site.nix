@@ -184,6 +184,36 @@
       };
     };
   };
+  k8s.prod.deployment.inteng = {
+    image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
+    port = 80;
+    env = {
+      PORT = "80";
+      HUNT_COMPONENTS = "inteng";
+      API_BASE_URL = "http://api/api";
+      #OTEL_METRICS_EXPORTER=console
+      #OTEL_LOGS_EXPORTER=console
+      #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
+    };
+    envValueFrom.REDIS_URL.secret_key_ref = [{
+      key = "REDIS_URL";
+      name = lib.tfRef "kubernetes_secret_v1.api.metadata[0].name";
+    }];
+    envValueFrom.FRONTEND_API_SECRET.secret_key_ref = [{
+      key = "FRONTEND_API_SECRET";
+      name = lib.tfRef "kubernetes_secret_v1.api.metadata[0].name";
+    }];
+    container = {
+      liveness_probe = {
+        http_get = {
+          path = "/healthz";
+          port = 80;
+        };
+        initial_delay_seconds = 3;
+        period_seconds = 3;
+      };
+    };
+  };
   gcp.ar.images.images.ops.sourceImage = pkgs.dockerTools.buildLayeredImage {
     name = "ops";
     contents = with pkgs; [
