@@ -158,7 +158,7 @@ const Solution = (): JSX.Element => {
             <td>NW, Rain, .44</td>
             <td>Cumulus Low 2 tenths, South</td>
             <td></td>
-            <td>Rise -1′, 6 tenth</td>
+            <td>Rise -0′, 6 tenth</td>
           </tr>
           <tr>
             <td>Paris</td>
@@ -220,7 +220,7 @@ const Solution = (): JSX.Element => {
             <td>NW, Rain, .44</td>
             <td>Cumulus Low 2 tenths, South</td>
             <td></td>
-            <td>Rise -1′, 6 tenth</td>
+            <td>Rise -0′, 6 tenth</td>
           </tr>
           <tr>
             <td></td>
