@@ -1,5 +1,11 @@
 import React from "react";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
+import { styled } from "styled-components";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import morty from "./assets/morty.svg";
+
+const StyledImg = styled.img`
+  height: 7rem;
+`;
 
 export function getInfo({
   stream_path,
@@ -30,7 +36,29 @@ const Puzzle = ({ teamId, teamJwt }: { teamId: number; teamJwt?: string }) => {
   const inlineScript = `window.controlRoomInfo = ${JSON.stringify(info)};`;
   return (
     <>
-      <ArchivalNotice />
+      <AuthorsNoteBlock>
+        <p>
+          This puzzle had an on-campus or physical component, and is not
+          currently solvable unless you already received the physical materials
+          or completed the in-person interaction. We are working on archival
+          versions of as much of the hunt as we can, so please check back soon.
+        </p>
+
+        <p>
+          In the mean time, if you participated in this puzzle (either as the
+          player or the team guiding them), you can:
+        </p>
+
+        <p>
+          <a
+            href="https://morty.app/attraction/55472/control-room"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <StyledImg src={morty} alt="Find us on Morty" />
+          </a>
+        </p>
+      </AuthorsNoteBlock>
       <noscript>This puzzle requires Javascript.</noscript>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
       <div id="control-room-root" />
