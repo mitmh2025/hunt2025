@@ -17,16 +17,16 @@
     replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "1Gi";
+      limits.memory = "512Mi";
       requests.cpu = "10m";
-      requests.memory = "512Mi";
+      requests.memory = "256Mi";
     };
   };
   k8s.prod.deployment.api = {
     replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "1Gi";
+      limits.memory = "512Mi";
       requests.cpu = "50m";
       requests.memory = "384Mi";
     };
@@ -35,7 +35,7 @@
     replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "1Gi";
+      limits.memory = "512Mi";
       requests.cpu = "75m";
       requests.memory = "384Mi";
     };
@@ -44,9 +44,9 @@
     replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "1.5Gi";
+      limits.memory = "768Gi";
       requests.cpu = "50m";
-      requests.memory = "768Mi";
+      requests.memory = "512Mi";
     };
     deployment.spec.strategy.rolling_update = {
       max_surge = "100%";
@@ -57,7 +57,7 @@
     replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "1Gi";
+      limits.memory = "768Mi";
       requests.cpu = "10m";
       requests.memory = "384Mi";
     };
@@ -66,7 +66,7 @@
     replicas = 1;
     container.resources = {
       limits.cpu = "500m";
-      limits.memory = "1Gi";
+      limits.memory = "256Mi";
       requests.cpu = "10m";
       requests.memory = "128Mi";
     };
