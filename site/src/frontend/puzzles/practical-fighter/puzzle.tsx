@@ -4,6 +4,7 @@ import { type TeamHuntState } from "../../../../lib/api/client";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import { ArchivalNotice, AuthorsNote } from "../../components/PuzzleLayout";
 import { HScrollTableWrapper } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import footIcon from "./assets/foot.svg";
 import headphonesIcon from "./assets/headphones.svg";
 import lightIcon from "./assets/light.svg";
@@ -58,8 +59,9 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
       {teamState.puzzles.songs_on_the_radio?.answer !== undefined && (
         <AuthorsNote>
           Congratulations on solving this puzzle! Your{" "}
-          <a href="/radio">radio’s instruction manual</a> has been updated with
-          instructions on how to make your own music with your radio.
+          <a href={`${rootUrl}/radio`}>radio’s instruction manual</a> has been
+          updated with instructions on how to make your own music with your
+          radio.
         </AuthorsNote>
       )}
       <p className="puzzle-flavor">

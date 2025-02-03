@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import { type ActivityLogEntry } from "../../../lib/api/client";
 import logoIcon from "../../assets/logo-simple.svg";
+import rootUrl from "../utils/rootUrl";
 import { PuzzleIcon } from "./PuzzleLink";
 import { darkBgLinkStyles } from "./StyledUI";
 
@@ -59,7 +60,8 @@ export function formatActivityLogEntry(
         icon: <HuntIcon />,
         description: (
           <>
-            Unlocked round <a href={`/rounds/${entry.slug}`}>{entry.title}</a>
+            Unlocked round{" "}
+            <a href={`${rootUrl}/rounds/${entry.slug}`}>{entry.title}</a>
           </>
         ),
         showNotification: true,
@@ -80,8 +82,9 @@ export function formatActivityLogEntry(
           icon: "🔎",
           description: (
             <>
-              Event <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> is now
-              accepting solutions
+              Event{" "}
+              <a href={`${rootUrl}/puzzles/${entry.slug}`}>{entry.title}</a> is
+              now accepting solutions
             </>
           ),
           showNotification: true,
@@ -92,7 +95,7 @@ export function formatActivityLogEntry(
           description: (
             <>
               Unlocked puzzle{" "}
-              <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+              <a href={`${rootUrl}/puzzles/${entry.slug}`}>{entry.title}</a>
             </>
           ),
           showNotification: true,
@@ -104,8 +107,8 @@ export function formatActivityLogEntry(
         description: (
           <>
             Partially solved puzzle{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> (partial answer{" "}
-            <code>{entry.partial}</code>)
+            <a href={`${rootUrl}/puzzles/${entry.slug}`}>{entry.title}</a>{" "}
+            (partial answer <code>{entry.partial}</code>)
           </>
         ),
         showNotification: true,
@@ -116,7 +119,8 @@ export function formatActivityLogEntry(
           icon: "🔎",
           description: (
             <>
-              Completed event <a href="/rounds/events">{entry.title}</a> (answer{" "}
+              Completed event{" "}
+              <a href={`${rootUrl}/rounds/events`}>{entry.title}</a> (answer{" "}
               <code>{entry.answer}</code>) and earned{" "}
               {entry.strong_currency_delta}{" "}
               {entry.strong_currency_delta === 1 ? "clue" : "clues"}
@@ -129,7 +133,8 @@ export function formatActivityLogEntry(
           icon: <PuzzleIcon lockState="unlocked" answer={entry.answer} />,
           description: (
             <>
-              Solved puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>{" "}
+              Solved puzzle{" "}
+              <a href={`${rootUrl}/puzzles/${entry.slug}`}>{entry.title}</a>{" "}
               (answer <code>{entry.answer}</code>)
             </>
           ),
@@ -142,7 +147,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Unlocked interaction{" "}
-            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
+            <a href={`${rootUrl}/interactions/${entry.slug}`}>{entry.title}</a>
           </>
         ),
         showNotification: !entry.virtual,
@@ -153,7 +158,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Started interaction{" "}
-            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
+            <a href={`${rootUrl}/interactions/${entry.slug}`}>{entry.title}</a>
           </>
         ),
         showNotification: false,
@@ -164,7 +169,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Completed interaction{" "}
-            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
+            <a href={`${rootUrl}/interactions/${entry.slug}`}>{entry.title}</a>
           </>
         ),
         showNotification: false,
@@ -185,7 +190,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Rate limits reset for puzzle{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+            <a href={`${rootUrl}/puzzles/${entry.slug}`}>{entry.title}</a>
           </>
         ),
         showNotification: false,
@@ -213,7 +218,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Exchanged 1 clue for the answer to puzzle{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>:{" "}
+            <a href={`${rootUrl}/puzzles/${entry.slug}`}>{entry.title}</a>:{" "}
             <code>{entry.answer}</code>
           </>
         ),
@@ -225,7 +230,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Erratum issued for puzzle{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+            <a href={`${rootUrl}/puzzles/${entry.slug}`}>{entry.title}</a>
           </>
         ),
         showNotification: true,
@@ -239,12 +244,12 @@ export function formatActivityLogEntry(
         description: isPast ? (
           <>
             Hints are now available for puzzle{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>.
+            <a href={`${rootUrl}/puzzles/${entry.slug}`}>{entry.title}</a>.
           </>
         ) : (
           <>
             Hints will become available for puzzle{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> at{" "}
+            <a href={`${rootUrl}/puzzles/${entry.slug}`}>{entry.title}</a> at{" "}
             {new Date(entry.hints_available_at).toLocaleString("en-US", {
               timeZone: "America/New_York",
             })}
@@ -259,7 +264,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Requested a hint for puzzle{" "}
-            <a href={`/puzzles/${entry.slug}/hints`}>{entry.title}</a>
+            <a href={`${rootUrl}/puzzles/${entry.slug}/hints`}>{entry.title}</a>
           </>
         ),
         showNotification: false,
@@ -270,7 +275,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Hint provided for{" "}
-            <a href={`/puzzles/${entry.slug}/hints`}>{entry.title}</a>
+            <a href={`${rootUrl}/puzzles/${entry.slug}/hints`}>{entry.title}</a>
           </>
         ),
         showNotification: true,

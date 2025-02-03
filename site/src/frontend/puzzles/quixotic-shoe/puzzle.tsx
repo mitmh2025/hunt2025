@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/media-has-caption -- audio transcripts are below */
 import React from "react";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import archiveMode from "../../utils/archiveMode";
+import rootUrl from "../../utils/rootUrl";
 import { PuzzlingWordFromOurSponsors } from "./PuzzlingWordFromOurSponsors";
 import ad_a from "./assets/quixotic-shoe-a.mp3";
 import ad_b from "./assets/quixotic-shoe-b.mp3";
@@ -17,8 +19,10 @@ const Puzzle = (): JSX.Element => {
         <p>
           During the hunt, in lieu of this puzzle page unlocking, teams’ radios
           would spontaneously start playing ads between each song. This puzzle
-          page would only be available one one of the subpuzzles was solved. The
-          ads are as follows:
+          page would only be available one one of the subpuzzles was solved.
+          {archiveMode &&
+            " Note that the exact URLs in the ads may need to be adjusted for the archives; we’ve updated the links appropriately."}{" "}
+          The ads are as follows:
         </p>
         <audio src={ad_a} controls />
         <details>
@@ -41,8 +45,8 @@ const Puzzle = (): JSX.Element => {
               bars. Just remember to include the secret ingredient (not included
               in your delivery). For a limited time, get 250 bonus
               MITropoliscard points when you go to{" "}
-              <a href="/hellfresh">two-pi-noir.agency/hellfresh</a> and enter
-              promo code [static] at checkout.
+              <a href={`${rootUrl}/hellfresh`}>two-pi-noir.agency/hellfresh</a>{" "}
+              and enter promo code [static] at checkout.
             </span>
           </p>
         </details>
@@ -62,8 +66,10 @@ const Puzzle = (): JSX.Element => {
               BetterOprah, we’ve got you covered! With a subscription that drops
               the best inspirational quotes from your favorite TV personality,
               you’ll never miss another word! Go to{" "}
-              <a href="/betteroprah">two-pi-noir.agency/betteroprah</a> and
-              enter promo code [static] at checkout.
+              <a href={`${rootUrl}/betteroprah`}>
+                two-pi-noir.agency/betteroprah
+              </a>{" "}
+              and enter promo code [static] at checkout.
             </span>
           </p>
         </details>
@@ -86,8 +92,10 @@ const Puzzle = (): JSX.Element => {
               walls, ensuring every key area of your home is captured from
               multiple angles by two different cameras. And for a limited time,
               get 250 bonus MITropolisCard Points when you go to
-              <a href="/hardlysafe">two-pi-noir.agency/hardlysafe</a> and enter
-              promo code [static] at checkout.
+              <a href={`${rootUrl}/hardlysafe`}>
+                two-pi-noir.agency/hardlysafe
+              </a>{" "}
+              and enter promo code [static] at checkout.
             </span>
           </p>
         </details>
@@ -110,8 +118,10 @@ const Puzzle = (): JSX.Element => {
               beers on tap, so you’re sure to find one you love, even if you end
               up spilling a drop of it. For a limited time only, you can get 250
               bonus MITropolisCard points when you go to
-              <a href="/draughtqueens">two-pi-noir.agency/draughtqueens</a> and
-              enter promo code [static] at checkout.
+              <a href={`${rootUrl}/draughtqueens`}>
+                two-pi-noir.agency/draughtqueens
+              </a>{" "}
+              and enter promo code [static] at checkout.
             </span>
           </p>
         </details>
@@ -132,7 +142,7 @@ const Puzzle = (): JSX.Element => {
               downtown TownSquareSpace is the bulletin board for everything you
               need to sell anything. And for a limited time, when you sign up
               you’ll get 250 MITropolis card points. Just go to
-              <a href="/townsquarespace">
+              <a href={`${rootUrl}/townsquarespace`}>
                 two-pi-noir.agency/townsquarespace
               </a>{" "}
               and enter promo code [static] at checkout.

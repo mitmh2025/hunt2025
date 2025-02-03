@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
+import rootUrl from "../../utils/rootUrl";
 import {
   CLEANSTRING_REGEX,
   HAS_STORAGE,
@@ -30,7 +31,7 @@ const App = (): JSX.Element => {
   ] = usePuzzleState();
 
   const refreshState = useCallback(() => {
-    fetch("/puzzles/the_annual_massachusetts_spelling_bee/state", {
+    fetch(`${rootUrl}/puzzles/the_annual_massachusetts_spelling_bee/state`, {
       method: "POST",
       body: JSON.stringify({ guessesByUuid: getGuessesByUuid() }),
       headers: {

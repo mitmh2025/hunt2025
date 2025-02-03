@@ -10,6 +10,7 @@ import {
   Mono,
   PuzzleAnswer,
 } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import actorGraph from "./assets/actor-graph.png";
 import artist1 from "./assets/artist1.png";
 import artist2 from "./assets/artist2.png";
@@ -1896,7 +1897,8 @@ const Solution = (): JSX.Element => {
       </p>
       <h2>But wait, there’s more!</h2>
       <p>
-        After solving <a href="/puzzles/papas_stash">Papa’s Stash</a>, solvers
+        After solving{" "}
+        <a href={`${rootUrl}/puzzles/papas_stash`}>Papa’s Stash</a>, solvers
         gain access to a digital blacklight that reveals new information about
         several early puzzles in the round. For this puzzle, the digital
         blacklight instructs solvers to use a real blacklight on the physical

@@ -10,6 +10,7 @@ import Notifications, {
   type Notification,
 } from "../components/Notifications";
 import type { EventsState } from "../rounds/events/types";
+import rootUrl from "../utils/rootUrl";
 import globalDatasetManager from "./DatasetManager";
 import useDataset from "./useDataset";
 
@@ -111,7 +112,7 @@ const NavBarManager = ({
                 <>
                   It’s time to interview a key witness! Each person on your team
                   should join Billie to{" "}
-                  <a href={`/interactions/${activeInteraction.slug}`}>
+                  <a href={`${rootUrl}/interactions/${activeInteraction.slug}`}>
                     conduct an {activeInteraction.title}
                   </a>
                   .

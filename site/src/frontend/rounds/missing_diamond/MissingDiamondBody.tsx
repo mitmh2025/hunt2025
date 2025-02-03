@@ -26,6 +26,7 @@ import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboar
 import { PuzzleUnlockModal, usePuzzleState } from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
 import { deviceMax, deviceMin } from "../../utils/breakpoints";
+import rootUrl from "../../utils/rootUrl";
 import map from "./assets/map.png";
 import skyline from "./assets/skyline.png";
 import stars from "./assets/stars.png";
@@ -419,7 +420,7 @@ const MissingDiamondMapEntity = ({
         <EntityContainer
           as="a"
           style={containerStyle}
-          href={`/puzzles/${puzzleState.slug}`}
+          href={`${rootUrl}/puzzles/${puzzleState.slug}`}
         >
           {image}
         </EntityContainer>
@@ -518,7 +519,7 @@ const MissingDiamondInteraction = ({
       <EntityContainer
         as="a"
         style={containerStyle}
-        href={`/interactions/${interaction.slug}`}
+        href={`${rootUrl}/interactions/${interaction.slug}`}
         $clickable={true}
       >
         {image}

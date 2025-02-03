@@ -5,6 +5,7 @@ import {
   Mono,
   PuzzleAnswer,
 } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import { Centered, StyledOl } from "./puzzle";
 
 const DONUT_CARD_1: { quantity: number; flavor: string; extraction: string }[] =
@@ -2483,7 +2484,8 @@ const Solution = (): JSX.Element => {
         This spells out the initial answer, <Mono>FOOD COURT</Mono>.
       </p>
       <p>
-        After solving <a href="/puzzles/papas_stash">Papa’s Stash</a>, solvers
+        After solving{" "}
+        <a href={`${rootUrl}/puzzles/papas_stash`}>Papa’s Stash</a>, solvers
         receive two additional Special Instructions:
       </p>
       <StyledOl>

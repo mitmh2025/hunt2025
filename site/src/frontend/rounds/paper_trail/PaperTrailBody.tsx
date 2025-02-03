@@ -22,6 +22,7 @@ import { type TeamHuntState } from "../../../../lib/api/client";
 import { PuzzleUnlockModal, usePuzzleState } from "../../components/PuzzleLink";
 import { Button } from "../../components/StyledUI";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
+import rootUrl from "../../utils/rootUrl";
 import { Desk, DeskItem, NotesDialog } from "./Layout";
 import { PaperTrailFonts } from "./PaperTrailFonts";
 import {
@@ -166,7 +167,7 @@ const PaperTrailDeskItem = ({
   } else {
     return (
       <>
-        <DeskItem style={position} href={`/puzzles/${item.slug}`}>
+        <DeskItem style={position} href={`${rootUrl}/puzzles/${item.slug}`}>
           {itemContents}
           {tooltip}
         </DeskItem>

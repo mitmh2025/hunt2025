@@ -25,6 +25,7 @@ import {
   type StartState,
   VirtualInteractionHandler,
 } from "../interactions/virtual_interaction_handler";
+import rootUrl from "../utils/rootUrl";
 import { AuthorsNoteBlock } from "./PuzzleLayout";
 import SpinnerTimer from "./SpinnerTimer";
 import { DarkStyledDialog } from "./StyledDialog";
@@ -619,7 +620,7 @@ function VirtualInteractionPlayer({
             <Content>
               <Scrollback ref={scrollbackRef}>
                 {rewardImage && (
-                  <a href="/">
+                  <a href={`${rootUrl}/`}>
                     <RewardAsset src={rewardImage} alt={rewardDescription} />
                   </a>
                 )}

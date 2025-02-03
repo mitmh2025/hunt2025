@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
+import rootUrl from "../../utils/rootUrl";
 import GroupViewer from "./puzzle-components/GroupViewer";
 import PanelViewer from "./puzzle-components/PanelViewer";
 import {
@@ -53,7 +54,7 @@ const App = (): JSX.Element => {
   ] = usePuzzleState();
 
   useEffect(() => {
-    fetch("/puzzles/jargon/state", {
+    fetch(`${rootUrl}/puzzles/jargon/state`, {
       method: "POST",
       body: JSON.stringify({ solvedUuids: [...solvedUuids] }),
       headers: {

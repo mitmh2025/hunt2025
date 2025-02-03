@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { CaveatFont } from "../../assets/SharedFonts";
 import { AuthorsNote } from "../../components/PuzzleLayout";
 import { Errata } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import weatherLosAngeles from "./assets/icy-box-los-angeles.mp3";
 import weatherParis from "./assets/icy-box-paris.mp3";
 import weatherRome from "./assets/icy-box-rome.mp3";
@@ -59,9 +60,9 @@ const Puzzle = (): JSX.Element => {
         <p>
           During Mystery Hunt, after they had unlocked the Paper Trail round,
           teams would begin receiving weather reports over their{" "}
-          <a href="/radio">radio</a> approximately every 20 minutes. When they
-          subsequently unlocked this puzzle, they would need to connect those
-          reports with the puzzle content here.
+          <a href={`${rootUrl}/radio`}>radio</a> approximately every 20 minutes.
+          When they subsequently unlocked this puzzle, they would need to
+          connect those reports with the puzzle content here.
         </p>
         <p>
           Below, you can hear (or read) how the five weather reports would have

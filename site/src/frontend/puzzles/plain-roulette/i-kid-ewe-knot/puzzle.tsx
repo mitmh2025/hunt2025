@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import rootUrl from "../../../utils/rootUrl";
 
 const Arrow = styled.span`
   color: var(--gold-800);
@@ -10,7 +11,9 @@ const Puzzle = (): JSX.Element => {
     <>
       <p>
         <Arrow>←</Arrow>{" "}
-        <a href="/puzzles/weirdo_threaded_doodads">Back to main puzzle</a>
+        <a href={`${rootUrl}/puzzles/weirdo_threaded_doodads`}>
+          Back to main puzzle
+        </a>
       </p>
       <p className="puzzle-flavor">
         A classy black-and-white square potholder.

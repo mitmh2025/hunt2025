@@ -13,6 +13,7 @@ import icon_unlock from "../../assets/unlock-icon.svg";
 import icon_unlocked from "../../assets/unlocked_status.svg";
 import icon_unlockable from "../../assets/visible_status.svg";
 import apiUrl from "../utils/apiUrl";
+import rootUrl from "../utils/rootUrl";
 import StyledDialog, { DialogActions } from "./StyledDialog";
 import { Button, ButtonSecondary } from "./StyledUI";
 
@@ -289,7 +290,7 @@ const PuzzleLink = ({
         />
       ) : undefined}
       {puzzleState.state === "unlocked" ? (
-        <a className="puzzle-link-title" href={`/puzzles/${slug}`}>
+        <a className="puzzle-link-title" href={`${rootUrl}/puzzles/${slug}`}>
           {title}
         </a>
       ) : (

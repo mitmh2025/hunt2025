@@ -1,5 +1,6 @@
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { omit } from "../../../utils/omit";
+import rootUrl from "../../utils/rootUrl";
 import bookcase from "./assets/bookcase/bookcase.png";
 import bookcase_blacklight from "./assets/bookcase/bookcase_blacklight.svg";
 import bookcase_paneling from "./assets/bookcase/bookcase_paneling.svg";
@@ -538,7 +539,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.83,
         },
         cursor: move_up_cursor,
-        href: "/",
+        href: `${rootUrl}/`,
       },
     ],
     interactions: [

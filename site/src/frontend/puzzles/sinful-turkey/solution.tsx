@@ -6,6 +6,7 @@ import {
   Mono,
   PuzzleAnswer,
 } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import image10 from "./assets/image10.png";
 import image11 from "./assets/image11.png";
 import image12 from "./assets/image12.png";
@@ -1033,7 +1034,8 @@ const Solution = (): JSX.Element => {
         </tr>
       </Table>
       <p>
-        After solving <a href="/puzzles/papas_stash">Papa’s Stash</a>, solvers
+        After solving{" "}
+        <a href={`${rootUrl}/puzzles/papas_stash`}>Papa’s Stash</a>, solvers
         receive new information,{" "}
         <Mono>THE THIRD QUARTILE WAS ALSO ALWAYS IN PLAIN SIGHT</Mono>. This
         suggests that a secondary answer is also hidden in the instructions,

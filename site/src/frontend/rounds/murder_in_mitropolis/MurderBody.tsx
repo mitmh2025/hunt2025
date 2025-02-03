@@ -20,6 +20,7 @@ import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { PuzzleUnlockModal, usePuzzleState } from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent } from "../../components/Tooltip";
+import rootUrl from "../../utils/rootUrl";
 import {
   CityWrapper,
   MurderCityBg,
@@ -141,7 +142,7 @@ const MurderWindow = ({
   } else {
     return (
       <>
-        <MurderWindowComponent href={`/puzzles/${puzzleState.slug}`}>
+        <MurderWindowComponent href={`${rootUrl}/puzzles/${puzzleState.slug}`}>
           {itemContents}
           {tooltip}
         </MurderWindowComponent>

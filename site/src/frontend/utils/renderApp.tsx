@@ -16,6 +16,7 @@ import {
   lookupScripts,
   lookupStylesheets,
 } from "../server/assets";
+import rootUrl from "./rootUrl";
 
 const oneDay = String(60 * 60 * 24);
 
@@ -30,7 +31,7 @@ const notFoundHandler = (req: Request) => {
         </PageHeader>
         <PageMain>
           <p>We didn’t find what you were looking for.</p>
-          <a href="/">← Back home</a>
+          <a href={`${rootUrl}/`}>← Back home</a>
         </PageMain>
       </>
     </PageWrapper>

@@ -1,3 +1,4 @@
+import rootUrl from "../../utils/rootUrl";
 import { type PuzzleDefinition } from "../types";
 import Puzzle from "./puzzle";
 import Receipt from "./receipt";
@@ -68,7 +69,7 @@ const puzzle: PuzzleDefinition = {
       reply:
         "The bartender is glaring daggers at you. You’d better go to the Gala and pay up. Send someone who can act appropriately contrite.\n\nDuring Mystery Hunt, teams would be lambasted by bartenders for the mess they had made—there was often kneeling and groveling involved—but if they seemed sufficiently apologetic, they would be given a receipt. Fortunately, you won’t be subjected to quite that much hazing; you can find a copy of your tab ",
       link: {
-        href: "/ye_olde_mystery_hunt_tavern_receipt",
+        href: `${rootUrl}/ye_olde_mystery_hunt_tavern_receipt`,
         display: "here.",
       },
     },

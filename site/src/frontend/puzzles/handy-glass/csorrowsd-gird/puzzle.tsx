@@ -2,6 +2,7 @@ import React from "react";
 import { styled, type CSSProperties } from "styled-components";
 import Crossword from "../../../components/Crossword";
 import { MailtoLink } from "../../../components/StyledUI";
+import rootUrl from "../../../utils/rootUrl";
 import { HANDY_GLASS_SLUG } from "../constants";
 
 export const LABELS = `
@@ -52,7 +53,9 @@ const Puzzle = (): JSX.Element => {
     <>
       <p>
         <Arrow>←</Arrow>{" "}
-        <a href={`/puzzles/${HANDY_GLASS_SLUG}`}>Bcak to mian plzuze</a>
+        <a href={`${rootUrl}/puzzles/${HANDY_GLASS_SLUG}`}>
+          Bcak to mian plzuze
+        </a>
       </p>
       <StyledCrossword
         labels={LABELS}

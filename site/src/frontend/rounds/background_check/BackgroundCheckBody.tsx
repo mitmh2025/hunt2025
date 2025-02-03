@@ -17,6 +17,7 @@ import React, {
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { PuzzleUnlockModal, usePuzzleState } from "../../components/PuzzleLink";
+import rootUrl from "../../utils/rootUrl";
 import { BackgroundCheckFonts } from "./BackgroundCheckFonts";
 import { Fridge, SCALED_WIDTH, SCALED_HEIGHT } from "./Layout";
 import { type BackgroundCheckObject, type BackgroundCheckState } from "./types";
@@ -139,7 +140,7 @@ const BackgroundCheckDisplayObject = ({
     style: aStyle,
     href:
       puzzleState.state !== "unlockable"
-        ? `/puzzles/${puzzleState.slug}`
+        ? `${rootUrl}/puzzles/${puzzleState.slug}`
         : undefined,
     onClick: puzzleState.state === "unlockable" ? showUnlockModal : undefined,
   };

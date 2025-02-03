@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../lib/api/client";
+import rootUrl from "../utils/rootUrl";
 
 const HintLinkWrapper = styled.div`
   margin-top: 1rem;
@@ -45,7 +46,7 @@ export default function PuzzleHintLink({
   if (unlocked) {
     return (
       <HintLinkWrapper>
-        <a href={`/puzzles/${slug}/hints`}>
+        <a href={`${rootUrl}/puzzles/${slug}/hints`}>
           Hints are available for this puzzle.
         </a>
       </HintLinkWrapper>

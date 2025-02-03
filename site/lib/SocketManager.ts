@@ -1,3 +1,4 @@
+import rootUrl from "../src/frontend/utils/rootUrl";
 import {
   type DatasetParams,
   type Dataset,
@@ -70,7 +71,7 @@ type SubscriptionState = {
 };
 
 const getWsUrl = () =>
-  `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`;
+  `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}${rootUrl}/ws`;
 
 export type SocketState =
   | "connecting"

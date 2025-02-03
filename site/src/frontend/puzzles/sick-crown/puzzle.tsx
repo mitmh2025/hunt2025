@@ -6,6 +6,7 @@ import { InteractionLinkBlock } from "../../components/PuzzleLayout";
 import bookcase_blacklight_single from "../../rounds/illegal_search/assets/bookcase/bookcase_blacklight_single.svg";
 import note_blacklight from "../../rounds/illegal_search/assets/bookcase/note_blacklight_modal.svg";
 import { BookcaseInteraction } from "../../rounds/illegal_search/client/Bookcase";
+import rootUrl from "../../utils/rootUrl";
 
 const SideBySideWithBookHighlights = styled.div`
   display: flex;
@@ -50,7 +51,7 @@ export default function Puzzle({ teamState }: { teamState: TeamHuntState }) {
       {interactionState !== undefined ? (
         <InteractionLinkBlock>
           Unlocked interaction:{" "}
-          <a href="/interactions/confront_papa">Confront Papa</a>
+          <a href={`${rootUrl}/interactions/confront_papa`}>Confront Papa</a>
         </InteractionLinkBlock>
       ) : null}
 

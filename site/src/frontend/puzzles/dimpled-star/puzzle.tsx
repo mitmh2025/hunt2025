@@ -36,6 +36,7 @@ import {
   InteractionLinkBlock,
 } from "../../components/PuzzleLayout";
 import { MailtoLink } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 
 const Note = styled.p`
   margin: 0 2em;
@@ -61,7 +62,9 @@ const Puzzle = ({
       {interactionState !== undefined ? (
         <InteractionLinkBlock>
           Unlocked interaction:{" "}
-          <a href="/interactions/the_crime_scene">The Crime Scene</a>
+          <a href={`${rootUrl}/interactions/the_crime_scene`}>
+            The Crime Scene
+          </a>
         </InteractionLinkBlock>
       ) : null}
 

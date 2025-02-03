@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import rootUrl from "../../utils/rootUrl";
 import { ExtractionCell } from "../monstrous-shadow/solution";
 import { type Blunder, BlundersTable } from "../svelte-conductor/solution";
 import { Aside } from "../unique-australia/solution";
@@ -762,7 +763,7 @@ const Solution = () => {
       </h2>
       <p>
         For a complete explanation of <i>The Mark</i>, see{" "}
-        <a href="/puzzles/the_mark/solution">its solution</a>.
+        <a href={`${rootUrl}/puzzles/the_mark/solution`}>its solution</a>.
       </p>
       <p>
         The new shell (colorized only for ease of distinguishing cheques) is:
@@ -839,7 +840,10 @@ const Solution = () => {
 
       <p>
         For a complete explanation of <i>The Grand Illusion</i>, see{" "}
-        <a href="/puzzles/the_grand_illusion/solution">its solution</a>.
+        <a href={`${rootUrl}/puzzles/the_grand_illusion/solution`}>
+          its solution
+        </a>
+        .
       </p>
 
       <p>The new shell is:</p>
@@ -926,7 +930,7 @@ const Solution = () => {
       </h2>
       <p>
         For a complete explanation of <i>The Oversight</i>, see{" "}
-        <a href="/puzzles/the_oversight/solution">its solution</a>.
+        <a href={`${rootUrl}/puzzles/the_oversight/solution`}>its solution</a>.
       </p>
       <p>The new shell is:</p>
       <LinkedImage

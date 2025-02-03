@@ -8,6 +8,7 @@ import boardwalk from "../rounds/missing_diamond/assets/boardwalk-solved.svg";
 import casino from "../rounds/missing_diamond/assets/casino-solved.svg";
 import jewelryStore from "../rounds/missing_diamond/assets/jewelry-store-solved.svg";
 import map from "../rounds/missing_diamond/assets/map.png";
+import rootUrl from "../utils/rootUrl";
 import about_the_hunt_flag from "./assets/about_the_hunt_flag.png";
 import art_gallery_token_kieftenbeld from "./assets/art_gallery_token_kieftenbeld.png";
 import art_gallery_token_lemahieu from "./assets/art_gallery_token_lemahieu.png";
@@ -193,7 +194,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 440,
     rot: 1.5,
     shadow: true,
-    href: "/radio",
+    href: `${rootUrl}/radio`,
     condition: HUNT_NOT_STARTED,
     pin: {
       asset: pin_purple,
@@ -209,7 +210,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 519,
     rot: -4.3,
     shadow: true,
-    href: "/about",
+    href: `${rootUrl}/about`,
     condition: HUNT_NOT_STARTED,
   },
   {
@@ -220,7 +221,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 519,
     rot: 3.4,
     shadow: true,
-    href: "/health_and_safety",
+    href: `${rootUrl}/health_and_safety`,
     condition: HUNT_NOT_STARTED,
   },
   {
@@ -247,7 +248,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 991,
     rot: 0,
     shadow: true,
-    href: "/rounds/missing_diamond",
+    href: `${rootUrl}/rounds/missing_diamond`,
     condition: MISSING_DIAMOND_UNLOCKED,
   },
   {
@@ -302,7 +303,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 948,
     rot: 1.8,
     shadow: true,
-    href: "/rounds/illegal_search",
+    href: `${rootUrl}/rounds/illegal_search`,
     condition: ILLEGAL_SEARCH_UNLOCKED,
     pin: {
       asset: pin_purple,
@@ -329,7 +330,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 920,
     rot: -1.1,
     shadow: true,
-    href: "/rounds/background_check",
+    href: `${rootUrl}/rounds/background_check`,
     condition: BACKGROUND_CHECK_UNLOCKED,
     pin: {
       asset: pin_purple,
@@ -356,7 +357,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 901,
     rot: 1.6,
     shadow: true,
-    href: "/rounds/paper_trail",
+    href: `${rootUrl}/rounds/paper_trail`,
     condition: PAPER_TRAIL_UNLOCKED,
     pin: {
       asset: pin_purple,
@@ -384,7 +385,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 4,
     rotOrigin: "top left",
     shadow: true,
-    href: "/rounds/stakeout",
+    href: `${rootUrl}/rounds/stakeout`,
     condition: STAKEOUT_UNLOCKED,
     pin: {
       asset: pin_purple,
@@ -412,7 +413,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 399,
     rot: -4.6,
     shadow: true,
-    href: "/interactions/interview_at_the_art_gallery",
+    href: `${rootUrl}/interactions/interview_at_the_art_gallery`,
     condition(teamState: TeamHuntState) {
       const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_art_gallery?.result as ArtGalleryResult | undefined;
@@ -435,7 +436,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 399,
     rot: -4.6,
     shadow: true,
-    href: "/interactions/interview_at_the_art_gallery",
+    href: `${rootUrl}/interactions/interview_at_the_art_gallery`,
     condition(teamState: TeamHuntState) {
       const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_art_gallery?.result as ArtGalleryResult | undefined;
@@ -458,7 +459,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 402,
     rot: 2.3,
     shadow: true,
-    href: "/rounds/stray_leads",
+    href: `${rootUrl}/rounds/stray_leads`,
     condition: HUNT_STARTED,
     pin: {
       asset: pin_gold,
@@ -474,7 +475,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 449,
     rot: 2.6,
     shadow: true,
-    href: "/interactions/interview_at_the_casino",
+    href: `${rootUrl}/interactions/interview_at_the_casino`,
     condition(teamState: TeamHuntState) {
       const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_casino?.result as CasinoResult | undefined;
@@ -494,7 +495,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 449,
     rot: 2.6,
     shadow: true,
-    href: "/interactions/interview_at_the_casino",
+    href: `${rootUrl}/interactions/interview_at_the_casino`,
     condition(teamState: TeamHuntState) {
       const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_casino?.result as CasinoResult | undefined;
@@ -514,7 +515,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 449,
     rot: 2.6,
     shadow: true,
-    href: "/interactions/interview_at_the_casino",
+    href: `${rootUrl}/interactions/interview_at_the_casino`,
     condition(teamState: TeamHuntState) {
       const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_casino?.result as CasinoResult | undefined;
@@ -556,7 +557,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 409,
     rot: 4.7,
     shadow: true,
-    href: "/interactions/interview_at_the_jewelry_store",
+    href: `${rootUrl}/interactions/interview_at_the_jewelry_store`,
     condition(teamState: TeamHuntState) {
       return (
         teamState.rounds.missing_diamond?.interactions
@@ -578,7 +579,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 10.1,
     rotOrigin: "top left",
     shadow: true,
-    href: "/interactions/interview_at_the_boardwalk",
+    href: `${rootUrl}/interactions/interview_at_the_boardwalk`,
     condition(teamState: TeamHuntState) {
       const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_boardwalk?.result as
@@ -600,7 +601,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 242,
     rot: 0,
     shadow: true,
-    href: "/interactions/interview_at_the_boardwalk",
+    href: `${rootUrl}/interactions/interview_at_the_boardwalk`,
     condition(teamState: TeamHuntState) {
       const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_boardwalk?.result as
@@ -622,7 +623,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 132,
     rot: -1.4,
     shadow: true,
-    href: "/interactions/interview_at_the_boardwalk",
+    href: `${rootUrl}/interactions/interview_at_the_boardwalk`,
     condition(teamState: TeamHuntState) {
       const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_boardwalk?.result as
@@ -644,7 +645,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 887,
     rot: -1.6,
     shadow: true,
-    href: "/rounds/murder_in_mitropolis",
+    href: `${rootUrl}/rounds/murder_in_mitropolis`,
     condition: MURDER_IN_MITROPOLIS_UNLOCKED,
     pin: {
       asset: pin_purple,
@@ -689,7 +690,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: -2.7,
     rotOrigin: "top left",
     shadow: true,
-    href: "/rounds/missing_diamond",
+    href: `${rootUrl}/rounds/missing_diamond`,
     condition: MISSING_DIAMOND_UNLOCKED,
     pin: {
       asset: pin_purple,
@@ -815,7 +816,7 @@ const OBJECTS: HubObjectSetting[] = [
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/the_crime_scene",
+    href: `${rootUrl}/interactions/the_crime_scene`,
     condition: INTERACTION_UNLOCKED("missing_diamond", "the_crime_scene"),
   },
   {
@@ -827,7 +828,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: -17.2,
     rotOrigin: "top left",
     shadow: false,
-    href: "/interactions/confront_papa",
+    href: `${rootUrl}/interactions/confront_papa`,
     condition: INTERACTION_UNLOCKED("illegal_search", "confront_papa"),
   },
   {
@@ -839,7 +840,7 @@ const OBJECTS: HubObjectSetting[] = [
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/confront_carter",
+    href: `${rootUrl}/interactions/confront_carter`,
     condition: INTERACTION_UNLOCKED("background_check", "confront_carter"),
   },
   {
@@ -851,7 +852,7 @@ const OBJECTS: HubObjectSetting[] = [
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/confront_katrina",
+    href: `${rootUrl}/interactions/confront_katrina`,
     condition: INTERACTION_UNLOCKED("stakeout", "confront_katrina"),
   },
   {
@@ -863,7 +864,7 @@ const OBJECTS: HubObjectSetting[] = [
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/confront_gladys",
+    href: `${rootUrl}/interactions/confront_gladys`,
     condition: INTERACTION_UNLOCKED("paper_trail", "confront_gladys"),
   },
   {
@@ -875,7 +876,7 @@ const OBJECTS: HubObjectSetting[] = [
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/the_safehouse",
+    href: `${rootUrl}/interactions/the_safehouse`,
     condition: INTERACTION_UNLOCKED("murder_in_mitropolis", "the_safehouse"),
   },
   {
@@ -887,7 +888,7 @@ const OBJECTS: HubObjectSetting[] = [
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/the_vault",
+    href: `${rootUrl}/interactions/the_vault`,
     condition: INTERACTION_UNLOCKED("endgame", "the_vault"),
   },
 

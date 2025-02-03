@@ -12,6 +12,7 @@ import billie from "../../../assets/billie.png";
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
 import PuzzleLink from "../../../components/PuzzleLink";
 import { Button } from "../../../components/StyledUI";
+import rootUrl from "../../../utils/rootUrl";
 import {
   type ScreenArea,
   type Node,
@@ -131,7 +132,7 @@ export const Navigation = ({
     // eslint-disable-next-line jsx-a11y/anchor-has-content -- These are unlikely to have any non-visual content
     <a
       style={style}
-      href={`/rounds/illegal_search?node=${navigation.destId}`}
+      href={`${rootUrl}/rounds/illegal_search?node=${navigation.destId}`}
       onClick={onClicked}
     />
   );

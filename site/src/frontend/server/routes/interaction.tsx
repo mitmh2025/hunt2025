@@ -9,6 +9,7 @@ import { getBackgroundCheckManifestOverrides } from "../../components/Background
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import VirtualInteraction from "../../components/VirtualInteraction";
 import { type InteractionDefinition, INTERACTIONS } from "../../interactions";
+import rootUrl from "../../utils/rootUrl";
 import {
   type ComponentManifest,
   DEFAULT_MANIFEST,
@@ -53,7 +54,7 @@ function stubInteractionState(slug: string, interaction: Interaction) {
           <p>
             This interaction is <strong>unlocked</strong>.
           </p>
-          <form method="POST" action={`/interactions/${slug}/start`}>
+          <form method="POST" action={`${rootUrl}/interactions/${slug}/start`}>
             <button type="submit">Start interaction</button>
           </form>
         </>
@@ -64,7 +65,10 @@ function stubInteractionState(slug: string, interaction: Interaction) {
           <p>
             This interaction is <strong>running</strong>.
           </p>
-          <form method="POST" action={`/interactions/${slug}/complete`}>
+          <form
+            method="POST"
+            action={`${rootUrl}/interactions/${slug}/complete`}
+          >
             <button type="submit">Complete interaction</button>
           </form>
         </>
@@ -127,7 +131,7 @@ function virtualInteractionHandler(
         <link key={src} rel="preload" as="image" href={src} />
       ))}
       {interaction.virtual && process.env.NODE_ENV === "development" && (
-        <form method="POST" action={`/interactions/${slug}/skip`}>
+        <form method="POST" action={`${rootUrl}/interactions/${slug}/skip`}>
           <button type="submit">[DEV MODE] Skip interaction</button>
         </form>
       )}
@@ -260,7 +264,7 @@ export const interactionStartPostHandler: RequestHandler<
       interactionId: req.params.slug,
     },
   });
-  res.redirect(`/interactions/${req.params.slug}`);
+  res.redirect(`${rootUrl}/interactions/${req.params.slug}`);
 });
 
 export const interactionCompletePostHandler: RequestHandler<
@@ -283,7 +287,7 @@ export const interactionCompletePostHandler: RequestHandler<
     },
     body: {},
   });
-  res.redirect(`/interactions/${req.params.slug}`);
+  res.redirect(`${rootUrl}/interactions/${req.params.slug}`);
 });
 
 export const interactionSkipPostHandler: RequestHandler<
@@ -306,5 +310,5 @@ export const interactionSkipPostHandler: RequestHandler<
     },
     body: {},
   });
-  res.redirect(`/interactions/${req.params.slug}`);
+  res.redirect(`${rootUrl}/interactions/${req.params.slug}`);
 });

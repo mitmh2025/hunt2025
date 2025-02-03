@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import LinkedImage from "../../../components/LinkedImage";
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
 import Spoiler from "../../../components/Spoiler";
+import rootUrl from "../../../utils/rootUrl";
 import back from "./assets/back.jpg";
 import bottles from "./assets/bottles.jpg";
 import finalPackagingLaser from "./assets/final-packaging-laser.pdf";
@@ -24,7 +25,7 @@ const Puzzle = (): JSX.Element => {
     <>
       <p>
         <Arrow>←</Arrow>{" "}
-        <a href="/puzzles/kindred_spirits">Back to main puzzle</a>
+        <a href={`${rootUrl}/puzzles/kindred_spirits`}>Back to main puzzle</a>
       </p>
       <AuthorsNoteBlock>
         <p>

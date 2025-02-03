@@ -1,12 +1,15 @@
 import React from "react";
 import { AuthorsNote } from "../../../components/PuzzleLayout";
+import rootUrl from "../../../utils/rootUrl";
 import staticAudio from "../assets/static.flac";
 
 const Puzzle = () => {
   return (
     <>
       <p>
-        <a href="/puzzles/can_do_transmissions">← Back to the puzzle</a>
+        <a href={`${rootUrl}/puzzles/can_do_transmissions`}>
+          ← Back to the puzzle
+        </a>
       </p>
 
       <AuthorsNote as="div">

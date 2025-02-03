@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
+import rootUrl from "../../utils/rootUrl";
 
 const Arrow = styled.span`
   color: var(--gold-800);
@@ -19,13 +20,13 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
       </p>
       {unlockedIKidEweKnot && (
         <p>
-          <a href="/i_kid_ewe_knot">I Kid Ewe Knot</a>
+          <a href={`${rootUrl}/i_kid_ewe_knot`}>I Kid Ewe Knot</a>
           <Arrow>→</Arrow>
         </p>
       )}
       {unlockedStitchySituation && (
         <p>
-          <a href="/stitchy_situation">Stitchy Situation</a>
+          <a href={`${rootUrl}/stitchy_situation`}>Stitchy Situation</a>
           <Arrow>→</Arrow>
         </p>
       )}

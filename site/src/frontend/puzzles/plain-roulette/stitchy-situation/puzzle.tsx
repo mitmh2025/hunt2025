@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import rootUrl from "../../../utils/rootUrl";
 
 const FakeP = styled.div`
   margin: 1em 0;
@@ -14,7 +15,9 @@ const Puzzle = (): JSX.Element => {
     <>
       <p>
         <Arrow>←</Arrow>{" "}
-        <a href="/puzzles/weirdo_threaded_doodads">Back to main puzzle</a>
+        <a href={`${rootUrl}/puzzles/weirdo_threaded_doodads`}>
+          Back to main puzzle
+        </a>
       </p>
       <p className="puzzle-flavor">
         An elegant, squishy flat-knit piece appropriate for circular or straight
