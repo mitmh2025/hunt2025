@@ -44,7 +44,7 @@
     replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "768Gi";
+      limits.memory = "768Mi";
       requests.cpu = "50m";
       requests.memory = "512Mi";
     };
