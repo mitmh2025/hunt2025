@@ -4,6 +4,7 @@ import AppleTouchIcon from "../../assets/apple-touch-icon.png";
 import FaviconIco from "../../assets/favicon.ico";
 import Favicon from "../../assets/favicon.svg";
 import { lookupScripts, lookupStylesheets } from "../server/assets";
+import archiveMode from "../utils/archiveMode.js";
 
 function dedupedOrderedItems(scripts: string[]): string[] {
   // Dedupe included scripts.  We only need to load each chunk once.
@@ -79,8 +80,14 @@ const Layout = ({
 }) => {
   const injectDevScript = process.env.NODE_ENV === "development" && !!teamState;
   const devScripts = injectDevScript ? lookupScripts("dev") : [];
+
+  const archiveScripts = archiveMode
+    ? lookupScripts("archive_puzzle_server_emulation")
+    : [];
+
   // Scripts are deduped by BaseLayout
   const allScripts = [
+    ...archiveScripts,
     ...lookupScripts("main"),
     ...(scripts ?? []),
     ...devScripts,

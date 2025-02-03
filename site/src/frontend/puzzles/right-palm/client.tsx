@@ -247,12 +247,18 @@ const App = () => {
   );
 };
 
-const elem = document.getElementById("follow-the-rules-root");
-if (elem) {
-  const root = createRoot(elem);
-  root.render(<App />);
-} else {
-  console.error(
-    "Could not mount App because #follow-the-rules-root was nowhere to be found",
-  );
-}
+const ready =
+  (window as unknown as { mswWorkerReady?: Promise<void> }).mswWorkerReady ??
+  Promise.resolve();
+
+void ready.then(() => {
+  const elem = document.getElementById("follow-the-rules-root");
+  if (elem) {
+    const root = createRoot(elem);
+    root.render(<App />);
+  } else {
+    console.error(
+      "Could not mount App because #follow-the-rules-root was nowhere to be found",
+    );
+  }
+});

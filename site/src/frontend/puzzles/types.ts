@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-unresolved -- this is pulled in by express, but eslint can't seem to find it
+import { type RouteParameters } from "express-serve-static-core";
 import { type ParsedQs } from "qs";
 import type { FunctionComponent } from "react";
 import type { Router } from "websocket-express";
@@ -164,6 +166,45 @@ export type SubpuzzleDefinition = {
   answer?: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- interface is needed to be able to return this
+export interface PuzzleEndpointResponse {
+  status: (code: number) => this;
+
+  send: (body?: unknown) => this;
+  json: (body?: unknown) => this;
+
+  set: (field: unknown, value?: string) => this;
+  header: (field: unknown, value?: string) => this;
+}
+
+export type PuzzleEndpoint<
+  Method extends
+    | "all"
+    | "get"
+    | "post"
+    | "put"
+    | "delete"
+    | "patch"
+    | "options"
+    | "head" =
+    | "all"
+    | "get"
+    | "post"
+    | "put"
+    | "delete"
+    | "patch"
+    | "options"
+    | "head",
+  Route extends string = string,
+> = {
+  method: Method;
+  route: Route;
+  handler: (
+    req: { params: RouteParameters<Route>; body: unknown },
+    resp: PuzzleEndpointResponse,
+  ) => void;
+};
+
 export type PuzzleDefinition = PuzzleDefinitionMetadata & {
   // The React component that contains the puzzle content we render in the <div id="puzzle-content">.
   // It should NOT include a div for the title; it should be purely the puzzle content.
@@ -174,9 +215,11 @@ export type PuzzleDefinition = PuzzleDefinitionMetadata & {
   // should just be the text and images of the steps, and any additional author notes.
   solution: SolutionContent;
 
-  // If provided, an additional websocket-express Router that should be mounted at `/puzzles/<slug>/`
-  // to allow for additional puzzle-specific server behavior.
-  router?: Router;
+  // If provided, additional puzzle-specific server behavior. This can either be
+  // a websocket-express Router (which will get mounted server-side), or a list
+  // of routes using a subset of the websocket-express API that we can also
+  // expose on the client for archival using mswjs.
+  router?: Router | PuzzleEndpoint[];
 
   // Slugs for any subpuzzle pages associated with this puzzle. Subpuzzles do not have individual answers,
   // but they may update hunt state when accessed.

@@ -490,24 +490,36 @@ export function registerUiRoutes({
       const slug = puzzle.slug;
       if (slug) {
         const puzzleDefinition = PUZZLES[slug];
-        if (puzzleDefinition && "router" in puzzleDefinition) {
-          const puzzleRouter = puzzleDefinition.router;
-          if (puzzleRouter) {
-            const base = `/puzzles/${slug}`;
-            //console.log("Mounting handler at", base);
-            authRouter.use(
-              base,
-              asyncHandler(async (req, resp, next) => {
-                if (req.teamState?.state.puzzles[slug]?.locked !== "unlocked") {
-                  await render404(req, resp, next);
-                  return;
-                }
-
-                next();
-              }),
-            );
-            authRouter.use(base, puzzleRouter);
+        if (
+          puzzleDefinition &&
+          "router" in puzzleDefinition &&
+          puzzleDefinition.router
+        ) {
+          let puzzleRouter: Router;
+          if (Array.isArray(puzzleDefinition.router)) {
+            const routes = puzzleDefinition.router;
+            puzzleRouter = new Router();
+            routes.forEach(({ method, route, handler }) => {
+              puzzleRouter[method](route, handler);
+            });
+          } else {
+            puzzleRouter = puzzleDefinition.router;
           }
+
+          const base = `/puzzles/${slug}`;
+          //console.log("Mounting handler at", base);
+          authRouter.use(
+            base,
+            asyncHandler(async (req, resp, next) => {
+              if (req.teamState?.state.puzzles[slug]?.locked !== "unlocked") {
+                await render404(req, resp, next);
+                return;
+              }
+
+              next();
+            }),
+          );
+          authRouter.use(base, puzzleRouter);
         }
       }
     });

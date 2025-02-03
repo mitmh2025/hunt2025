@@ -493,6 +493,10 @@ export default function createConfigs(_env, argv) {
       main: "./src/frontend/client/main.tsx",
       dev: "./src/frontend/client/dev.tsx",
 
+      // Included on all pages in archive mode
+      archive_puzzle_server_emulation:
+        "./src/frontend/archive/puzzle_server_emulation.ts",
+
       // Included on specific routes
       activity_log: "./src/frontend/client/activity_log.tsx",
       all_puzzles: "./src/frontend/client/all_puzzles.tsx",

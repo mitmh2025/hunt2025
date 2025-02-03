@@ -18,6 +18,7 @@ import {
   registerUiRoutes,
 } from "./frontend/server/routes";
 import { WebsocketManager } from "./frontend/server/ws";
+import archiveMode from "./frontend/utils/archiveMode";
 import {
   addStaticMiddleware,
   healthzHandler,
@@ -136,6 +137,21 @@ export default async function ({
     const uiRouter = getBaseRouter({ apiUrl, frontendApiSecret });
     const unauthRouter = new Router();
     const authRouter = getAuthRouter();
+
+    if (archiveMode) {
+      // This needs to be hoisted here because service workers can only handle
+      // routes that share the same prefix as the service worker itself
+      uiRouter.get("/mockServiceWorker.js", (_req, res) => {
+        res
+          .contentType("text/javascript")
+          .sendFile(
+            path.join(
+              __dirname,
+              "../node_modules/msw/src/mockServiceWorker.js",
+            ),
+          );
+      });
+    }
 
     if (enabledComponents.has("ui")) {
       registerUiRoutes({ hunt, unauthRouter, authRouter });
