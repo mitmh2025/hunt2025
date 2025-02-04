@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
+import archiveMode from "../../utils/archiveMode";
 import rootUrl from "../../utils/rootUrl";
 
 const Arrow = styled.span`
@@ -17,6 +18,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
     <>
       <p className="puzzle-flavor">
         A gaugeless scarf, up to 6 times as long as it is wide.
+        {archiveMode &&
+          " Note that URLs within this puzzle will need to be adjusted in order to access additional content within the archives."}
       </p>
       {unlockedIKidEweKnot && (
         <p>
