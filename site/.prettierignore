@@ -28,3 +28,5 @@ types/mfng/*.ts
 *.woff2
 # Also lol ignore this file
 .prettierignore
+# Ignore CSV files
+*.csv
