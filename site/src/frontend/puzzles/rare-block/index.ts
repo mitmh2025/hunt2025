@@ -1,4 +1,5 @@
 import { type PuzzleDefinition } from "../types";
+import finalAnswer from "./assets/finalanswer.mp3";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
 
@@ -70,7 +71,9 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["LAST CALL"],
-      reply: "Great! Go back to the bar and try to make that call again.",
+      reply:
+        "Great! Go back to the bar and try to make that call again.\n\nDuring Mystery Hunt, after returning to the Gala, teams would find that the previously broken phone was now working. They would receive a call with the final answer to the puzzle: DOWN A RABBIT HOLE. If you’d like to hear that call, you can ",
+      link: { href: finalAnswer, display: "listen to it here" },
     },
   ],
 };
