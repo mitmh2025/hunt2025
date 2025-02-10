@@ -72,5 +72,6 @@
     ./redis.nix
     ./mail.nix
     ./scaling.nix
+    ./prod-vm.nix
   ];
 }
