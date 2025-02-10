@@ -90,8 +90,8 @@
         upstreams.hunt2025-ops.servers."unix:/run/hunt2025-ops/ops.sock" = {};
         virtualHosts = {
           "www.two-pi-noir.agency" = {
-            forceSSL = true;
-            enableACME = true;
+            #forceSSL = true;
+            #enableACME = true;
             locations."/" = {
               proxyPass = "http://hunt2025";
               proxyWebsockets = true;
@@ -105,8 +105,8 @@
             };
           };
           "www.mitmh2025.com" = {
-            forceSSL = true;
-            enableACME = true;
+            #forceSSL = true;
+            #enableACME = true;
             locations."/" = {
               proxyPass = "http://hunt2025-reg";
               proxyWebsockets = true;
@@ -114,8 +114,8 @@
             locations."/static/".alias = "${pkgs.hunt2025.assets}/static/";
           };
           "ops.mitmh2025.com" = {
-            forceSSL = true;
-            enableACME = true;
+            #forceSSL = true;
+            #enableACME = true;
             locations."/" = {
               proxyPass = "http://hunt2025-ops";
               proxyWebsockets = true;
