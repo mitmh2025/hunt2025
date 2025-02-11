@@ -12,7 +12,7 @@ const puzzle: PuzzleDefinition = {
     "Emilie Josephs",
     "Cyrus Eyster",
     "James Douberley",
-    "maddiehi",
+    "Madeline Hickman",
     "Molly Frey",
     "Rebecca Engelke",
   ],
