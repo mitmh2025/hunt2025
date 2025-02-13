@@ -23,6 +23,9 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    "process.env.ARCHIVE_MODE": process.env.ARCHIVE_MODE,
+  },
   resolve: {
     alias: {
       "@mui/styled-engine": "@mui/styled-engine-sc",
