@@ -161,7 +161,11 @@ const ALL_ARTISTS: Artist[] = [
   { name: "Santana", albums: ["Santana III", "Borboletta", "Marathon"] },
 ];
 
-const QuestionBlock = ({ question }: { question: FermitQuestion }) => {
+const QuestionBlock = ({
+  question,
+}: {
+  question: FermitQuestion & { geoguessr: null };
+}) => {
   return (
     <tr>
       <QuestionText>{question.text}</QuestionText>
@@ -391,7 +395,10 @@ const Solution = (): JSX.Element => {
             <QuestionHeader>Question</QuestionHeader>
             <AnswerHeader>Answer</AnswerHeader>
           </tr>
-          {ALL_QUESTIONS.filter((q) => q.geoguessr === null).map((q, idx) => (
+          {ALL_QUESTIONS.filter(
+            (q): q is FermitQuestion & { geoguessr: null } =>
+              q.geoguessr === null,
+          ).map((q, idx) => (
             <QuestionBlock question={q} key={idx} />
           ))}
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((g) => (
