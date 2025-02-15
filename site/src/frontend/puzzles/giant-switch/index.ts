@@ -18,6 +18,7 @@ const puzzle: PuzzleDefinition = {
   ],
   content: {
     component: Puzzle,
+    entrypoint: "puzzle_giant_switch",
   },
   solution: {
     component: Solution,
