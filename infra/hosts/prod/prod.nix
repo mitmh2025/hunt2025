@@ -6,11 +6,11 @@
     ../../services/postgres.nix
     ../../services/redis.nix
     ../../services/deploy.nix
-    #../../services/authentik
+    ../../services/authentik
   ];
   config = lib.mkMerge [
     {
-      #sops.defaultSopsFile = ../../secrets/prod/prod.yaml;
+      sops.defaultSopsFile = ../../secrets/prod/prod.yaml;
       sops.secrets.ssh_key.sopsFile = ../../secrets/prod/deploy.yaml;
       hunt.deploy.serviceAccountName = "prod-vm";
     }

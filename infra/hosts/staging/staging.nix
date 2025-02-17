@@ -5,7 +5,7 @@
     ../base.nix
     ../../services/postgres.nix
     ../../services/redis.nix
-    ../../services/authentik
+    #../../services/authentik
   ];
   config = lib.mkMerge [
     {
@@ -118,6 +118,8 @@
           "staging.mitmh2025.com" = {
             forceSSL = true;
             enableACME = true;
+            authentik.enable = true;
+            authentik.url = "https://auth.mitmh2025.com:9443";
             locations."/" = {
               proxyPass = "http://hunt2025";
               proxyWebsockets = true;
@@ -143,6 +145,8 @@
           "reg.staging.mitmh2025.com" = {
             forceSSL = true;
             enableACME = true;
+            authentik.enable = true;
+            authentik.url = "https://auth.mitmh2025.com:9443";
             locations."/" = {
               proxyPass = "http://hunt2025-reg";
               proxyWebsockets = true;
