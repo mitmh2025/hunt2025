@@ -92,8 +92,8 @@
         upstreams.hunt2025-ops.servers."unix:/run/hunt2025-ops/ops.sock" = {};
         virtualHosts = {
           "www.two-pi-noir.agency" = {
-            #forceSSL = true;
-            #enableACME = true;
+            forceSSL = true;
+            enableACME = true;
             locations."/" = {
               proxyPass = "http://hunt2025";
               proxyWebsockets = true;
@@ -107,8 +107,8 @@
             };
           };
           "www.mitmh2025.com" = {
-            #forceSSL = true;
-            #enableACME = true;
+            forceSSL = true;
+            enableACME = true;
             locations."/" = {
               proxyPass = "http://hunt2025-reg";
               proxyWebsockets = true;
@@ -116,13 +116,33 @@
             locations."/static/".alias = "${pkgs.hunt2025.assets}/static/";
           };
           "ops.mitmh2025.com" = {
-            #forceSSL = true;
-            #enableACME = true;
+            forceSSL = true;
+            enableACME = true;
             locations."/" = {
               proxyPass = "http://hunt2025-ops";
               proxyWebsockets = true;
             };
             locations."/api".proxyPass = "http://hunt2025";
+          };
+          "two-pi-noir.agency" = {
+            addSSL = true;
+            enableACME = true;
+            globalRedirect = "www.two-pi-noir.agency";
+          };
+          "mitmh2025.com" = {
+            addSSL = true;
+            enableACME = true;
+            globalRedirect = "www.mitmh2025.com";
+          };
+          "www.two-pi-noir.com" = {
+            addSSL = true;
+            enableACME = true;
+            globalRedirect = "www.two-pi-noir.agency";
+          };
+          "two-pi-noir.com" = {
+            addSSL = true;
+            enableACME = true;
+            globalRedirect = "www.two-pi-noir.agency";
           };
           "localhost" = {
             # Expose plain HTTP on localhost for use by the frontend
