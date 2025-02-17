@@ -24,6 +24,8 @@
         jwksUri = "https://auth.mitmh2025.com/application/o/ops/jwks/";
       };
 
+      services.postgresql.package = pkgs.postgresql_16;
+
       users.users."${config.services.nginx.user}".extraGroups = [ "hunt2025" ];
       systemd.services.hunt2025 = {
         serviceConfig.RuntimeDirectory = "hunt2025";
