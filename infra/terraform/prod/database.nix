@@ -49,6 +49,23 @@
     instance = lib.tfRef "google_sql_database_instance.prod.name";
     type = "CLOUD_IAM_SERVICE_ACCOUNT";
   };
+  resource.google_sql_user.prod-vm = {
+    name = lib.tfRef ''trimsuffix(google_service_account.prod-vm.email, ".gserviceaccount.com")'';
+    instance = lib.tfRef "google_sql_database_instance.prod.name";
+    type = "CLOUD_IAM_SERVICE_ACCOUNT";
+  };
+  resource.postgresql_grant_role.prod-vm-k8s-prod-api = {
+    provider = "postgresql.prod";
+    role = lib.tfRef "google_sql_user.prod-vm.name";
+    grant_role = lib.tfRef "google_sql_user.k8s-prod-api.name";
+    with_admin_option = true;
+  };
+  resource.postgresql_grant_role.prod-vm-thingsboard = {
+    provider = "postgresql.prod";
+    role = lib.tfRef "google_sql_user.prod-vm.name";
+    grant_role = lib.tfRef "postgresql_role.thingsboard.name";
+    with_admin_option = true;
+  };
   resource.random_password.sql-prod-terraform = {
     keepers.name = lib.tfRef "google_sql_database_instance.prod.name";
     min_lower = 1;
