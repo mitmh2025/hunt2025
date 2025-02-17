@@ -522,6 +522,7 @@ export default function createConfigs(_env, argv) {
       puzzle_deserted_ninja: "./src/frontend/puzzles/deserted-ninja/client.tsx",
       puzzle_diligent_spy: "./src/frontend/puzzles/diligent-spy/client.tsx",
       puzzle_few_nail: "./src/frontend/puzzles/few-nail/client.tsx",
+      puzzle_giant_switch: "./src/frontend/puzzles/giant-switch/client.tsx",
       puzzle_giving_fighter: "./src/frontend/puzzles/giving-fighter/client.tsx",
       puzzle_lean_lock: "./src/frontend/puzzles/lean-lock/client.tsx",
       puzzle_legitimate_bridge:
