@@ -68,7 +68,8 @@
     ./gke.nix
     #disabled ./gclb.nix
     ./assets.nix
-    ./site.nix
+    #disabled ./site.nix
+    ./site-secrets.nix
     ./redis.nix
     ./mail.nix
     ./scaling.nix

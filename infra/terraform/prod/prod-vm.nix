@@ -1,5 +1,7 @@
 { lib, self, ... }:
 {
+  # Run everything in prod as a single VM post-hunt
+
   gce.instance.prod = {
     route53.zone = "mitmh2025";
     machineType = "e2-highmem-2"; # 2 vCPU, 16 GB RAM

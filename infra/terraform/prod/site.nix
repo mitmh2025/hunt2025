@@ -18,18 +18,7 @@
       dockerTools.binSh
     ];
   };
-  sops.keys.site = {};
   data.sops_file.site.source_file = "${../../secrets/prod/site.yaml}";
-  resource.tls_private_key.jwt_secret = {
-    algorithm = "RSA";
-  };
-  resource.random_password.data_api_secret = {
-    length = 64;
-    special = false;
-  };
-  resource.random_password.frontend_api_secret = {
-    length = 64;
-  };
   resource.kubernetes_config_map_v1.api = {
     metadata.namespace = "prod";
     metadata.name = "api";

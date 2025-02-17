@@ -59,11 +59,17 @@
     {
       sops.secrets."postmark/token".sopsFile = ../../secrets/prod/site.yaml;
       sops.secrets."postmark/stream".sopsFile = ../../secrets/prod/site.yaml;
+      sops.secrets."site/JWT_SECRET".sopsFile = ../../secrets/prod/site.yaml;
+      sops.secrets."site/FRONTEND_API_SECRET".sopsFile = ../../secrets/prod/site.yaml;
+      sops.secrets."site/DATA_API_SECRET".sopsFile = ../../secrets/prod/site.yaml;
       sops.templates."site/environment" = {
         owner = "hunt2025";
         content = ''
           EMAIL_POSTMARK_TOKEN=${config.sops.placeholder."postmark/token"}
           EMAIL_POSTMARK_STREAM=${config.sops.placeholder."postmark/stream"}
+          JWT_SECRET="${config.sops.placeholder."site/JWT_SECRET"}"
+          FRONTEND_API_SECRET="${config.sops.placeholder."site/FRONTEND_API_SECRET"}"
+          DATA_API_SECRET="${config.sops.placeholder."site/DATA_API_SECRET"}"
         '';
       };
       systemd.services.hunt2025.serviceConfig.EnvironmentFile = [config.sops.templates."site/environment".path];
