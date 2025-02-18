@@ -79,12 +79,12 @@
   #     requests.memory = "4Gi";
   #   };
   # };
-  k8s.prod.statefulSet.redis = {
-    container.resources = {
-      limits.cpu = "2";
-      limits.memory = "1Gi";
-      requests.cpu = "100m";
-      requests.memory = "256Mi";
-    };
-  };
+  # k8s.prod.statefulSet.redis = {
+  #   container.resources = {
+  #     limits.cpu = "2";
+  #     limits.memory = "1Gi";
+  #     requests.cpu = "100m";
+  #     requests.memory = "256Mi";
+  #   };
+  # };
 }

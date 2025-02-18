@@ -70,7 +70,7 @@
     ./assets.nix
     #disabled ./site.nix
     ./site-secrets.nix
-    ./redis.nix
+    #disabled ./redis.nix
     ./mail.nix
     ./scaling.nix
     ./prod-vm.nix
