@@ -9,6 +9,7 @@
   ci.nix.cache.users = [
     # Give deploy VM access to our Nix cache.
     (lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.deploy-vm.member")
+    (lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.prod-vm.member")
   ];
   ci.nix.cache.viewers = [
     (lib.tfRef "google_service_account.staging-vm.member")
