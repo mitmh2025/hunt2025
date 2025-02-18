@@ -1,10 +1,54 @@
 export type FermitQuestion = {
   id: number;
   text: string;
-  answer: number;
-  geoguessr: number | null;
-  scoringMethod: string;
+  scoringMethod:
+    | "percent"
+    | "raw"
+    | "12345"
+    | "12468"
+    | "1double"
+    | "2double"
+    | "3double"
+    | "4double"
+    | "9double"
+    | "10double"
+    | "team_puzzle_solves"
+    | "all_submissions";
   categories: string[];
+} & (
+  | {
+      geoguessr: number;
+      answer: () => SVGGeometryElement[];
+      scoringMethod: "raw";
+    }
+  | {
+      geoguessr: null;
+      answer: number;
+    }
+);
+
+const makeEllipse = ({
+  cx,
+  cy,
+  rx,
+  ry,
+  transform,
+}: {
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+  transform?: string;
+}) => {
+  const elt = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+  elt.setAttribute("cx", cx.toString());
+  elt.setAttribute("cy", cy.toString());
+  elt.setAttribute("rx", rx.toString());
+  elt.setAttribute("ry", ry.toString());
+  if (transform) {
+    elt.setAttribute("transform", transform);
+  }
+  return elt;
 };
 
 export const ALL_QUESTIONS: FermitQuestion[] = [
@@ -19,7 +63,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 1,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 979.300454545455,
+        cy: 727.360454545455,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 979.300454545455,
+        cy: 727.870454545455,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 977.747272727273,
+        cy: 724.269545454545,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 976.201818181818,
+        cy: 728.905909090909,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 975.691818181818,
+        cy: 728.898181818182,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 1,
     scoringMethod: "raw",
     categories: [],
@@ -51,7 +126,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 5,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 1156.50227272727,
+        cy: 735.597727272727,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 1156.50227272727,
+        cy: 736.123181818182,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 1154.96454545455,
+        cy: 735.597727272727,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1153.41909090909,
+        cy: 737.143181818182,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1152.90909090909,
+        cy: 737.150909090909,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 2,
     scoringMethod: "raw",
     categories: [],
@@ -99,7 +205,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 11,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 1087.48227272727,
+        cy: 733.542272727273,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 1087.48227272727,
+        cy: 734.052272727273,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 1085.92909090909,
+        cy: 733.542272727273,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1084.38363636364,
+        cy: 735.087727272727,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1083.87363636364,
+        cy: 735.08,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 3,
     scoringMethod: "raw",
     categories: [],
@@ -139,7 +276,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 16,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 910.265,
+        cy: 656.269545454545,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 910.265,
+        cy: 656.779545454546,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 908.727272727273,
+        cy: 656.269545454545,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 907.181818181818,
+        cy: 657.815,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 906.656363636364,
+        cy: 657.807272727273,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 4,
     scoringMethod: "raw",
     categories: [],
@@ -163,7 +331,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 19,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 1085.41136363636,
+        cy: 624.325,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 1085.41136363636,
+        cy: 624.850454545455,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 1083.87363636364,
+        cy: 624.325,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1082.32818181818,
+        cy: 625.870454545455,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1081.81818181818,
+        cy: 625.878181818182,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 5,
     scoringMethod: "raw",
     categories: [],
@@ -195,7 +394,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 23,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 759.328181818182,
+        cy: 752.597727272727,
+        rx: 18.5454545454545,
+        ry: 10.3004545454545,
+      }),
+      makeEllipse({
+        cx: 758.810454545455,
+        cy: 756.724090909091,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 757.272727272727,
+        cy: 758.269545454545,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 755.727272727273,
+        cy: 758.779545454545,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 755.201818181818,
+        cy: 754.660909090909,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 6,
     scoringMethod: "raw",
     categories: [],
@@ -219,7 +449,42 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 26,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 1279.62863636364,
+        cy: 665.032272727273,
+        rx: 10.3004545454545,
+        ry: 10.3004545454545,
+      }),
+      makeEllipse({
+        cx: 1433.7,
+        cy: 158.23,
+        rx: 18.761,
+        ry: 33,
+        transform: "rotate(21.177)",
+      }),
+      makeEllipse({
+        cx: 1435.3,
+        cy: 142.56,
+        rx: 33.321,
+        ry: 54.338,
+        transform: "rotate(21.841)",
+      }),
+      makeEllipse({
+        cx: 1434.7,
+        cy: 157.43,
+        rx: 49.098,
+        ry: 74.837,
+        transform: "rotate(21.326)",
+      }),
+      makeEllipse({
+        cx: 1440,
+        cy: 100.94,
+        rx: 81.023,
+        ry: 104.38,
+        transform: "rotate(23.598)",
+      }),
+    ],
     geoguessr: 7,
     scoringMethod: "raw",
     categories: [],
@@ -251,7 +516,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 30,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 1021.53772727273,
+        cy: 666.577727272727,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 1021.53772727273,
+        cy: 667.087727272727,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 1020,
+        cy: 666.577727272727,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1018.45454545455,
+        cy: 668.123181818182,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1017.92909090909,
+        cy: 668.115454545455,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 8,
     scoringMethod: "raw",
     categories: [],
@@ -387,7 +683,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 47,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 804.138636363636,
+        cy: 679.961363636364,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 804.138636363636,
+        cy: 680.486818181818,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 802.600909090909,
+        cy: 679.961363636364,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 801.055454545455,
+        cy: 681.506818181818,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 800.545454545455,
+        cy: 681.514545454545,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 9,
     scoringMethod: "raw",
     categories: [],
@@ -395,7 +722,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 48,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 1170.93681818182,
+        cy: 548.087727272727,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 1167.84590909091,
+        cy: 548.597727272727,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 1166.29272727273,
+        cy: 548.087727272727,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1164.74727272727,
+        cy: 549.633181818182,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1166.29272727273,
+        cy: 548.605454545455,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 10,
     scoringMethod: "raw",
     categories: [],
@@ -403,7 +761,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 49,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 987.537727272727,
+        cy: 666.577727272727,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 984.446818181818,
+        cy: 667.087727272727,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 982.909090909091,
+        cy: 666.577727272727,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 981.363636363636,
+        cy: 668.123181818182,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 982.909090909091,
+        cy: 667.08,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 11,
     scoringMethod: "raw",
     categories: [],
@@ -411,7 +800,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 50,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 1086.44681818182,
+        cy: 646.996818181818,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 1086.44681818182,
+        cy: 647.506818181818,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 1084.90909090909,
+        cy: 646.996818181818,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1083.36363636364,
+        cy: 648.542272727273,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 1082.83818181818,
+        cy: 648.534545454545,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 12,
     scoringMethod: "raw",
     categories: [],
@@ -419,7 +839,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 51,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 548.628636363636,
+        cy: 622.269545454545,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 548.628636363636,
+        cy: 622.779545454546,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 547.090909090909,
+        cy: 622.269545454545,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 545.545454545455,
+        cy: 623.815,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 545.02,
+        cy: 623.807272727273,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 13,
     scoringMethod: "raw",
     categories: [],
@@ -427,7 +878,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 52,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 397.174090909091,
+        cy: 740.759545454545,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 397.174090909091,
+        cy: 741.269545454545,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 395.636363636364,
+        cy: 740.759545454546,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 394.090909090909,
+        cy: 742.305,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 393.565454545455,
+        cy: 742.297272727273,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 14,
     scoringMethod: "raw",
     categories: [],
@@ -435,7 +917,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 53,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 719.664090909091,
+        cy: 754.143181818182,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 719.664090909091,
+        cy: 754.668636363636,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 718.110909090909,
+        cy: 754.143181818182,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 716.565454545455,
+        cy: 755.688636363636,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 716.055454545455,
+        cy: 755.696363636364,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 15,
     scoringMethod: "raw",
     categories: [],
@@ -443,7 +956,38 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 54,
     text: "Where is this location on campus?",
-    answer: 0,
+    answer: () => [
+      makeEllipse({
+        cx: 943.229545454546,
+        cy: 627.415909090909,
+        rx: 8.755,
+        ry: 8.755,
+      }),
+      makeEllipse({
+        cx: 943.229545454546,
+        cy: 627.941363636364,
+        rx: 33.4822727272727,
+        ry: 19.5731818181818,
+      }),
+      makeEllipse({
+        cx: 941.691818181818,
+        cy: 627.415909090909,
+        rx: 55.6363636363636,
+        ry: 33.4822727272727,
+      }),
+      makeEllipse({
+        cx: 940.146363636364,
+        cy: 628.961363636364,
+        rx: 75.7272727272727,
+        ry: 50.4822727272727,
+      }),
+      makeEllipse({
+        cx: 939.636363636364,
+        cy: 628.969090909091,
+        rx: 105.090909090909,
+        ry: 82.4190909090909,
+      }),
+    ],
     geoguessr: 16,
     scoringMethod: "raw",
     categories: [],

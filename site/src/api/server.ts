@@ -2762,6 +2762,14 @@ export async function getRouter({
 
                   const answer = answerObj.answer;
 
+                  if (question.geoguessr !== null) {
+                    // geoguessrs are always raw scoring so short-circuit
+                    if (answer < 0 || answer > 5) {
+                      return 0;
+                    }
+                    return Math.floor(answer);
+                  }
+
                   const percentage =
                     100 * Math.abs(answer / question.answer - 1);
                   const difference = Math.abs(answer - question.answer);
