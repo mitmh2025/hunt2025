@@ -56,6 +56,7 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/shoddy-table/assets/10000sheets.xlsx",
   "src/frontend/puzzles/timely-head/assets/engagements-and-other-crimes.pdf",
   "src/frontend/puzzles/valuable-alps/assets/cross-dash-word.pdf",
+  "src/frontend/archives/assets/activity_log.csv",
 ];
 // There are also 54 pages with predictable paths for the Murder in MITropolis meta
 for (let i = 1; i <= 54; i++) {
@@ -362,6 +363,11 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const csvRule = {
+    test: /\.csv$/,
+    type: "asset/resource",
+  };
+
   // Disable displayName classes on styled-components when not in dev mode.
   const styledComponentsPluginConfig = swcConfig.jsc.experimental.plugins.find(
     (plugin) => plugin[0] === "@swc/plugin-styled-components",
@@ -443,6 +449,7 @@ export default function createConfigs(_env, argv) {
         threemfRule,
         xlsxRule,
         vttRule,
+        csvRule,
       ],
       // Add modules as appropriate
     },

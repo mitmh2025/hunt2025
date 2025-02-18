@@ -11,6 +11,7 @@ import { connect as dbConnect } from "./api/db";
 import { getMailer } from "./api/email";
 import { connect as redisConnect } from "./api/redis";
 import { getRouter } from "./api/server";
+import { getArchiveRouter } from "./frontend/archives/routes";
 import { VirtualInteractionEngine } from "./frontend/interactions/virtual_interaction_engine";
 import {
   getAuthRouter,
@@ -18,6 +19,7 @@ import {
   registerUiRoutes,
 } from "./frontend/server/routes";
 import { WebsocketManager } from "./frontend/server/ws";
+import archiveMode from "./frontend/utils/archiveMode";
 import {
   addStaticMiddleware,
   healthzHandler,
@@ -156,13 +158,18 @@ export default async function ({
     uiRouter.use(unauthRouter);
     uiRouter.use(authRouter);
 
+    if (archiveMode) {
+      const archiveRouter = getArchiveRouter();
+      app.use("/2025", archiveRouter);
+    }
+
     // Forward all other requests to the UI router, which we expect to
     // handle most user requests.
     app.use(`${rootUrl}/`, uiRouter);
 
     if (rootUrl !== "") {
       app.get("/", (_req, res) => {
-        res.redirect(rootUrl);
+        res.redirect("/2025");
       });
     }
   }
