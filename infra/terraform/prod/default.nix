@@ -65,7 +65,7 @@
     ../base.nix
     ./deploy.nix
     ./database.nix
-    ./gke.nix
+    #disabled ./gke.nix
     #disabled ./gclb.nix
     ./assets.nix
     #disabled ./site.nix

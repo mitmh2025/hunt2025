@@ -42,6 +42,13 @@
     };
     lifecycle.ignore_changes = ["settings[0].disk_size"];
   };
+  gcp.serviceAccount.k8s-prod-api = {
+    displayName = "k8s/prod/api";
+    iamRoles = [
+      "cloudsql.client"
+      "cloudsql.instanceUser"
+    ];
+  };
   resource.google_sql_user.k8s-prod-api = {
     # Note: for Postgres only, GCP requires omitting the ".gserviceaccount.com" suffix
     # from the service account email due to length limits on database usernames.

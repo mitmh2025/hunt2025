@@ -14,6 +14,7 @@
       ];
     };
     resource.google_container_cluster.k8s = {
+      deletion_protection = false;
       depends_on = ["google_project_service.container"];
       # gcloud beta container --project "mitmh2025" clusters create "k8s"
       name = "k8s";
@@ -151,13 +152,6 @@
   resource.kubernetes_namespace_v1.prod.metadata.name = "prod";
 
   # Service account for the API to talk to Postgres
-  gcp.serviceAccount.k8s-prod-api = {
-    displayName = "k8s/prod/api";
-    iamRoles = [
-      "cloudsql.client"
-      "cloudsql.instanceUser"
-    ];
-  };
   resource.google_service_account_iam_binding.k8s-prod-api = {
     depends_on = ["module.gke-cluster"];
     service_account_id = lib.tfRef "google_service_account.k8s-prod-api.name";
