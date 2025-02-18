@@ -10,6 +10,38 @@ import {
 } from "../../../../ops/src/opsdata/desertedNinjaQuestions";
 import LinkedImage from "../../components/LinkedImage";
 import { PuzzleAnswer } from "../../components/StyledUI";
+import geoMap1 from "./assets/geoguessr-map1.pdf";
+import geoMap10 from "./assets/geoguessr-map10.pdf";
+import geoMap11 from "./assets/geoguessr-map11.pdf";
+import geoMap12 from "./assets/geoguessr-map12.pdf";
+import geoMap13 from "./assets/geoguessr-map13.pdf";
+import geoMap14 from "./assets/geoguessr-map14.pdf";
+import geoMap15 from "./assets/geoguessr-map15.pdf";
+import geoMap16 from "./assets/geoguessr-map16.pdf";
+import geoMap2 from "./assets/geoguessr-map2.pdf";
+import geoMap3 from "./assets/geoguessr-map3.pdf";
+import geoMap4 from "./assets/geoguessr-map4.pdf";
+import geoMap5 from "./assets/geoguessr-map5.pdf";
+import geoMap6 from "./assets/geoguessr-map6.pdf";
+import geoMap7 from "./assets/geoguessr-map7.pdf";
+import geoMap8 from "./assets/geoguessr-map8.pdf";
+import geoMap9 from "./assets/geoguessr-map9.pdf";
+import geoRubric1 from "./assets/geoguessr-rubric1.pdf";
+import geoRubric10 from "./assets/geoguessr-rubric10.pdf";
+import geoRubric11 from "./assets/geoguessr-rubric11.pdf";
+import geoRubric12 from "./assets/geoguessr-rubric12.pdf";
+import geoRubric13 from "./assets/geoguessr-rubric13.pdf";
+import geoRubric14 from "./assets/geoguessr-rubric14.pdf";
+import geoRubric15 from "./assets/geoguessr-rubric15.pdf";
+import geoRubric16 from "./assets/geoguessr-rubric16.pdf";
+import geoRubric2 from "./assets/geoguessr-rubric2.pdf";
+import geoRubric3 from "./assets/geoguessr-rubric3.pdf";
+import geoRubric4 from "./assets/geoguessr-rubric4.pdf";
+import geoRubric5 from "./assets/geoguessr-rubric5.pdf";
+import geoRubric6 from "./assets/geoguessr-rubric6.pdf";
+import geoRubric7 from "./assets/geoguessr-rubric7.pdf";
+import geoRubric8 from "./assets/geoguessr-rubric8.pdf";
+import geoRubric9 from "./assets/geoguessr-rubric9.pdf";
 
 const Example = styled.div`
   width: 80%;
@@ -26,6 +58,11 @@ const QuestionText = styled.td`
 const QuestionAnswer = styled.td`
   border-top: thin solid;
   padding-left: 10px;
+`;
+const QuestionRanges = styled.td`
+  border-top: thin solid;
+  padding-left: 10px;
+  white-space: nowrap;
 `;
 const GeoguessrContainer = styled.div`
   width: 40%;
@@ -83,6 +120,42 @@ const ALL_GEOGUESSR_LOCATIONS = [
   "between Westgate and Next",
   "Theta Delta Chi (Amherst Alley side)",
   "Subbasement 9",
+];
+const GeoguessrRubrics = [
+  geoRubric1,
+  geoRubric2,
+  geoRubric3,
+  geoRubric4,
+  geoRubric5,
+  geoRubric6,
+  geoRubric7,
+  geoRubric8,
+  geoRubric9,
+  geoRubric10,
+  geoRubric11,
+  geoRubric12,
+  geoRubric13,
+  geoRubric14,
+  geoRubric15,
+  geoRubric16,
+];
+const GeoguessrMaps = [
+  geoMap1,
+  geoMap2,
+  geoMap3,
+  geoMap4,
+  geoMap5,
+  geoMap6,
+  geoMap7,
+  geoMap8,
+  geoMap9,
+  geoMap10,
+  geoMap11,
+  geoMap12,
+  geoMap13,
+  geoMap14,
+  geoMap15,
+  geoMap16,
 ];
 
 type Artist = {
@@ -161,15 +234,127 @@ const ALL_ARTISTS: Artist[] = [
   { name: "Santana", albums: ["Santana III", "Borboletta", "Marathon"] },
 ];
 
+const scoreRanges = ({
+  question,
+}: {
+  question: FermitQuestion & { geoguessr: null };
+}):
+  | undefined
+  | [
+      [number, number],
+      [number, number],
+      [number, number],
+      [number, number],
+      [number, number],
+    ] => {
+  let ranges = undefined;
+  switch (question.scoringMethod) {
+    case "percent":
+      ranges = [
+        [0.98 * question.answer, 1.02 * question.answer],
+        [0.95 * question.answer, 1.05 * question.answer],
+        [0.9 * question.answer, 1.1 * question.answer],
+        [0.8 * question.answer, 1.2 * question.answer],
+        [0.5 * question.answer, 1.5 * question.answer],
+      ] as const;
+      break;
+    case "12345":
+      ranges = [
+        [question.answer - 1, question.answer + 1],
+        [question.answer - 2, question.answer + 2],
+        [question.answer - 3, question.answer + 3],
+        [question.answer - 4, question.answer + 4],
+        [question.answer - 5, question.answer + 5],
+      ];
+      break;
+    case "12468":
+      ranges = [
+        [question.answer - 1, question.answer + 1],
+        [question.answer - 2, question.answer + 2],
+        [question.answer - 4, question.answer + 4],
+        [question.answer - 6, question.answer + 6],
+        [question.answer - 8, question.answer + 8],
+      ];
+      break;
+    case "1double":
+    case "2double":
+    case "3double":
+    case "4double":
+    case "9double":
+    case "10double": {
+      const base = parseInt(question.scoringMethod.slice(0, -6));
+      ranges = [
+        [question.answer - base, question.answer + base],
+        [question.answer - 2 * base, question.answer + 2 * base],
+        [question.answer - 4 * base, question.answer + 4 * base],
+        [question.answer - 8 * base, question.answer + 8 * base],
+        [question.answer - 16 * base, question.answer + 16 * base],
+      ];
+      break;
+    }
+  }
+
+  return ranges
+    ? [
+        [
+          Math.round(ranges[0][0] * 100) / 100,
+          Math.round(ranges[0][1] * 100) / 100,
+        ],
+        [
+          Math.round(ranges[1][0] * 100) / 100,
+          Math.round(ranges[1][1] * 100) / 100,
+        ],
+        [
+          Math.round(ranges[2][0] * 100) / 100,
+          Math.round(ranges[2][1] * 100) / 100,
+        ],
+        [
+          Math.round(ranges[3][0] * 100) / 100,
+          Math.round(ranges[3][1] * 100) / 100,
+        ],
+        [
+          Math.round(ranges[4][0] * 100) / 100,
+          Math.round(ranges[4][1] * 100) / 100,
+        ],
+      ]
+    : undefined;
+};
+
 const QuestionBlock = ({
   question,
 }: {
   question: FermitQuestion & { geoguessr: null };
 }) => {
+  const ranges = scoreRanges({ question });
   return (
     <tr>
       <QuestionText>{question.text}</QuestionText>
-      <QuestionAnswer>{question.answer}</QuestionAnswer>
+      <QuestionAnswer>
+        {["all_submissions", "team_puzzle_solves"].includes(
+          question.scoringMethod,
+        )
+          ? "N/A"
+          : question.answer}
+      </QuestionAnswer>
+      {ranges ? (
+        <QuestionRanges>
+          5/5: {ranges[0][0]}–{ranges[0][1]}
+          <br />
+          4/5: {ranges[1][0]}–{ranges[1][1]}
+          <br />
+          3/5: {ranges[2][0]}–{ranges[2][1]}
+          <br />
+          2/5: {ranges[3][0]}–{ranges[3][1]}
+          <br />
+          1/5: {ranges[4][0]}–{ranges[4][1]}
+        </QuestionRanges>
+      ) : (
+        <QuestionAnswer>
+          (This question was live-scored from the current state of the Hunt
+          based on percent error — within 2%, 5%, 10%, 20%, and 50% for 5/5,
+          4/5, 3/5, 2/5, and 1/5 respectively.)
+        </QuestionAnswer>
+      )}
     </tr>
   );
 };
@@ -394,6 +579,7 @@ const Solution = (): JSX.Element => {
           <tr>
             <QuestionHeader>Question</QuestionHeader>
             <AnswerHeader>Answer</AnswerHeader>
+            <AnswerHeader>Score Ranges (inclusive)</AnswerHeader>
           </tr>
           {ALL_QUESTIONS.filter(
             (q): q is FermitQuestion & { geoguessr: null } =>
@@ -412,6 +598,19 @@ const Solution = (): JSX.Element => {
                 </GeoguessrContainer>
               </GeoguessrCell>
               <QuestionAnswer>{ALL_GEOGUESSR_LOCATIONS[g - 1]}</QuestionAnswer>
+              <QuestionAnswer>
+                <a href={GeoguessrMaps[g - 1]} target="_blank" rel="noreferrer">
+                  Map
+                </a>
+                <br />
+                <a
+                  href={GeoguessrRubrics[g - 1]}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Scoring Rubric{g === 1 && " (for printing on transparency)"}
+                </a>
+              </QuestionAnswer>
             </tr>
           ))}
         </table>
