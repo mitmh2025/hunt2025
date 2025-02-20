@@ -208,6 +208,7 @@ const MapCanvas = styled.canvas`
 const DialContainer = styled.div`
   width: 100%;
   position: relative;
+  touch-action: none;
 `;
 
 const DialImage = styled.img`
@@ -408,24 +409,29 @@ const App = () => {
     return cleanup;
   }, [currentSource.type, currentSource.url]);
 
-  const onMouseDown = useCallback((e: React.MouseEvent<HTMLImageElement>) => {
-    e.preventDefault();
+  const onPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLImageElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-    // Initialize white noise stream on mouse down so that it's in response to user interaction
-    if (!whiteNoise.current) {
-      whiteNoise.current = makeWhiteNoiseStream();
-    }
+      // Initialize white noise stream on pointer down so that it's in response to user interaction
+      if (!whiteNoise.current) {
+        whiteNoise.current = makeWhiteNoiseStream();
+      }
 
-    setDragging(true);
+      setDragging(true);
 
-    const dial = e.currentTarget;
-    setDragStartAngle(getAngle(dial, e.clientX, e.clientY));
-  }, []);
+      const dial = e.currentTarget;
+      setDragStartAngle(getAngle(dial, e.clientX, e.clientY));
+    },
+    [],
+  );
 
-  const onMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLImageElement>) => {
+  const onPointerMove = useCallback(
+    (e: React.PointerEvent<HTMLImageElement>) => {
       if (!dragging) return;
       e.preventDefault();
+      e.stopPropagation();
 
       const dial = e.currentTarget;
       const angle = getAngle(dial, e.clientX, e.clientY);
@@ -437,8 +443,8 @@ const App = () => {
     [dragStartAngle, dragging],
   );
 
-  const onMouseUp = useCallback(
-    (e: React.MouseEvent<HTMLImageElement>) => {
+  const onPointerUp = useCallback(
+    (e: React.PointerEvent<HTMLImageElement>) => {
       if (!dragging) return;
       e.preventDefault();
       setDragging(false);
@@ -464,10 +470,10 @@ const App = () => {
         </div>
         <DialContainer
           style={{ cursor: "grab" }}
-          onMouseDown={onMouseDown}
-          onMouseMove={onMouseMove}
-          onMouseUp={onMouseUp}
-          onMouseLeave={onMouseUp}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerLeave={onPointerUp}
         >
           <DialImage
             src={dial}
