@@ -160,7 +160,7 @@ export default async function ({
 
     if (archiveMode) {
       const archiveRouter = getArchiveRouter();
-      app.use("/2025", archiveRouter);
+      app.use("/2025/", archiveRouter);
     }
 
     // Forward all other requests to the UI router, which we expect to
@@ -169,7 +169,7 @@ export default async function ({
 
     if (rootUrl !== "") {
       app.get("/", (_req, res) => {
-        res.redirect("/2025");
+        res.redirect("/2025/");
       });
     }
   }
