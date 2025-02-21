@@ -1,37 +1,25 @@
 import React from "react";
-import { type TeamHuntState } from "../../../../lib/api/client";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
-import { MailtoLink } from "../../components/StyledUI";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import cerealBox from "./assets/cereal-box.pdf";
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const pickupCompleted =
-    teamState.rounds.stakeout?.gates?.includes("sog01") ?? false;
-
-  if (pickupCompleted) {
-    return (
-      <>
-        <ArchivalNotice />
-        <p>Our records show you have picked up your copy of this puzzle.</p>
-        <p>
-          You should have received a miniature cereal box containing several
-          crayons. Please contact us at{" "}
-          <MailtoLink subject={"Missing pieces for Mystery O’s"} /> if it seems
-          that you are missing pieces.
-        </p>
-      </>
-    );
-  }
+const Puzzle = (): JSX.Element => {
   return (
-    <>
-      <ArchivalNotice />
-      <p>Please come to the Gala to pick up your copy of this puzzle.</p>
+    <AuthorsNoteBlock>
       <p>
-        You should receive a miniature cereal box containing several crayons.
-        Please contact us at{" "}
-        <MailtoLink subject={"Missing pieces for Mystery O’s"} /> if it seems
-        that you are missing pieces.
+        During Mystery Hunt, this puzzle was presented as an assembled cereal
+        box, approximately 5⅛”×4”×2”. If you’d like to solve this puzzle at
+        home, you can download{" "}
+        <a href={cerealBox} target="_blank" rel="noreferrer">
+          the flattened cereal box
+        </a>
+        , which has been shrunk slightly to fit on 8.5”×11” paper. For the best
+        experience, we suggest printing in color on 110pt (or thicker)
+        cardstock, although it shouldn’t be necessary to print in color (or
+        print at all) in order to solve the puzzle. If you’d like to assemble
+        it, you can cut along the dark brown outline, fold, and tape as
+        indicated. We included two dark-colored crayons for ease of solving.
       </p>
-    </>
+    </AuthorsNoteBlock>
   );
 };
 
