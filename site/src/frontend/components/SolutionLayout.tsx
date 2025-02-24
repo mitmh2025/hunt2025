@@ -112,6 +112,10 @@ const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
   }
 };
 
+const SolutionCannedResponse = styled.td`
+  white-space: pre-wrap;
+`;
+
 const SolutionCannedResponseRow = ({
   guess,
   reply,
@@ -128,7 +132,7 @@ const SolutionCannedResponseRow = ({
   return (
     <SpoileredRow key={guess} $revealed={revealed} onClick={onClick}>
       <td>{guess}</td>
-      <td>{reply}</td>
+      <SolutionCannedResponse>{reply}</SolutionCannedResponse>
       <td>{providesSolveReward ? "yes" : "no"}</td>
     </SpoileredRow>
   );
