@@ -142,6 +142,8 @@ export function statsHandler() {
             </li>
           </ul>
 
+          <p>(All timestamps below are in Eastern Standard Time.)</p>
+
           <noscript>Additional statistics displays require Javascript</noscript>
           <div id="stats-root">
             <p>Computing additional statistics...</p>
@@ -151,7 +153,8 @@ export function statsHandler() {
           <p>
             Download the <a href={activityLog}>full activity log</a>, including
             unlocks, answer submissions, interactions requests, and operations
-            on both keys 🗝️ and clues 🔎. (Note that hints were given out quite
+            on both keys 🗝️ and clues 🔎. As with everything, timestamps are in
+            Eastern Standard Time. (Note that hints were given out quite
             liberally on Sunday, and we therefore do not consider any rankings
             beyond first and second finish to be authoritative.)
           </p>
