@@ -96,13 +96,13 @@ export function indexHandler() {
 
           <p>
             At 8:56 AM on Sunday, January 19th, <strong>Cardinality</strong>{" "}
-            became the first team to solve each of the rounds. At 12:17 PM they
-            successfully broke into the Finster family vault and revealed the
-            true mastermind behind the theft of the Shadow Diamond, making them
-            the winners of the 2025 MIT Mystery Hunt. Unfortunately, they
-            weren’t able to recover either the Shadow Diamond or the coin stolen
-            by Papa, but instead they received a stash of surprisingly coin-like
-            counterfeit jewelry manufactured by one of the characters.
+            became the first team to solve their final major investigation. At
+            12:17 PM they successfully broke into the Finster family vault and
+            revealed the true mastermind behind the theft of the Shadow Diamond,
+            making them the winners of the 2025 MIT Mystery Hunt. Unfortunately,
+            they weren’t able to recover either the Shadow Diamond or the coin
+            stolen by Papa, but instead they received a stash of surprisingly
+            coin-like counterfeit jewelry manufactured by one of the characters.
           </p>
 
           <p>
