@@ -29,9 +29,11 @@ const SpoilerSpan = styled.span<{ $reveal: boolean; $color: string }>`
 const Spoiler = ({
   children,
   opaqueColor,
+  block,
 }: {
   children: ReactNode;
   opaqueColor?: string;
+  block?: boolean;
 }) => {
   // Note that in most places you'd expect to use a Spoiler, you won't actually have the event
   // handlers hooked up because solutions are generally just a static page.  But that's fine because
@@ -43,6 +45,7 @@ const Spoiler = ({
 
   return (
     <SpoilerSpan
+      as={block ? "div" : undefined}
       $reveal={reveal}
       $color={opaqueColor ?? "var(--black)"}
       onClick={setRevealed}

@@ -77,119 +77,81 @@ const Puzzle = (): JSX.Element => {
           </Spoiler>
         </p>
         <p>
-          <Spoiler>Drink 1:</Spoiler>
-          <ul>
-            <li>
-              <Spoiler>1 oz elderberry juice</Spoiler>
-            </li>
-            <li>
-              <Spoiler>2 oz lime juice</Spoiler>
-            </li>
-            <li>
-              <Spoiler>40 g fig jam</Spoiler>
-            </li>
-          </ul>
+          Drink 1:
+          <Spoiler block>
+            <ul>
+              <li>1 oz elderberry juice</li>
+              <li>2 oz lime juice</li>
+              <li>40 g fig jam</li>
+            </ul>
+          </Spoiler>
         </p>
         <p>
-          <Spoiler>Drink 2:</Spoiler>
-          <ul>
-            <li>
-              <Spoiler>1 1/2 oz lime juice</Spoiler>
-            </li>
-            <li>
-              <Spoiler>1 oz elderberry juice</Spoiler>
-            </li>
-            <li>
-              <Spoiler>30 g Greek yogurt</Spoiler>
-            </li>
-          </ul>
+          Drink 2:
+          <Spoiler block>
+            <ul>
+              <li>1 1/2 oz lime juice</li>
+              <li>1 oz elderberry juice</li>
+              <li>30 g Greek yogurt</li>
+            </ul>
+          </Spoiler>
         </p>
         <p>
-          <Spoiler>Drink 3:</Spoiler>
-          <ul>
-            <li>
-              <Spoiler>2 1/2 oz apple juice</Spoiler>
-            </li>
-            <li>
-              <Spoiler>35 g Greek yogurt</Spoiler>
-            </li>
-            <li>
-              <Spoiler>1 1/4 oz elderberry juice</Spoiler>
-            </li>
-          </ul>
+          Drink 3:
+          <Spoiler block>
+            <ul>
+              <li>2 1/2 oz apple juice</li>
+              <li>35 g Greek yogurt</li>
+              <li>1 1/4 oz elderberry juice</li>
+            </ul>
+          </Spoiler>
         </p>
         <p>
-          <Spoiler>Drink 4:</Spoiler>
-          <ul>
-            <li>
-              <Spoiler>2 1/2 oz apple juice</Spoiler>
-            </li>
-            <li>
-              <Spoiler>1 oz elderberry juice</Spoiler>
-            </li>
-            <li>
-              <Spoiler>1 tsp rose water</Spoiler>
-            </li>
-          </ul>
+          Drink 4:
+          <Spoiler block>
+            <ul>
+              <li>2 1/2 oz apple juice</li>
+              <li>1 oz elderberry juice</li>
+              <li>1 tsp rose water</li>
+            </ul>
+          </Spoiler>
         </p>
         <p>
-          <Spoiler>Drink 5:</Spoiler>
-          <ul>
-            <li>
-              <Spoiler>3 1/2 oz apple juice</Spoiler>
-            </li>
-            <li>
-              <Spoiler>1/2 tsp ground coffee</Spoiler>
-            </li>
-            <li>
-              <Spoiler>1 tsp rose water</Spoiler>
-            </li>
-          </ul>
+          Drink 5:
+          <Spoiler block>
+            <ul>
+              <li>3 1/2 oz apple juice</li>
+              <li>1/2 tsp ground coffee</li>
+              <li>1 tsp rose water</li>
+            </ul>
+          </Spoiler>
         </p>
         <p>
-          <Spoiler>Drink 6:</Spoiler>
-          <ul>
-            <li>
-              <Spoiler>3 1/2 oz apple juice</Spoiler>
-            </li>
-            <li>
-              <Spoiler>1/2 tsp ground coffee</Spoiler>
-            </li>
-            <li>
-              <Spoiler>1 sprig dill</Spoiler>
-            </li>
-          </ul>
+          Drink 6:
+          <Spoiler block>
+            <ul>
+              <li>3 1/2 oz apple juice</li>
+              <li>1/2 tsp ground coffee</li>
+              <li>1 sprig dill</li>
+            </ul>
+          </Spoiler>
         </p>
         <p>
-          <Spoiler>We used the following brands of packaged products:</Spoiler>
-          <ul>
-            <li>
-              <Spoiler>Elderberry juice: Biotta</Spoiler>
-            </li>
-            <li>
-              <Spoiler>Lime juice: ReaLime</Spoiler>
-            </li>
-            <li>
-              <Spoiler>
-                Fig jam: Dalmatia, until we ran out, then Bonne Maman
-              </Spoiler>
-            </li>
-            <li>
-              <Spoiler>
+          We used the following brands of packaged products:
+          <Spoiler block>
+            <ul>
+              <li>Elderberry juice: Biotta</li>
+              <li>Lime juice: ReaLime</li>
+              <li>Fig jam: Dalmatia (until we ran out, then Bonne Maman)</li>
+              <li>
                 Greek yogurt: mystery brand from Restaurant Depot; notably, it
                 was overfat (10%)
-              </Spoiler>
-            </li>
-            <li>
-              <Spoiler>Apple juice: Mott’s</Spoiler>
-            </li>
-            <li>
-              <Spoiler>Rose water: Fee Brothers</Spoiler>
-            </li>
-            <li>
-              <Spoiler>Coffee: Folger’s</Spoiler>
-            </li>
-          </ul>
+              </li>
+              <li>Apple juice: Mott’s</li>
+              <li>Rose water: Fee Brothers</li>
+              <li>Coffee: Folger’s</li>
+            </ul>
+          </Spoiler>
         </p>
 
         <p>
