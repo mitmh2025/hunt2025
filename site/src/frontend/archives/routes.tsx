@@ -1,7 +1,7 @@
 import expressAsyncHandler from "express-async-handler";
 import { Router } from "websocket-express";
 import renderApp from "../utils/renderApp";
-import { statsHandler } from "./stats";
+import { statsHandler } from "./stats/handler";
 import { indexHandler } from ".";
 
 export function getArchiveRouter() {

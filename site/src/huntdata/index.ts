@@ -629,7 +629,8 @@ const HUNT: Hunt = {
           unlock_cost: 1,
           slug: "editors_solemnity",
         },
-        { id: "sop37",
+        {
+          id: "sop37",
           unlocked_if: { oneOf: [] }, // Only manual unlocks by operators
           prize: 0,
           slug: "control_room",
@@ -667,6 +668,7 @@ const HUNT: Hunt = {
         {
           id: "som01",
           is_meta: true,
+          is_supermeta: true,
           unlocked_if: { puzzles_solved: 34 },
           slug: "chinatown",
         },
@@ -1357,6 +1359,7 @@ const HUNT: Hunt = {
         {
           id: "ism03",
           is_meta: true,
+          is_supermeta: true,
           unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg32" }],
           slug: "papas_bookcase_blacklight",
         },
@@ -1763,8 +1766,11 @@ const HUNT: Hunt = {
       unlock_if: [{ gate_satisfied: "hunt_started" }],
       gates: [
         { id: "evg01", internal_description: "Tailing a Lead concluded" },
-        { id: "evg02", internal_description: "Making Contact With An Informant concluded" },
-      ]
+        {
+          id: "evg02",
+          internal_description: "Making Contact With An Informant concluded",
+        },
+      ],
     },
     {
       // We don't actually want an "endgame" (or "The Vault") round to appear;
@@ -1806,8 +1812,20 @@ const HUNT: Hunt = {
         { id: "flp01", unlock_cost: 1, slug: "a_b_c_easy_as_1_2_3" },
         { id: "flp02", unlock_cost: 1, slug: "wouthit_porbelm" },
         { id: "flp03", unlock_cost: 1, slug: "hello_darkness_my_old_friend" },
-        { id: "flp04", unlock_cost: 1, slug: "infiltrating_the_criminal_underworld", prize: 0, strong_currency_prize: 1},
-        { id: "flp05", unlock_cost: 1, slug: "re_infiltrating_the_criminal_underworld", prize: 0, strong_currency_prize: 1},
+        {
+          id: "flp04",
+          unlock_cost: 1,
+          slug: "infiltrating_the_criminal_underworld",
+          prize: 0,
+          strong_currency_prize: 1,
+        },
+        {
+          id: "flp05",
+          unlock_cost: 1,
+          slug: "re_infiltrating_the_criminal_underworld",
+          prize: 0,
+          strong_currency_prize: 1,
+        },
         { id: "flp06", unlock_cost: 1, slug: "trainees_first_recital" },
         { id: "flp07", unlock_cost: 1, slug: "the_comeback_it_takes_two" },
       ],

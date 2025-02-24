@@ -56,7 +56,7 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/shoddy-table/assets/10000sheets.xlsx",
   "src/frontend/puzzles/timely-head/assets/engagements-and-other-crimes.pdf",
   "src/frontend/puzzles/valuable-alps/assets/cross-dash-word.pdf",
-  "src/frontend/archives/assets/activity_log.csv",
+  "src/frontend/archives/stats/assets/activity_log.csv",
 ];
 // There are also 54 pages with predictable paths for the Murder in MITropolis meta
 for (let i = 1; i <= 54; i++) {
@@ -512,6 +512,8 @@ export default function createConfigs(_env, argv) {
       hints: "./src/frontend/client/hints.tsx",
       virtual_radio: "./src/frontend/client/virtual_radio.tsx",
 
+      archive_stats: "./src/frontend/archives/stats/client.tsx",
+
       // Included on the round pages
       missing_diamond: "./src/frontend/rounds/missing_diamond/client.tsx",
       missing_diamond_puzzle:
@@ -585,6 +587,7 @@ export default function createConfigs(_env, argv) {
         flacRule,
         mp4Rule,
         fontRule,
+        csvRule,
       ],
     },
     resolve: {

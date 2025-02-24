@@ -21,24 +21,29 @@ export function indexHandler() {
             engagement of Gladys Finster (heir apparent to the legitimate
             businesses of crime boss Robert “Papa” Finster) and Ferdinand Carter
             (scion of the Carter Brothers jewelry conglomerate) is interrupted
-            when Carter’s latest acquisition, the storied Shadow Diamond, is
-            discovered to be missing.
+            when Carter’s latest acquisition, the storied{" "}
+            <strong>Shadow Diamond</strong>, is discovered to be missing.
           </p>
 
           <p>
-            Papa hires private eye Billie O’Ryan, who in turn recruits teams to
-            join their newly formed Billie O’Ryan Detective Academy and help
-            find the diamond.
+            Papa hires private eye Billie O’Ryan, of the Two P.I. Noir Detective
+            Agency, who in turn recruits teams to join them and help find the
+            diamond.
           </p>
 
           <h2>Prequel</h2>
 
           <p>
-            In October, The Providence Crime Syndications and the MIT Puzzle
-            Club ran an pre-hunt as an event for students. The{" "}
-            <a href="heist/">MIT Mystery Heist</a> is a prequel to the story of
-            The Case of the Shadow Diamond, where Papa organizes a bank robbery
-            to steal a valuable rare coin.
+            In October,{" "}
+            <strong>
+              The Providence Crime Syndications and the MIT Puzzle Club
+            </strong>{" "}
+            ran an pre-hunt as an event for students. The{" "}
+            <strong>
+              <a href="heist/">MIT Mystery Heist</a>
+            </strong>{" "}
+            is a prequel to the story of The Case of the Shadow Diamond, where
+            Papa organizes a bank robbery to steal a valuable rare coin.
           </p>
 
           <h2>Kickoff</h2>
@@ -54,9 +59,11 @@ export function indexHandler() {
           </p>
 
           <p>
-            <a href="https://www.youtube.com/watch?v=cWPZ61YgY6s">
-              Watch kickoff
-            </a>{" "}
+            <strong>
+              <a href="https://www.youtube.com/watch?v=cWPZ61YgY6s">
+                Watch kickoff
+              </a>
+            </strong>{" "}
             on YouTube.
           </p>
 
@@ -79,20 +86,23 @@ export function indexHandler() {
           </p>
 
           <p>
-            View the <a href="hunt/">Hunt website</a> as seen by teams.
+            <strong>
+              View the <a href="hunt/">Hunt website</a>
+            </strong>{" "}
+            as seen by teams.
           </p>
 
           <h2>Winning Team</h2>
 
           <p>
-            At 8:56 AM on Sunday, January 19th, Cardinality became the first
-            team to solve each of the rounds. At 12:17 PM they successfully
-            broke into the Finster family vault and revealed the true mastermind
-            behind the theft of the Shadow Diamond, making them the winners of
-            the 2025 MIT Mystery Hunt. Unfortunately, they weren’t able to
-            recover either the Shadow Diamond or the coin stolen by Papa, but
-            instead they received a stash of surprisingly coin-like counterfeit
-            jewelry manufactured by one of the characters.
+            At 8:56 AM on Sunday, January 19th, <strong>Cardinality</strong>{" "}
+            became the first team to solve each of the rounds. At 12:17 PM they
+            successfully broke into the Finster family vault and revealed the
+            true mastermind behind the theft of the Shadow Diamond, making them
+            the winners of the 2025 MIT Mystery Hunt. Unfortunately, they
+            weren’t able to recover either the Shadow Diamond or the coin stolen
+            by Papa, but instead they received a stash of surprisingly coin-like
+            counterfeit jewelry manufactured by one of the characters.
           </p>
 
           <p>

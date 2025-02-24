@@ -70,3 +70,8 @@ declare module "*.csv" {
   const value: string;
   export default value;
 }
+
+declare module "*.csv?embed" {
+  const value: string;
+  export default value;
+}
