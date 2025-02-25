@@ -1,3 +1,4 @@
+import type { ParamsDictionary } from "express-serve-static-core";
 import React from "react";
 import {
   PageWrapper,
@@ -5,6 +6,7 @@ import {
   PageTitle,
   PageMain,
 } from "../../components/PageLayout";
+import { type PageRenderer } from "../../utils/renderApp";
 import rootUrl from "../../utils/rootUrl";
 import activityLog from "./assets/activity_log.csv";
 
@@ -87,7 +89,7 @@ ORDER BY
 
 */
 
-export function statsHandler() {
+const statsHandler: PageRenderer<ParamsDictionary> = () => {
   const node = (
     <PageWrapper>
       <>
@@ -164,4 +166,6 @@ export function statsHandler() {
   );
 
   return { node, title: "Statistics", entrypoints: ["archive_stats"] };
-}
+};
+
+export default statsHandler;
