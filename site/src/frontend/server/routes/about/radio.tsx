@@ -1,6 +1,7 @@
 import { type Request } from "express";
 import React from "react";
 import { styled } from "styled-components";
+import teamIsImmutable from "../../../../utils/teamIsImmutable";
 import { wrapContentWithNavBar } from "../../../components/ContentWithNavBar";
 import LinkedImage from "../../../components/LinkedImage";
 import { Math, MFrac, MI, MN, MRow } from "../../../components/MathML";
@@ -276,7 +277,8 @@ export function radioHandler(req: Request) {
           Once successfully configured, you may tune your radio back to its
           original station.
         </p>
-        {teamState.state.puzzles.songs_on_the_radio?.answer !== undefined && (
+        {(teamIsImmutable(teamState.info.teamUsername) ||
+          teamState.state.puzzles.songs_on_the_radio?.answer !== undefined) && (
           <>
             <h3 id="station-pi">
               Instrumental Mode: <Pi />
