@@ -24,6 +24,10 @@ const SpoilerSpan = styled.span<{ $reveal: boolean; $color: string }>`
     color: inherit;
     background-color: transparent;
   }
+
+  &:not(:hover) > * {
+    filter: opacity(0);
+  }
 `;
 
 const Spoiler = ({
