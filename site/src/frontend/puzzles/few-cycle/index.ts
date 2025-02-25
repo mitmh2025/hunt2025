@@ -1,4 +1,6 @@
+import rootUrl from "../../utils/rootUrl";
 import { type PuzzleDefinition } from "../types";
+import Nails from "./nails";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
 
@@ -90,9 +92,15 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["COME GET YOUR NAILS DONE"],
-      reply: "Yes! Speak to Gala staff about getting your nails painted.",
+      reply:
+        "Yes! Speak to Gala staff about getting your nails painted.\n\nIf you’d like to learn more about what would happen when you arrived at the Gala, ",
+      link: {
+        display: "click here.",
+        href: `${rootUrl}/come_get_your_nails_done`,
+      },
     },
   ],
+  subpuzzles: [Nails],
 };
 
 export default puzzle;

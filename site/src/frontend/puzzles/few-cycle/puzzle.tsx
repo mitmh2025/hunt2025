@@ -1,12 +1,10 @@
 import React from "react";
 import LinkedImage from "../../components/LinkedImage";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
 import image01 from "./assets/01.png";
 
 const Puzzle = () => {
   return (
     <>
-      <ArchivalNotice />
       <p>
         A laissez-faire philosophy for sharks [7]
         <br /> A nudist‘s plea to “hear me out“ [9]

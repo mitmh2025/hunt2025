@@ -329,6 +329,20 @@ export function registerUiRoutes({
       );
     }),
   );
+  authRouter.get(
+    "/come_get_your_nails_done",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(
+        subpuzzleHandler,
+        {
+          ...req,
+          params: { subpuzzleSlug: "come_get_your_nails_done" },
+        } as Request<SubpuzzleParams>,
+        res,
+        next,
+      );
+    }),
+  );
   const plainRouletteData = [
     { href: "/i_kid_ewe_knot", slug: "i_kid_ewe_knot", gate: "tmg01" },
     { href: "/stitchy_situation", slug: "stitchy_situation", gate: "tmg02" },

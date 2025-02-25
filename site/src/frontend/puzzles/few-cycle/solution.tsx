@@ -372,7 +372,7 @@ const Solution = () => {
       <h4>Step 2: Nail placement</h4>
       <LinkedImage
         src={image02}
-        alt="a piece of foam with different colored nails on top"
+        alt="a piece of 3D printed plastic with different colored nails on top"
       />
       <LinkedImage
         src={image03}
