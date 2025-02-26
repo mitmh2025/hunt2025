@@ -281,7 +281,10 @@ export function radioHandler(req: Request) {
           teamState.state.puzzles.songs_on_the_radio?.answer !== undefined) && (
           <>
             <h3 id="station-pi">
-              Instrumental Mode: <Pi />
+              Instrumental Mode:{" "}
+              <Math>
+                <Pi />
+              </Math>
             </h3>
             <AuthorsNote>
               This station was originally discovered in connection with the
@@ -293,9 +296,12 @@ export function radioHandler(req: Request) {
             </AuthorsNote>
 
             <p>
-              Tuning your radio to <Pi /> will allow you to use your radio as a
-              musical instrument. To play basic notes, you can use any of the
-              following 4 inputs:
+              Tuning your radio to{" "}
+              <Math>
+                <Pi />
+              </Math>{" "}
+              will allow you to use your radio as a musical instrument. To play
+              basic notes, you can use any of the following 4 inputs:
             </p>
 
             <ul>
