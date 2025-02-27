@@ -5,6 +5,7 @@ import {
   PageTitle,
   PageMain,
 } from "../components/PageLayout";
+import rootUrl from "../utils/rootUrl";
 
 export function indexHandler() {
   const node = (
@@ -126,6 +127,15 @@ export function indexHandler() {
             <li>
               <a href="extras/stats">Statistics</a>: Stastics from the Hunt,
               including the full activity log.
+            </li>
+            <li>
+              <a href="extras/minigames">Minigames</a>: The{" "}
+              <a href={`${rootUrl}/interactions/interview_at_the_boardwalk`}>
+                Interview at the Boardwalk
+              </a>{" "}
+              featured three minigames that you had to play on Roger’s behalf.
+              If you’d like to just play the games without the full interview,
+              you can do so here.
             </li>
           </ul>
         </PageMain>
