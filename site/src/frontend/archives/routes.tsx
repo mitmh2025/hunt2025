@@ -2,6 +2,7 @@ import expressAsyncHandler from "express-async-handler";
 import { Router } from "websocket-express";
 import renderApp from "../utils/renderApp";
 import coinHandler from "./coin/handler";
+import creditsHandler from "./credits/handler";
 import { minigamesHandler } from "./minigames";
 import musicHandler from "./music/handler";
 import radioHandler from "./radio/handler";
@@ -21,6 +22,13 @@ export function getArchiveRouter() {
     "/extras/coin",
     expressAsyncHandler(async (req, res, next) => {
       await renderApp(coinHandler, req, res, next);
+    }),
+  );
+
+  router.get(
+    "/extras/credits",
+    expressAsyncHandler(async (req, res, next) => {
+      await renderApp(creditsHandler, req, res, next);
     }),
   );
 

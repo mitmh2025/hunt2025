@@ -155,6 +155,9 @@ export function indexHandler() {
           </p>
           <ul>
             <li>
+              <a href="/2025/extras/credits">Credits</a>
+            </li>
+            <li>
               <a href="/2025/extras/coin">Coin</a>: A detailed look at the
               design of our coin, highlighting some references and fun easter
               eggs.
