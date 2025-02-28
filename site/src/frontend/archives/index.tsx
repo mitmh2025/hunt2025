@@ -1,4 +1,5 @@
 import React from "react";
+import { styled } from "styled-components";
 import LinkedImage from "../components/LinkedImage";
 import {
   PageWrapper,
@@ -9,6 +10,12 @@ import {
 import invitePDF from "../puzzles/timely-head/assets/engagements-and-other-crimes.pdf";
 import inviteFront from "../puzzles/timely-head/assets/invitation-front.svg";
 import rootUrl from "../utils/rootUrl";
+
+const ExtraList = styled.ul`
+  & li {
+    margin-bottom: 1rem;
+  }
+`;
 
 export function indexHandler() {
   const node = (
@@ -153,7 +160,13 @@ export function indexHandler() {
             Outside of the Hunt website, we also have a few pages of bonus
             content, analysis, and behind-the-scenes coverage:
           </p>
-          <ul>
+          <ExtraList>
+            <li>
+              <a href="/2025/extras/credits">Credits</a>: Over 165 people worked
+              tierlessly for both a year and a weekend to bring the 2025 MIT
+              Mystery Hunt to life. In addition to credits on individual puzzle
+              pages, you can roll the overall credits here.
+            </li>
             <li>
               <a href="/2025/extras/coin">Coin</a>: A detailed look at the
               design of our coin, highlighting some references and fun easter
@@ -192,7 +205,7 @@ export function indexHandler() {
               If you’d like to just play the games without the full interview,
               you can do so here.
             </li>
-          </ul>
+          </ExtraList>
         </PageMain>
       </>
     </PageWrapper>
