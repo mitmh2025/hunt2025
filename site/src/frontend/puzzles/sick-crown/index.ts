@@ -11,15 +11,15 @@ const puzzle: PuzzleDefinition = {
   editors: ["James Douberley", "Kevin Hwang", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [
     {
-      for_what: "Art",
+      for_what: "Round Art",
       who: [
+        "Simone Agha",
         "Anna Brunner",
-        "Arcturus Wang",
-        "Gareth",
-        "Karen Rustad Tolva",
+        "Gareth Hinds",
         "Nine Morch",
         "rfong",
-        "Simone Agha",
+        "Karen Rustad Tolva",
+        "Arcturus Wang",
       ],
     },
     {

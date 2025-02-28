@@ -13,13 +13,13 @@ const puzzle: PuzzleDefinition = {
     {
       for_what: "Round Art",
       who: [
+        "Simone Agha",
         "Anna Brunner",
-        "Arcturus Wang",
-        "Gareth",
-        "Karen Rustad Tolva",
+        "Gareth Hinds",
         "Nine Morch",
         "rfong",
-        "Simone Agha",
+        "Karen Rustad Tolva",
+        "Arcturus Wang",
       ],
     },
     {
