@@ -11,7 +11,7 @@ const puzzle: PuzzleDefinition = {
   editors: ["Kevin Hwang", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [
     {
-      for_what: "Art",
+      for_what: "Round Art",
       who: [
         "Anna Brunner",
         "Arcturus Wang",

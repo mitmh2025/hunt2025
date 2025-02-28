@@ -14,7 +14,11 @@ const puzzle: PuzzleDefinition = {
       freeform: "Additional authors: Chris Pringle and Joanna Murray",
     },
     {
-      for_what: "Art",
+      for_what: "Round Art",
+      who: ["Karen Rustad Tolva"],
+    },
+    {
+      for_what: "Puzzle Art",
       who: ["Simone Agha"],
     },
     {

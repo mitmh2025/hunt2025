@@ -12,10 +12,6 @@ const puzzle: PuzzleDefinition = {
   editors: ["Erin Price", "Henry Wong", "James Douberley", "Robin Deits"],
   additional_credits: [
     {
-      for_what: "Art",
-      who: ["Simone Agha"],
-    },
-    {
       for_what: "Title",
       who: ["Erin Price"],
     },

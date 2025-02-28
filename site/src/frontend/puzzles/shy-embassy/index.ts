@@ -17,15 +17,16 @@ const puzzle: PuzzleDefinition = {
   ],
   additional_credits: [
     {
-      for_what: "Art",
+      for_what: "Round Art",
       who: [
+        "Simone Agha",
         "Anna Brunner",
-        "Arcturus Wang",
-        "Gareth",
-        "Karen Rustad Tolva",
+        "Lucid Clairvoyant",
+        "Gareth Hinds",
         "Nine Morch",
         "rfong",
-        "Simone Agha",
+        "Karen Rustad Tolva",
+        "Arcturus Wang",
       ],
     },
     {

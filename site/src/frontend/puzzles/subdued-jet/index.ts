@@ -13,7 +13,12 @@ const puzzle: PuzzleDefinition = {
     "Leland Aldridge",
   ],
   editors: ["Drew Fisher", "Henry Wong", "Li-Mei Lim", "Robin Deits"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Round Art",
+      who: ["Karen Rustad Tolva"],
+    },
+  ],
   content: {
     component: Puzzle,
     copyable: true,

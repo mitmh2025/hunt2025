@@ -11,7 +11,7 @@ const puzzle: PuzzleDefinition = {
   editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [
     {
-      for_what: "Round art (excluding photos)",
+      for_what: "Round Art (excluding photos)",
       who: ["Simone Agha"],
     },
     {
