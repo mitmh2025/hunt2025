@@ -1,4 +1,4 @@
-{ config, lib, pkgs, radio-media, ... }:
+{ config, options, lib, pkgs, radio-media, ... }:
 {
   imports = [
     ../../services/gce-vm.nix
@@ -153,6 +153,121 @@
           "localhost" = {
             # Expose plain HTTP on localhost for use by the frontend
             locations."/api".proxyPass = "http://hunt2025";
+          };
+        };
+      };
+    }
+    {
+      systemd.services.atlantis.path = [
+        # Give Atlantis a normal user path.
+        "/run/current-system/sw"
+      ];
+      systemd.services.atlantis.restartTriggers = [
+        options.services.atlantis.configPath.default
+      ];
+      sops.secrets."atlantis/gh-app-id".sopsFile = ../../secrets/prod/deploy.yaml;
+      sops.secrets."atlantis/gh-app-slug".sopsFile = ../../secrets/prod/deploy.yaml;
+      sops.secrets."atlantis/gh-app-key-file" = {
+        sopsFile = ../../secrets/prod/deploy.yaml;
+        owner = config.users.users.deploy.name;
+      };
+      sops.secrets."atlantis/gh-webhook-secret".sopsFile = ../../secrets/prod/deploy.yaml;
+      sops.templates."atlantis.yaml" = {
+        file = options.services.atlantis.configPath.default;
+        owner = config.users.users.deploy.name;
+      };
+      services.atlantis = {
+        enable = true;
+        user = "deploy";
+        configPath = config.sops.templates."atlantis.yaml".path;
+        config = {
+          # https://www.runatlantis.io/docs/access-credentials.html#github-app
+          gh-org = "mitmh2025";
+          repo-allowlist = "github.com/mitmh2025/*";
+          atlantis-url = "https://atlantis.mitmh2025.com";
+          gh-team-allowlist = "Tech:plan, Tech:apply, Tech:import, Tech:unlock";
+
+          emoji-reaction = "+1";
+          enable-diff-markdown-format = true;
+          hide-prev-plan-comments = true;
+
+          # Set these to create a new app.
+          #gh-user = "fake";
+          #gh-token = "fake";
+
+          # Then set these with your new app's info.
+          gh-app-id = config.sops.placeholder."atlantis/gh-app-id";
+          gh-app-slug = config.sops.placeholder."atlantis/gh-app-slug";
+          gh-app-key-file = config.sops.secrets."atlantis/gh-app-key-file".path;
+          gh-webhook-secret = config.sops.placeholder."atlantis/gh-webhook-secret";
+          write-git-creds = true;
+
+          # Always apply the post-merge config
+          checkout-strategy = "merge";
+          #include-git-untracked-files = true;
+
+          # Don't run a plan unless it's specifically requested
+          disable-autoplan = true;
+
+          auto-merge = true;
+          auto-merge-method = "merge";
+
+          tf-distribution = "opentofu";
+          tf-download = false;
+        };
+        repos = [{
+          id = "github.com/mitmh2025/hunt2025";
+          plan_requirements = [];
+          apply_requirements = [];
+          import_requirements = [];
+          workflow = "hunt2025";
+        }];
+        workflows.hunt2025 = {
+          # https://www.runatlantis.io/blog/2024/integrating-atlantis-with-opentofu
+          plan.steps = [
+            { env.name = "TF_IN_AUTOMATION"; env.value = "true"; }
+            {
+              run.command = ''nix build -o config.tf.json ".#terraformConfigurations.$PROJECT_NAME"'';
+              run.output = "hide";
+            }
+            { run = ''nix run .#terraform -- init -upgrade''; }
+            {
+              run.command = ''nix run .#terraform -- plan -input=false -out=$PLANFILE'';
+              run.output = "strip_refreshing";
+            }
+          ];
+          apply.steps = [
+            { env.name = "TF_IN_AUTOMATION"; env.value = "true"; }
+            { run = ''nix run .#terraform -- apply $PLANFILE''; }
+          ];
+          import.steps = [
+            { env.name = "TF_IN_AUTOMATION"; env.value = "true"; }
+            {
+              run.command = ''nix build -o config.tf.json ".#terraformConfigurations.$PROJECT_NAME"'';
+              run.output = "hide";
+            }
+            { run = ''nix run .#terraform -- init -upgrade''; }
+            { run = ''nix run .#terraform -- import -input=false $(printf '%s' $COMMENT_ARGS | sed 's/,/ /' | tr -d '\\')''; }
+          ];
+        };
+      };
+      services.nginx = {
+        upstreams.atlantis.servers."127.0.0.1:4141" = {};
+        virtualHosts = {
+          "atlantis.mitmh2025.com" = {
+            forceSSL = true;
+            enableACME = true;
+            locations."/" = {
+              proxyPass = "http://atlantis";
+              proxyWebsockets = true;
+            };
+            authentik.enable = true;
+            authentik.url = "https://auth.mitmh2025.com:9443";
+
+            locations."/events" = {
+              # Make sure that webhooks can be delivered without Authentik
+              proxyPass = "http://atlantis";
+            };
           };
         };
       };

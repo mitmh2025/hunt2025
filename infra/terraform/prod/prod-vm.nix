@@ -5,6 +5,7 @@
   gce.instance.prod = {
     route53.zone = "mitmh2025";
     route53.aliases = [
+      "atlantis"
       "auth"
     ];
     machineType = "e2-highmem-2"; # 2 vCPU, 16 GB RAM

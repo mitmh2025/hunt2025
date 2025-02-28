@@ -5,9 +5,6 @@
   resource.google_compute_disk.deploy.type = lib.mkForce "pd-ssd";
   gce.instance.deploy = {
     route53.zone = "mitmh2025";
-    route53.aliases = [
-      "atlantis"
-    ];
     firewall.allowedTCPPorts = [
       22 # SSH
       80 # HTTP
