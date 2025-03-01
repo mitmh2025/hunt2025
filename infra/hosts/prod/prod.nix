@@ -12,7 +12,16 @@
     {
       sops.defaultSopsFile = ../../secrets/prod/prod.yaml;
       sops.secrets.ssh_key.sopsFile = ../../secrets/prod/deploy.yaml;
-      hunt.deploy.serviceAccountName = "prod-vm";
+      hunt.deploy = {
+        serviceAccountName = "prod-vm";
+        awsRoleName = "GCPProdProd";
+      };
+    }
+    {
+      swapDevices = [{
+        device = "/var/lib/swapfile";
+        size = 16*1024; # 16 GiB
+      }];
     }
     {
       hunt2025.site = {

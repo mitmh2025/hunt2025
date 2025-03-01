@@ -10,8 +10,14 @@ let
     exec ${self.packages.${config.nixpkgs.system}.terraform}/bin/tofu "$@"
   '';
 in {
-  options.hunt.deploy.serviceAccountName = lib.mkOption {
-    type = lib.types.str;
+  options.hunt.deploy = {
+    serviceAccountName = lib.mkOption {
+      type = lib.types.str;
+    };
+    awsRoleName = lib.mkOption {
+      type = lib.types.str;
+      default = "GCPProdDeploy";
+    };
   };
   config = lib.mkMerge [
     {
@@ -80,8 +86,8 @@ in {
           endpoint_url = "https://storage.googleapis.com";
           credential_process = "${hmacAuth} ${config.hunt.deploy.serviceAccountName}";
         };
-        "profile mitmh2025-puzzup".credential_process = "${awsAuth} 891377012427 GCPProdDeploy";
-        "profile mitmh2025-staging".credential_process = "${awsAuth} 767398012733 GCPProdDeploy";
+        "profile mitmh2025-puzzup".credential_process = "${awsAuth} 891377012427 ${config.hunt.deploy.awsRoleName}";
+        "profile mitmh2025-staging".credential_process = "${awsAuth} 767398012733 ${config.hunt.deploy.awsRoleName}";
       };
       systemd.globalEnvironment = {
         AWS_CONFIG_FILE = "/etc/aws/config";
