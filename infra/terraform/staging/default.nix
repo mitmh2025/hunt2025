@@ -39,13 +39,13 @@
 
   state.bucket.name = "rb8tcjeo-tfstate";
   state.bucket.users = [
-    (lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.deploy-vm.member")
+    (lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.prod-vm.member")
   ];
   state.remote.buckets.prod = "cvqb2gwr-tfstate";
-  resource.google_project_iam_member.deploy-vm-owner = {
+  resource.google_project_iam_member.prod-vm-owner = {
     project = lib.tfRef "data.google_project.this.project_id";
     role = "roles/owner";
-    member = lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.deploy-vm.member";
+    member = lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.prod-vm.member";
   };
 
   imports = [

@@ -20,7 +20,8 @@
     nixosConfiguration = self.nixosConfigurations."prod/prod";
   };
   # Make builds faster
-  resource.google_compute_disk.deploy.type = lib.mkForce "pd-ssd";
+  # Can't be changed without recreating :(
+  #resource.google_compute_disk.prod.type = lib.mkForce "pd-ssd";
   # Give it the ability to perform deploys
   gcp.serviceAccount.prod-vm = {
     hmacKey.enable = true;
@@ -28,6 +29,8 @@
       "owner"
     ];
   };
+
+  sops.keys.deploy.users = [(lib.tfRef "google_service_account.prod-vm.member")];
 
   route53.mitmh2025.rr.ops = {
     type = "A";

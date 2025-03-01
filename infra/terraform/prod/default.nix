@@ -33,7 +33,7 @@
 
   state.bucket.name = "cvqb2gwr-tfstate";
   state.bucket.users = [
-    (lib.tfRef "google_service_account.deploy-vm.member")
+    (lib.tfRef "google_service_account.prod-vm.member")
   ];
 
   route53.mitmh2025 = {
@@ -63,7 +63,7 @@
 
   imports = [
     ../base.nix
-    ./deploy.nix
+    #disabled ./deploy.nix
     ./database.nix
     #disabled ./gke.nix
     #disabled ./gclb.nix

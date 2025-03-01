@@ -1,11 +1,11 @@
 {
-  gce.instance.deploy = {
-    machineType = "e2-standard-8"; # 8 vCPU, 32 GB RAM
-    # SSD persistent disks have a limit of 30 IOPS and 0.48 MiB/s per GiB of capacity.
-    # https://cloud.google.com/compute/docs/disks/performance#zonal_pd
-    # Even though we don't need 200 GiB of capacity, this will give us 96 MiB/s throughput.
-    bootDisk.size = 200;
-  };
+  # gce.instance.deploy = {
+  #   machineType = "e2-standard-8"; # 8 vCPU, 32 GB RAM
+  #   # SSD persistent disks have a limit of 30 IOPS and 0.48 MiB/s per GiB of capacity.
+  #   # https://cloud.google.com/compute/docs/disks/performance#zonal_pd
+  #   # Even though we don't need 200 GiB of capacity, this will give us 96 MiB/s throughput.
+  #   bootDisk.size = 200;
+  # };
   resource.google_sql_database_instance.prod = {
     settings = {
       edition = "ENTERPRISE";
