@@ -6,12 +6,12 @@
   #   # Even though we don't need 200 GiB of capacity, this will give us 96 MiB/s throughput.
   #   bootDisk.size = 200;
   # };
-  resource.google_sql_database_instance.prod = {
-    settings = {
-      edition = "ENTERPRISE";
-      tier = "db-f1-micro";
-    };
-  };
+  # resource.google_sql_database_instance.prod = {
+  #   settings = {
+  #     edition = "ENTERPRISE";
+  #     tier = "db-f1-micro";
+  #   };
+  # };
   # GKE cluster autoprovisioning limits are configured in ./gke.nix
   # k8s.prod.deployment.regsite = {
   #   replicas = 1;

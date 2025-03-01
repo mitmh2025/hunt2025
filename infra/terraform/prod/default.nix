@@ -36,6 +36,9 @@
     (lib.tfRef "google_service_account.prod-vm.member")
   ];
 
+  gcp.services.servicenetworking.enable = true;
+  gcp.vpc.default.googleManagedServices.enable = true;
+
   route53.mitmh2025 = {
     provider = "puzzup";
     domain = "mitmh2025.com";
@@ -64,7 +67,7 @@
   imports = [
     ../base.nix
     #disabled ./deploy.nix
-    ./database.nix
+    #disabled ./database.nix
     #disabled ./gke.nix
     #disabled ./gclb.nix
     ./assets.nix
