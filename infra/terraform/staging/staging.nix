@@ -33,4 +33,7 @@
     useSops = true;
     nixosConfiguration = self.nixosConfigurations."staging/staging";
   };
+  ci.nix.cache.viewers = [
+    (lib.tfRef "google_service_account.staging-vm.member")
+  ];
 }

@@ -154,26 +154,31 @@ in {
       }));
     };
   };
-  config = lib.mkIf (cfg != {}) {
-    gcp.services.compute.enable = true;
-    resource.google_compute_project_metadata_item = lib.mapAttrs (key: value: {
-      inherit key value;
-    }) config.gce.project.metadata;
-    data.google_compute_network.default = {
-      name = "default";
-    };
-    gcp.serviceAccount = lib.mapAttrs' (
-      key: value:
-      lib.nameValuePair
-      "${key}-vm"
-      value.objects.serviceAccount
-    ) cfg;
-    resource.google_compute_address = lib.mapAttrs (_: value: value.resource.google_compute_address) cfg;
-    resource.google_compute_disk = lib.mapAttrs (_: value: value.resource.google_compute_disk) cfg;
-    resource.google_compute_instance = lib.mapAttrs (_: value: value.resource.google_compute_instance) cfg;
-    resource.google_compute_firewall = lib.mapAttrs (_: value: value.resource.google_compute_firewall) cfg;
-    sops.keys = lib.mapAttrs (name: value: {
-      users = [(lib.tfRef "google_service_account.${name}-vm.member")];
-    }) (lib.filterAttrs (_: value: value.useSops) cfg);
-  };
+  config = lib.mkMerge [
+    (lib.mkIf (config.gce.project.metadata != {}) {
+      gcp.services.compute.enable = true;
+      resource.google_compute_project_metadata_item = lib.mapAttrs (key: value: {
+        inherit key value;
+      }) config.gce.project.metadata;
+    })
+    (lib.mkIf (cfg != {}) {
+      gcp.services.compute.enable = true;
+      data.google_compute_network.default = {
+        name = "default";
+      };
+      gcp.serviceAccount = lib.mapAttrs' (
+        key: value:
+        lib.nameValuePair
+        "${key}-vm"
+        value.objects.serviceAccount
+      ) cfg;
+      resource.google_compute_address = lib.mapAttrs (_: value: value.resource.google_compute_address) cfg;
+      resource.google_compute_disk = lib.mapAttrs (_: value: value.resource.google_compute_disk) cfg;
+      resource.google_compute_instance = lib.mapAttrs (_: value: value.resource.google_compute_instance) cfg;
+      resource.google_compute_firewall = lib.mapAttrs (_: value: value.resource.google_compute_firewall) cfg;
+      sops.keys = lib.mapAttrs (name: value: {
+        users = [(lib.tfRef "google_service_account.${name}-vm.member")];
+      }) (lib.filterAttrs (_: value: value.useSops) cfg);
+    })
+  ];
 }

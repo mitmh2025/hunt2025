@@ -51,9 +51,9 @@
   imports = [
     ../base.nix
     ./ci.nix
-    ./staging.nix
+    #disabled ./staging.nix
     ./mail.nix
-    ./staticsite.nix
+    #disabled ./staticsite.nix
   ];
 
   route53.mitmh2025 = {
@@ -65,4 +65,8 @@
     bucket.name = "rb8tcjeo-gce-images";
     nixosConfiguration = self.nixosConfigurations.gce-image;
   };
+
+  sops.keys.staging.users = [
+    (lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.prod-vm.member")
+  ];
 }
