@@ -50,6 +50,15 @@ export function indexHandler() {
           <h2>Kickoff</h2>
 
           <p>
+            <strong>
+              <a href="https://www.youtube.com/watch?v=cWPZ61YgY6s">
+                Watch kickoff
+              </a>
+            </strong>{" "}
+            on YouTube.
+          </p>
+
+          <p>
             The 2025 MIT Mystery Hunt was kicked off on Friday, January 17th at
             noon. It was presented in three different classrooms as a broadcast
             from the Finster-Carter engagement gala. When Carter goes to reveal
@@ -59,16 +68,14 @@ export function indexHandler() {
             to it.
           </p>
 
+          <h2>The Hunt</h2>
+
           <p>
             <strong>
-              <a href="https://www.youtube.com/watch?v=cWPZ61YgY6s">
-                Watch kickoff
-              </a>
+              View the <a href="hunt/">Hunt website</a>
             </strong>{" "}
-            on YouTube.
+            as seen by teams.
           </p>
-
-          <h2>The Hunt</h2>
 
           <p>
             In typical noir fashion, while searching for the missing diamond,
@@ -84,13 +91,6 @@ export function indexHandler() {
             Billie and teams had to break into the Finster family vault, after
             which they learned that someone unexpected had been behind the whole
             thing…
-          </p>
-
-          <p>
-            <strong>
-              View the <a href="hunt/">Hunt website</a>
-            </strong>{" "}
-            as seen by teams.
           </p>
 
           <h2>Winning Team</h2>
