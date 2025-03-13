@@ -239,6 +239,17 @@ export function Errata({
   );
 }
 
+export const lightBgLinkStyles = `
+  color: var(--gold-700);
+  text-decoration-color: var(--black);
+
+  &:hover {
+    text-shadow: 0 0 0.5rem hsl(from var(--gold-400) h s l / 0.2);
+    color: var(--gold-600);
+    text-decoration-color: var(--gold-700);
+  }
+`;
+
 export const darkBgLinkStyles = `
   color: var(--gold-200);
   text-decoration-line: underline;
@@ -250,16 +261,9 @@ export const darkBgLinkStyles = `
     text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.4);
     text-decoration-color: var(--gold-400);
   }
-`;
 
-export const lightBgLinkStyles = `
-  color: var(--gold-700);
-  text-decoration-color: var(--black);
-
-  &:hover {
-    text-shadow: 0 0 0.5rem hsl(from var(--gold-400) h s l / 0.2);
-    color: var(--gold-600);
-    text-decoration-color: var(--gold-700);
+  @media print {
+    ${lightBgLinkStyles}
   }
 `;
 

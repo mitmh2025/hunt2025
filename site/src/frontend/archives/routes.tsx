@@ -2,6 +2,7 @@ import expressAsyncHandler from "express-async-handler";
 import { Router } from "websocket-express";
 import renderApp from "../utils/renderApp";
 import { minigamesHandler } from "./minigames";
+import radioHandler from "./radio/handler";
 import statsHandler from "./stats/handler";
 import { indexHandler } from ".";
 
@@ -25,6 +26,13 @@ export function getArchiveRouter() {
     "/extras/stats",
     expressAsyncHandler(async (req, res, next) => {
       await renderApp(statsHandler, req, res, next);
+    }),
+  );
+
+  router.get(
+    "/extras/radio",
+    expressAsyncHandler(async (req, res, next) => {
+      await renderApp(radioHandler, req, res, next);
     }),
   );
 
