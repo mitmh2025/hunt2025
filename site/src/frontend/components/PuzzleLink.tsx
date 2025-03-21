@@ -101,20 +101,6 @@ export const PuzzleUnlockModal = React.forwardRef(
           console.error("Failed to unlock puzzle", err);
           setFetching(false);
         });
-
-      fetch(`/puzzles/${slug}/unlock`, {
-        method: "POST",
-      }).then(
-        (result) => {
-          setFetching(false);
-          if (result.ok) {
-            onDismiss();
-          }
-        },
-        () => {
-          setFetching(false);
-        },
-      );
     }, [fetching, onDismiss, slug, setApiState]);
     return (
       <StyledDialog ref={ref} onClick={stopClickPropagation}>

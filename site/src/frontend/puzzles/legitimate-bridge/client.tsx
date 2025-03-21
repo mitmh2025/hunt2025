@@ -93,7 +93,7 @@ const App = (): JSX.Element => {
       correctCallback: () => void;
       incorrectCallback: (value: string) => void;
     }) => {
-      fetch(`/puzzles/jargon/puzzle/${uuid}`, {
+      fetch(`${rootUrl}/puzzles/jargon/puzzle/${uuid}`, {
         method: "POST",
         body: JSON.stringify({ guess }),
         headers: {
