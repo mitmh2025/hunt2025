@@ -4,5 +4,5 @@
     "lib": ["esnext", "webworker"],
     "skipLibCheck": true
   },
-  "include": ["./*.ts", "../lib/**/*"]
+  "include": ["./*.ts"]
 }

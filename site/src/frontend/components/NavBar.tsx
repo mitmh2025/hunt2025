@@ -447,20 +447,26 @@ const NavBar = ({
             )}
           </ul>
         </Dropdown>
-        <ConnectionState>
-          <img
-            style={{ display: socketState === "connected" ? "inline" : "none" }}
-            src={connectedIcon}
-            alt={connectionStateLabels.connected}
-            title={connectionStateLabels.connected}
-          />
-          <img
-            style={{ display: socketState !== "connected" ? "inline" : "none" }}
-            src={disconnectedIcon}
-            alt={connectionStateLabels[socketState]}
-            title={connectionStateLabels[socketState]}
-          />
-        </ConnectionState>
+        {!archiveMode && (
+          <ConnectionState>
+            <img
+              style={{
+                display: socketState === "connected" ? "inline" : "none",
+              }}
+              src={connectedIcon}
+              alt={connectionStateLabels.connected}
+              title={connectionStateLabels.connected}
+            />
+            <img
+              style={{
+                display: socketState !== "connected" ? "inline" : "none",
+              }}
+              src={disconnectedIcon}
+              alt={connectionStateLabels[socketState]}
+              title={connectionStateLabels[socketState]}
+            />
+          </ConnectionState>
+        )}
       </NavItems>
       <ExchangeClueModal
         ref={exchangeModalRef}

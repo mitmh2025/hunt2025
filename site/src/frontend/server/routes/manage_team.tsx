@@ -10,6 +10,7 @@ import {
 } from "../../components/PageLayout";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import TeamManager from "../../components/TeamManager";
+import archiveMode from "../../utils/archiveMode";
 
 export async function manageTeamHandler(req: Request) {
   const teamState = req.teamState;
@@ -36,7 +37,7 @@ export async function manageTeamHandler(req: Request) {
         </PageHeader>
         <PageMain>
           <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-          {immutable ? (
+          {immutable && !archiveMode ? (
             <AuthorsNoteBlock style={{ margin: "5em auto", maxWidth: "400px" }}>
               The Manage Team page is not currently available for the public
               access team. We are working on archival version of as much of the

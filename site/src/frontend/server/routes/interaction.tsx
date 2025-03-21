@@ -7,7 +7,6 @@ import { type InteractionStateSchema } from "../../../../lib/api/contract";
 import teamIsImmutable from "../../../utils/teamIsImmutable";
 import { getBackgroundCheckManifestOverrides } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
-import VirtualInteraction from "../../components/VirtualInteraction";
 import { type InteractionDefinition, INTERACTIONS } from "../../interactions";
 import rootUrl from "../../utils/rootUrl";
 import {
@@ -122,20 +121,27 @@ function virtualInteractionHandler(
   if (!interaction) return undefined;
   const preloadImages = interactionDefinition.handler.getPreloadImages();
 
+  const inlineScript = `window.interactionSlug = "${slug}";`;
+
   const node = (
-    <div>
-      <div id="interaction-root">
-        <VirtualInteraction slug={slug} />
+    <>
+      <script
+        type="text/javascript"
+        dangerouslySetInnerHTML={{ __html: inlineScript }}
+      />
+
+      <div>
+        <div id="interaction-root" />
+        {preloadImages.map((src) => (
+          <link key={src} rel="preload" as="image" href={src} />
+        ))}
+        {interaction.virtual && process.env.NODE_ENV === "development" && (
+          <form method="POST" action={`${rootUrl}/interactions/${slug}/skip`}>
+            <button type="submit">[DEV MODE] Skip interaction</button>
+          </form>
+        )}
       </div>
-      {preloadImages.map((src) => (
-        <link key={src} rel="preload" as="image" href={src} />
-      ))}
-      {interaction.virtual && process.env.NODE_ENV === "development" && (
-        <form method="POST" action={`${rootUrl}/interactions/${slug}/skip`}>
-          <button type="submit">[DEV MODE] Skip interaction</button>
-        </form>
-      )}
-    </div>
+    </>
   );
   return wrapContentWithNavBar(
     {
@@ -162,6 +168,8 @@ function liveInteractionHandler(
     return undefined;
   }
 
+  const inlineScript = `window.interactionSlug = "${slug}";`;
+
   const ContentComponent = interaction.component;
   const title = interaction.title;
 
@@ -176,6 +184,11 @@ function liveInteractionHandler(
 
   const node = (
     <>
+      <script
+        type="text/javascript"
+        dangerouslySetInnerHTML={{ __html: inlineScript }}
+      />
+
       {FontsComponent ? <FontsComponent /> : undefined}
       <WrapperComponent>
         <HeaderComponent>

@@ -1,5 +1,6 @@
 // This is the canonical description of the structure of our hunt, with a full
 // enumeration of rounds, puzzles, interactions, and the dependency structure.
+import archiveMode from "../frontend/utils/archiveMode";
 import { type Gate, type Hunt, type PuzzleSlot, type Round } from "./types";
 
 const BGCHECK_FEEDER_SLOTS = {
@@ -733,6 +734,10 @@ const HUNT: Hunt = {
               { gate_satisfied: "ptg11" },
               { gate_satisfied: "ptg12" },
               { gate_satisfied: "ptg13" },
+              // As a special case for the archives, if the solve is for Songs on the
+              // Radio, unlock And Now a Puzzling Word (since we don't have the radio
+              // stream)
+              ...(archiveMode ? [{ slot_solved: "mdp03" }] : []),
             ],
           },
           prize: 0,

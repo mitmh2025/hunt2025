@@ -4,7 +4,8 @@ import {
   SocketManager,
   type SocketState,
   type SocketStateChangeCallback,
-} from "../../../lib/SocketManager";
+} from "../../SocketManager";
+import { genId } from "../../id";
 import {
   type MessageFromWorker,
   type MessageToWorker,
@@ -13,8 +14,10 @@ import {
   type DatasetValue,
   type ObjectWithId,
   type ObjectWithEpoch,
-} from "../../../lib/api/websocket";
-import { genId } from "../../../lib/id";
+} from "../websocket";
+import type datasetManager from "@hunt_client/globalDatasetManager";
+
+type DatasetManager = typeof datasetManager;
 
 class DirectDatasetManager {
   private socketManager: SocketManager;
@@ -266,7 +269,7 @@ const globalDatasetManager = USE_WORKER
   : new DirectDatasetManager({
       onConnectionStateChange: handleConnectionStateChange,
     });
-export default globalDatasetManager;
+export default globalDatasetManager satisfies DatasetManager;
 
 window.addEventListener("storage", (evt) => {
   if (evt.key === "username") {

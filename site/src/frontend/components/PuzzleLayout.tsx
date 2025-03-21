@@ -89,6 +89,9 @@ const AuthorsNote = styled.p`
   .copying & {
     background-color: transparent;
   }
+  a {
+    ${lightBgLinkStyles}
+  }
 `;
 
 const AuthorsNoteBlock = styled.div`
@@ -106,6 +109,9 @@ const AuthorsNoteBlock = styled.div`
   }
   p:last-child {
     margin-bottom: 0;
+  }
+  a {
+    ${lightBgLinkStyles}
   }
 `;
 

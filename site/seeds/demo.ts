@@ -8,6 +8,7 @@ import {
   puzzleStateLog,
 } from "../src/api/data";
 import { retryOnAbort } from "../src/api/db";
+import { INTERACTIONS } from "../src/frontend/interactions";
 import { PUZZLES } from "../src/frontend/puzzles";
 import {
   orderedQuixoticSubpuzzleSlugs,
@@ -15,6 +16,14 @@ import {
 } from "../src/frontend/puzzles/quixotic-shoe";
 import HUNT from "../src/huntdata";
 import { getSlotSlug, getSlugsBySlot } from "../src/huntdata/logic";
+
+// Most common results based on actual hunt data
+const interactionResults: Record<string, string> = {
+  interview_at_the_art_gallery: "kieftenbeld",
+  interview_at_the_boardwalk: "photo",
+  interview_at_the_casino: "ace-of-diamonds",
+  interview_at_the_jewelry_store: "phone-number",
+};
 
 export async function seed(knex: Knex): Promise<void> {
   const slotsToSlug = getSlugsBySlot(HUNT);
@@ -98,7 +107,8 @@ export async function seed(knex: Knex): Promise<void> {
       | "round_unlocked"
       | "puzzle_unlockable"
       | "puzzle_unlocked"
-      | "gate_completed",
+      | "gate_completed"
+      | "interaction_unlocked",
     slug: string,
   ) => {
     if (
@@ -679,6 +689,30 @@ export async function seed(knex: Knex): Promise<void> {
 
     for (const slug of slugs) {
       await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
+    }
+
+    for (const slug of Object.keys(INTERACTIONS)) {
+      await ensureActivityLogEntry(
+        mutator,
+        team_id,
+        "interaction_unlocked",
+        slug,
+      );
+
+      if (
+        !mutator.log.some(
+          (e) => e.type === "interaction_completed" && e.slug === slug,
+        )
+      ) {
+        await mutator.appendLog({
+          team_id,
+          type: "interaction_completed",
+          slug,
+          data: {
+            result: interactionResults[slug] ?? "",
+          },
+        });
+      }
     }
 
     for (const gate of PUBLIC_GATES) {

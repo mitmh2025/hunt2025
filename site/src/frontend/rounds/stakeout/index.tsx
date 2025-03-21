@@ -163,7 +163,7 @@ export function stakeoutState(
           slug,
           title,
           asset:
-            !!puzzleState.answer || immutable
+            !!puzzleState.answer || (immutable && typeof window === "undefined")
               ? solvedAsset
               : polaroidDeveloping,
         };

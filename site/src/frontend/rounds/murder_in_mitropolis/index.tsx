@@ -698,7 +698,8 @@ function genPDFWindows(
 
   const solvedCount = puzzles.filter((puzzle) => !!puzzle?.answer).length;
   const imagery = PDFWindows.map((window, i) => {
-    const isReleased = !!(i < solvedCount * 3) || immutable;
+    const isReleased =
+      !!(i < solvedCount * 3) || (immutable && typeof window === "undefined");
 
     return {
       ...window,
@@ -731,7 +732,8 @@ function genImagery(
     const unlockState = puzzleState.locked;
     if (unlockState === "locked") return [];
     const state =
-      puzzleState.answer !== undefined || immutable
+      puzzleState.answer !== undefined ||
+      (immutable && typeof window === "undefined")
         ? ("solved" as const)
         : unlockState === "unlockable"
           ? ("locked" as const)

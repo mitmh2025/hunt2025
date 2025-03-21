@@ -10,11 +10,12 @@ import Notifications, {
   type Notification,
 } from "../components/Notifications";
 import type { EventsState } from "../rounds/events/types";
+import archiveMode from "../utils/archiveMode";
 import rootUrl from "../utils/rootUrl";
-import globalDatasetManager from "./DatasetManager";
 import useDataset from "./useDataset";
+import globalDatasetManager from "@hunt_client/globalDatasetManager";
 
-const NOTIFICATION_HIGH_WATER_MARK = "notificationHighWaterMark";
+export const NOTIFICATION_HIGH_WATER_MARK = "notificationHighWaterMark";
 
 function getNotificationHighWaterMark(pageRenderEpoch: number): number {
   // We show notifications for activity logs that are newer than BOTH the
@@ -50,7 +51,9 @@ const NavBarManager = ({
   const state = useDataset("navbar", undefined, initialState);
   const notifications = useRef<NotificationsHandle | null>(null);
 
-  const highWaterMark = getNotificationHighWaterMark(initialState.epoch);
+  const highWaterMark = getNotificationHighWaterMark(
+    archiveMode ? -1 : initialState.epoch,
+  );
 
   useEffect(() => {
     const stop = globalDatasetManager.watch(

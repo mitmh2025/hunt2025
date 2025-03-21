@@ -4,14 +4,17 @@ import {
   type Dataset,
   type ObjectWithId,
 } from "../../../lib/api/websocket";
-import globalDatasetManager from "./DatasetManager";
+import archiveMode from "../utils/archiveMode";
+import globalDatasetManager from "@hunt_client/globalDatasetManager";
 
 function useAppendDataset<T extends ObjectWithId>(
   dataset: Dataset,
   params: DatasetParams,
   initialValue: T[],
 ): T[] {
-  const [state, setState] = useState<T[]>(() => [...initialValue]);
+  const [state, setState] = useState<T[]>(() =>
+    archiveMode ? [] : [...initialValue],
+  );
   useEffect(() => {
     const stop = globalDatasetManager.watch(
       dataset,

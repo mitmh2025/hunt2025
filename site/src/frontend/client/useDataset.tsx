@@ -4,7 +4,7 @@ import {
   type Dataset,
   type ObjectWithEpoch,
 } from "../../../lib/api/websocket";
-import globalDatasetManager from "./DatasetManager";
+import globalDatasetManager from "@hunt_client/globalDatasetManager";
 
 function useDataset<T extends ObjectWithEpoch>(
   dataset: Dataset,

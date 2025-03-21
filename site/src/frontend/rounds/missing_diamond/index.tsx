@@ -1046,12 +1046,14 @@ function genWitnesses(
     const puzzleDefinition = PUZZLES[slug];
     const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slotId}`;
 
+    const showAsSolved =
+      !!puzzleState.answer || (immutable && typeof window === "undefined");
+
     return [
       {
         alt: witness.alt,
         pos: witness.pos,
-        asset:
-          witness.asset[!!puzzleState.answer || immutable ? "solved" : state],
+        asset: witness.asset[showAsSolved ? "solved" : state],
         puzzle: {
           title,
           slug,
@@ -1059,8 +1061,7 @@ function genWitnesses(
           state,
           answer: puzzleState.answer,
         },
-        statement:
-          !!puzzleState.answer || immutable ? witness.statement : undefined,
+        statement: showAsSolved ? witness.statement : undefined,
       },
     ];
   });
@@ -1075,7 +1076,8 @@ function genInteractions(
 
   return Object.entries(interactions).flatMap(([interactionId, spec]) => {
     const interactionState = round.interactions?.[interactionId]?.state;
-    if (!immutable && !interactionState) return [];
+    const forceShow = immutable && typeof window === "undefined";
+    if (!forceShow && !interactionState) return [];
 
     const interaction =
       INTERACTIONS[interactionId as MissingDiamondInteraction];
