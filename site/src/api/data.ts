@@ -47,7 +47,12 @@ import {
   updateFermitRegistration as dbUpdateFermitRegistration,
   getTeamUsername,
 } from "./db";
-import { TeamInfoIntermediate, TeamStateIntermediate } from "./logic";
+import {
+  type ActivityLogMutatorInterface,
+  TeamInfoIntermediate,
+  TeamStateIntermediate,
+  recalculateTeamState,
+} from "./logic";
 import {
   type RedisClient,
   activityLog as redisActivityLog,
@@ -110,10 +115,10 @@ export abstract class Mutator<T extends { id: number; team_id?: number }, I> {
   }
 }
 
-export class ActivityLogMutator extends Mutator<
-  InternalActivityLogEntry,
-  InsertActivityLogEntry
-> {
+export class ActivityLogMutator
+  extends Mutator<InternalActivityLogEntry, InsertActivityLogEntry>
+  implements ActivityLogMutatorInterface
+{
   private _teamStates: Map<
     number,
     { entryCount: number; state: TeamStateIntermediate }
@@ -163,101 +168,6 @@ export class ActivityLogMutator extends Mutator<
     await recalculateTeamState(hunt, teamId, this);
     return this.getTeamState(hunt, teamId);
   }
-}
-
-async function recalculateTeamState(
-  hunt: Hunt,
-  team_id: number,
-  mutator: ActivityLogMutator,
-) {
-  const start = performance.now();
-
-  // What is already present in the activity log?
-  const old = mutator.getTeamState(hunt, team_id);
-
-  // What /should/ be in the activity log, based on the hunt description?
-  const next = old.recalculateTeamState(hunt);
-  const calculate_team_state_done = performance.now();
-
-  // Compute the differences, and generate the requisite inserts.
-  for (const slug of next.rounds_unlocked.difference(old.rounds_unlocked)) {
-    await mutator.appendLog({
-      team_id,
-      type: "round_unlocked",
-      slug,
-    });
-  }
-  const unlock_rounds_done = performance.now();
-  // These diff against the next state to make sure we don't insert an activity log entry out-of-order.
-  const diff = {
-    // puzzles_visible: next.puzzles_visible.difference(old.puzzles_visible),
-    puzzles_unlockable: next.puzzles_unlockable
-      .difference(old.puzzles_unlockable)
-      .difference(next.puzzles_unlocked),
-    puzzles_unlocked: next.puzzles_unlocked
-      .difference(old.puzzles_unlocked)
-      .difference(next.puzzles_solved),
-    interactions_unlocked: next.interactions_unlocked
-      .difference(old.interactions_unlocked)
-      .difference(next.interactions_started),
-    gates_satisfied: next.gates_satisfied.difference(old.gates_satisfied),
-  };
-  const diff_done = performance.now();
-  for (const slug of diff.puzzles_unlockable) {
-    await mutator.appendLog({
-      team_id,
-      type: "puzzle_unlockable",
-      slug,
-    });
-  }
-  const puzzles_unlockable_done = performance.now();
-  for (const slug of diff.puzzles_unlocked) {
-    await mutator.appendLog({
-      team_id,
-      type: "puzzle_unlocked",
-      slug,
-    });
-  }
-  const puzzles_unlock_done = performance.now();
-  for (const id of diff.interactions_unlocked) {
-    await mutator.appendLog({
-      team_id,
-      type: "interaction_unlocked",
-      slug: id,
-    });
-  }
-  const interactions_unlock_done = performance.now();
-  for (const id of diff.gates_satisfied) {
-    await mutator.appendLog({
-      team_id,
-      type: "gate_completed",
-      slug: id,
-    });
-  }
-  const gates_completed_done = performance.now();
-  for (const [slug, timestamp] of next.team_hints_unlocked_timestamp) {
-    if (!old.team_hints_unlocked_timestamp.has(slug)) {
-      await mutator.appendLog({
-        team_id,
-        type: "team_hints_unlocked",
-        slug,
-        data: {
-          hints_available_at: timestamp.toISOString(),
-        },
-      });
-    }
-  }
-  const team_hints_unlocked_done = performance.now();
-  console.log(`recalculateTeamState for team ${team_id}: ${interactions_unlock_done - start} msec
-  * calculateTeamState:  ${calculate_team_state_done - start} msec
-  * unlock rounds:       ${unlock_rounds_done - calculate_team_state_done} msec
-  * compute diffs:       ${diff_done - unlock_rounds_done} msec
-  * unlockable puzzles:  ${puzzles_unlockable_done - diff_done} msec
-  * unlock puzzles:      ${puzzles_unlock_done - puzzles_unlockable_done} msec
-  * unlock interactions: ${interactions_unlock_done - puzzles_unlock_done} msec
-  * complete gates:      ${gates_completed_done - interactions_unlock_done} msec
-  * unlock hints:        ${team_hints_unlocked_done - gates_completed_done}msec`);
-  return next;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- This cannot be represented as a type.

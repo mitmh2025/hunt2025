@@ -32,7 +32,6 @@ import { type Address } from "nodemailer/lib/mailer";
 import { Passport } from "passport";
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import sanitizeHtml from "sanitize-html";
 import * as swaggerUi from "swagger-ui-express";
 import {
   adminContract,
@@ -45,7 +44,6 @@ import {
   type MutableTeamRegistration,
   frontendContract,
   type TeamRegistrationLogEntry,
-  type PuzzleStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { authentikJwtStrategy } from "../../lib/auth";
 import canonicalizeInput from "../../lib/canonicalizeInput";
@@ -116,6 +114,7 @@ import {
   TeamStateIntermediate,
   TeamInfoIntermediate,
   PuzzleStateIntermediate,
+  formatSubpuzzleState,
 } from "./logic";
 import { type RedisClient } from "./redis";
 
@@ -481,125 +480,6 @@ export async function getRouter({
     };
   };
 
-  const formatSubpuzzleState = (
-    slug: string,
-    parent_slug: string,
-    state_log: PuzzleStateLogEntry[],
-  ) => {
-    const guesses = state_log.filter(
-      (e) =>
-        e.data.type === "subpuzzle_guess_submitted" &&
-        e.slug === parent_slug &&
-        e.data.subpuzzle_slug === slug,
-    );
-    const correct_answers = guesses
-      .filter((e) => e.data.status === "correct")
-      .map((e) => e.data.canonical_input)
-      .sort();
-    const result: SubpuzzleState = {
-      guesses: guesses.map(
-        ({ data: { canonical_input, status, response }, id, timestamp }) => ({
-          id: id,
-          canonical_input: canonical_input as string,
-          status: status as GuessStatus,
-          response: response as string,
-          timestamp: timestamp.toISOString(),
-        }),
-      ),
-      ...(correct_answers.length > 0
-        ? { answer: correct_answers.join(", ") }
-        : {}),
-    };
-    return result;
-  };
-
-  const formatPuzzleState = (
-    slug: string,
-    team_state: TeamStateIntermediate,
-    puzzle_state: PuzzleStateIntermediate,
-  ) => {
-    // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
-    // puzzle state for it.
-    const slotEntry = slugToSlotMap.get(slug);
-    if (!slotEntry) {
-      return undefined;
-    }
-
-    // The slot entry contains the round slug for the round that canonically contains this puzzle slug.
-    let round = slotEntry.roundSlug;
-
-    const round_unlocked = team_state.rounds_unlocked.has(round);
-    // TODO: If the round to which the slug belongs is not unlocked, we mark it as in the "stray_leads" round.
-    if (!round_unlocked) {
-      round = "stray_leads"; // TODO: configurable?
-    }
-
-    // The puzzle must be either unlockable or unlocked.
-    if (
-      !team_state.puzzles_unlockable.has(slug) &&
-      !team_state.puzzles_unlocked.has(slug)
-    ) {
-      return undefined;
-    }
-
-    const locked: "locked" | "unlockable" | "unlocked" =
-      team_state.puzzles_unlocked.has(slug)
-        ? "unlocked"
-        : team_state.puzzles_unlockable.has(slug)
-          ? "unlockable"
-          : "locked";
-
-    const correct_answers = puzzle_state.guesses
-      .filter((e) => e.data.status === "correct")
-      .map((e) => e.data.canonical_input)
-      .sort();
-
-    const result: PuzzleState = {
-      epoch: puzzle_state.epoch,
-      round,
-      locked,
-      guesses: puzzle_state.guesses.map(
-        ({
-          data: { canonical_input, link, status, response },
-          id,
-          timestamp,
-        }) => ({
-          id,
-          canonical_input,
-          ...(link !== undefined
-            ? { link: { display: link.display, href: link.href } }
-            : {}),
-          status,
-          response,
-          timestamp: timestamp.toISOString(),
-        }),
-      ),
-      hints: puzzle_state.hints.map((hint) => {
-        if (hint.type === "puzzle_hint_requested") {
-          return {
-            id: hint.id,
-            timestamp: hint.timestamp.toISOString(),
-            type: "puzzle_hint_requested",
-            data: hint.data,
-          };
-        } else {
-          return {
-            id: hint.id,
-            timestamp: hint.timestamp.toISOString(),
-            type: "puzzle_hint_responded",
-            data: {
-              response: sanitizeHtml(hint.data.response),
-            },
-          };
-        }
-      }),
-    };
-    if (correct_answers.length > 0) {
-      result.answer = correct_answers.join(", ");
-    }
-    return result;
-  };
-
   const getPuzzleState = async (
     team_id: number,
     slug: string,
@@ -618,7 +498,7 @@ export async function getRouter({
         redisKey: PuzzleStateIntermediate.redisKey(slug),
       },
     );
-    return formatPuzzleState(slug, teamState, puzzleState);
+    return teamState.formatPuzzleState(slug, puzzleState);
   };
 
   const getSubpuzzleState = async (
@@ -1164,9 +1044,8 @@ export async function getRouter({
               status: 200 as const,
               /* eslint-disable @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(
+              body: teamStates[team_id]!.formatPuzzleState(
                 slug,
-                teamStates[team_id]!,
                 logEntries.reduce(
                   (acc, entry) => acc.reduce(entry),
                   new PuzzleStateIntermediate(slug),
@@ -1249,9 +1128,8 @@ export async function getRouter({
               status: 200 as const,
               /* eslint-disable @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(
+              body: teamStates[team_id]!.formatPuzzleState(
                 slug,
-                teamStates[team_id]!,
                 logEntries.reduce(
                   (acc, entry) => acc.reduce(entry),
                   new PuzzleStateIntermediate(slug),
@@ -1603,9 +1481,8 @@ export async function getRouter({
               status: 200 as const,
               /* eslint-disable @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(
+              body: teamStates[team_id]!.formatPuzzleState(
                 slug,
-                teamStates[team_id]!,
                 logEntries.reduce(
                   (acc, entry) => acc.reduce(entry),
                   new PuzzleStateIntermediate(slug),

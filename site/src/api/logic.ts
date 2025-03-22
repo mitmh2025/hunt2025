@@ -1,5 +1,13 @@
-import { type TeamHuntState, type TeamInfo } from "../../lib/api/client";
+import sanitizeHtml from "sanitize-html";
+import type { z } from "zod";
 import {
+  type SubpuzzleState,
+  type PuzzleState,
+  type TeamHuntState,
+  type TeamInfo,
+} from "../../lib/api/client";
+import {
+  type GuessStatus,
   type InteractionState,
   type TeamRegistration,
   type TeamRegistrationState,
@@ -7,6 +15,7 @@ import {
 import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
+  type PuzzleStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { type Hydratable } from "../../lib/types";
 import { generateSlugToSlotMap, type SlotLookup } from "../huntdata";
@@ -181,6 +190,89 @@ export class TeamStateIntermediate extends LogicTeamState {
       queued_interactions: this.queued_interactions,
     };
   }
+
+  formatPuzzleState(slug: string, puzzle_state: PuzzleStateIntermediate) {
+    // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
+    // puzzle state for it.
+    const slotEntry = this.slugToSlotMap.get(slug);
+    if (!slotEntry) {
+      return undefined;
+    }
+
+    // The slot entry contains the round slug for the round that canonically contains this puzzle slug.
+    let round = slotEntry.roundSlug;
+
+    const round_unlocked = this.rounds_unlocked.has(round);
+    // TODO: If the round to which the slug belongs is not unlocked, we mark it as in the "stray_leads" round.
+    if (!round_unlocked) {
+      round = "stray_leads"; // TODO: configurable?
+    }
+
+    // The puzzle must be either unlockable or unlocked.
+    if (
+      !this.puzzles_unlockable.has(slug) &&
+      !this.puzzles_unlocked.has(slug)
+    ) {
+      return undefined;
+    }
+
+    const locked: "locked" | "unlockable" | "unlocked" =
+      this.puzzles_unlocked.has(slug)
+        ? "unlocked"
+        : this.puzzles_unlockable.has(slug)
+          ? "unlockable"
+          : "locked";
+
+    const correct_answers = puzzle_state.guesses
+      .filter((e) => e.data.status === "correct")
+      .map((e) => e.data.canonical_input)
+      .sort();
+
+    const result: PuzzleState = {
+      epoch: puzzle_state.epoch,
+      round,
+      locked,
+      guesses: puzzle_state.guesses.map(
+        ({
+          data: { canonical_input, link, status, response },
+          id,
+          timestamp,
+        }) => ({
+          id,
+          canonical_input,
+          ...(link !== undefined
+            ? { link: { display: link.display, href: link.href } }
+            : {}),
+          status,
+          response,
+          timestamp: timestamp.toISOString(),
+        }),
+      ),
+      hints: puzzle_state.hints.map((hint) => {
+        if (hint.type === "puzzle_hint_requested") {
+          return {
+            id: hint.id,
+            timestamp: hint.timestamp.toISOString(),
+            type: "puzzle_hint_requested",
+            data: hint.data,
+          };
+        } else {
+          return {
+            id: hint.id,
+            timestamp: hint.timestamp.toISOString(),
+            type: "puzzle_hint_responded",
+            data: {
+              response: sanitizeHtml(hint.data.response),
+            },
+          };
+        }
+      }),
+    };
+    if (correct_answers.length > 0) {
+      result.answer = correct_answers.join(", ");
+    }
+    return result;
+  }
 }
 
 // Converts from the serialized activity log entry (which e.g. has a string for timestamp)
@@ -296,6 +388,127 @@ export function formatTeamHuntState(
     next_interaction: data.next_interaction ?? undefined,
     next_interaction_queued_at: data.next_interaction_queued_at?.toISOString(),
   };
+}
+
+type DistributiveOmit<T, K extends keyof T> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+type DistributivePick<T, K extends keyof T> = T extends unknown
+  ? Pick<T, K>
+  : never;
+
+// This is effectively a re-derivation of InsertActivityLogEntry but this file
+// shouldn't have any database dependencies
+export type AppendableActivityLogEntry = DistributiveOmit<
+  InternalActivityLogEntry,
+  "id" | "timestamp" | "currency_delta" | "strong_currency_delta"
+> &
+  Partial<
+    DistributivePick<
+      InternalActivityLogEntry,
+      "currency_delta" | "strong_currency_delta"
+    >
+  >;
+
+export type ActivityLogMutatorInterface = {
+  getTeamState(hunt: Hunt, teamId: number): TeamStateIntermediate;
+  appendLog(entry: AppendableActivityLogEntry): Promise<unknown>;
+};
+
+export async function recalculateTeamState(
+  hunt: Hunt,
+  team_id: number,
+  mutator: ActivityLogMutatorInterface,
+) {
+  const start = performance.now();
+
+  // What is already present in the activity log?
+  const old = mutator.getTeamState(hunt, team_id);
+
+  // What /should/ be in the activity log, based on the hunt description?
+  const next = old.recalculateTeamState(hunt);
+  const calculate_team_state_done = performance.now();
+
+  // Compute the differences, and generate the requisite inserts.
+  for (const slug of next.rounds_unlocked.difference(old.rounds_unlocked)) {
+    await mutator.appendLog({
+      team_id,
+      type: "round_unlocked",
+      slug,
+    });
+  }
+  const unlock_rounds_done = performance.now();
+  // These diff against the next state to make sure we don't insert an activity log entry out-of-order.
+  const diff = {
+    // puzzles_visible: next.puzzles_visible.difference(old.puzzles_visible),
+    puzzles_unlockable: next.puzzles_unlockable
+      .difference(old.puzzles_unlockable)
+      .difference(next.puzzles_unlocked),
+    puzzles_unlocked: next.puzzles_unlocked
+      .difference(old.puzzles_unlocked)
+      .difference(next.puzzles_solved),
+    interactions_unlocked: next.interactions_unlocked
+      .difference(old.interactions_unlocked)
+      .difference(next.interactions_started),
+    gates_satisfied: next.gates_satisfied.difference(old.gates_satisfied),
+  };
+  const diff_done = performance.now();
+  for (const slug of diff.puzzles_unlockable) {
+    await mutator.appendLog({
+      team_id,
+      type: "puzzle_unlockable",
+      slug,
+    });
+  }
+  const puzzles_unlockable_done = performance.now();
+  for (const slug of diff.puzzles_unlocked) {
+    await mutator.appendLog({
+      team_id,
+      type: "puzzle_unlocked",
+      slug,
+    });
+  }
+  const puzzles_unlock_done = performance.now();
+  for (const id of diff.interactions_unlocked) {
+    await mutator.appendLog({
+      team_id,
+      type: "interaction_unlocked",
+      slug: id,
+    });
+  }
+  const interactions_unlock_done = performance.now();
+  for (const id of diff.gates_satisfied) {
+    await mutator.appendLog({
+      team_id,
+      type: "gate_completed",
+      slug: id,
+    });
+  }
+  const gates_completed_done = performance.now();
+  for (const [slug, timestamp] of next.team_hints_unlocked_timestamp) {
+    if (!old.team_hints_unlocked_timestamp.has(slug)) {
+      await mutator.appendLog({
+        team_id,
+        type: "team_hints_unlocked",
+        slug,
+        data: {
+          hints_available_at: timestamp.toISOString(),
+        },
+      });
+    }
+  }
+  const team_hints_unlocked_done = performance.now();
+  console.log(`recalculateTeamState for team ${team_id}: ${interactions_unlock_done - start} msec
+  * calculateTeamState:  ${calculate_team_state_done - start} msec
+  * unlock rounds:       ${unlock_rounds_done - calculate_team_state_done} msec
+  * compute diffs:       ${diff_done - unlock_rounds_done} msec
+  * unlockable puzzles:  ${puzzles_unlockable_done - diff_done} msec
+  * unlock puzzles:      ${puzzles_unlock_done - puzzles_unlockable_done} msec
+  * unlock interactions: ${interactions_unlock_done - puzzles_unlock_done} msec
+  * complete gates:      ${gates_completed_done - interactions_unlock_done} msec
+  * unlock hints:        ${team_hints_unlocked_done - gates_completed_done}msec`);
+  return next;
 }
 
 export class TeamInfoIntermediate {
@@ -488,3 +701,35 @@ export class PuzzleStateIntermediate {
     };
   }
 }
+
+export const formatSubpuzzleState = (
+  slug: string,
+  parent_slug: string,
+  state_log: PuzzleStateLogEntry[],
+) => {
+  const guesses = state_log.filter(
+    (e) =>
+      e.data.type === "subpuzzle_guess_submitted" &&
+      e.slug === parent_slug &&
+      e.data.subpuzzle_slug === slug,
+  );
+  const correct_answers = guesses
+    .filter((e) => e.data.status === "correct")
+    .map((e) => e.data.canonical_input)
+    .sort();
+  const result: SubpuzzleState = {
+    guesses: guesses.map(
+      ({ data: { canonical_input, status, response }, id, timestamp }) => ({
+        id: id,
+        canonical_input: canonical_input as string,
+        status: status as z.TypeOf<typeof GuessStatus>,
+        response: response as string,
+        timestamp: timestamp.toISOString(),
+      }),
+    ),
+    ...(correct_answers.length > 0
+      ? { answer: correct_answers.join(", ") }
+      : {}),
+  };
+  return result;
+};
