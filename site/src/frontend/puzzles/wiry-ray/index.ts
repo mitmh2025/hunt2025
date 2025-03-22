@@ -92,7 +92,9 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   canned_responses: [],
+  // #!if TARGET !== "client" || !ARCHIVE_MODE
   router,
+  // #!endif
 };
 
 export default puzzle;

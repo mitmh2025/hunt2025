@@ -368,6 +368,30 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const assetRules = [
+    cssRule,
+    // TODO: support importing other kinds of assets, and aliases for
+    // the results of the browser build bundles
+    imageRule,
+    mp3Rule,
+    opusRule,
+    wavRule,
+    flacRule,
+    mp4Rule,
+    // Opus files should only be used by the radio and thus should
+    // never be imported by browser entrypoints, only server entrypoints.
+    opusRule,
+    fontRule,
+    pdfRule,
+    psdRule,
+    xcfRule,
+    stlRule,
+    threemfRule,
+    xlsxRule,
+    vttRule,
+    csvRule,
+  ];
+
   // Disable displayName classes on styled-components when not in dev mode.
   const styledComponentsPluginConfig = swcConfig.jsc.experimental.plugins.find(
     (plugin) => plugin[0] === "@swc/plugin-styled-components",
@@ -429,27 +453,7 @@ export default function createConfigs(_env, argv) {
           test: /\.m?[jt]sx?$/,
           use: swcLoader,
         },
-        cssRule,
-        // TODO: support importing other kinds of assets, and aliases for
-        // the results of the browser build bundles
-        imageRule,
-        mp3Rule,
-        opusRule,
-        wavRule,
-        flacRule,
-        mp4Rule,
-        // Opus files should only be used by the radio and thus should
-        // never be imported by browser entrypoints, only server entrypoints.
-        opusRule,
-        fontRule,
-        pdfRule,
-        psdRule,
-        xcfRule,
-        stlRule,
-        threemfRule,
-        xlsxRule,
-        vttRule,
-        csvRule,
+        ...assetRules,
       ],
       // Add modules as appropriate
     },
@@ -578,17 +582,20 @@ export default function createConfigs(_env, argv) {
         {
           test: /\.m?tsx?$/,
           exclude: /(node_modules)/,
-          use: [swcLoader],
+          use: [
+            swcLoader,
+            {
+              loader: "webpack-preprocessor-loader",
+              options: {
+                params: {
+                  TARGET: "client",
+                  ARCHIVE_MODE: process.env.ARCHIVE_MODE !== undefined,
+                },
+              },
+            },
+          ],
         },
-        cssRule,
-        imageRule,
-        mp3Rule,
-        opusRule,
-        wavRule,
-        flacRule,
-        mp4Rule,
-        fontRule,
-        csvRule,
+        ...assetRules,
       ],
     },
     resolve: {

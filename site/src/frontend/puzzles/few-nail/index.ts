@@ -204,7 +204,9 @@ const puzzle: PuzzleDefinition = {
       reply: "Keep going!",
     },
   ],
+  // #!if TARGET !== "client" || !ARCHIVE_MODE
   router,
+  // #!endif
 };
 
 export default puzzle;
