@@ -69,10 +69,10 @@ type DatasetHandler =
       callback: (entry: DehydratedActivityLogEntry) => ObjectWithId | undefined;
     }
   | {
-      type: "guess_log";
-    }
-  | {
-      type: "hint_log";
+      type: "activity_log_with_slug";
+      callback: (
+        entry: InternalActivityLogEntry & { slug: string },
+      ) => ObjectWithId | undefined;
     }
   | {
       type: "team_registration";
@@ -102,10 +102,39 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
     callback: devtoolsState,
   },
   guess_log: {
-    type: "guess_log",
+    type: "activity_log_with_slug",
+    callback: (e) => {
+      if (e.type !== "puzzle_guess_submitted") {
+        return undefined;
+      }
+
+      return {
+        id: e.id,
+        status: e.data.status,
+        canonical_input: e.data.canonical_input,
+        link: e.data.link,
+        response: e.data.response,
+        timestamp: e.timestamp,
+      };
+    },
   },
   hint_log: {
-    type: "hint_log",
+    type: "activity_log_with_slug",
+    callback: (e) => {
+      if (
+        e.type !== "puzzle_hint_requested" &&
+        e.type !== "puzzle_hint_responded"
+      ) {
+        return undefined;
+      }
+
+      return {
+        id: e.id,
+        timestamp: e.timestamp,
+        type: e.type,
+        data: e.data,
+      };
+    },
   },
   hub: {
     type: "team_state",
@@ -215,17 +244,13 @@ type ActivityLogSubscriptionHandler<T> = {
   stop: () => void;
 };
 
-type GuessLogSubscriptionHandler = {
-  type: "guess_log";
+type ActivityLogWithSlugSubscriptionHandler<T> = {
+  type: "activity_log_with_slug";
   dataset: Dataset;
   slug: string;
-  stop: () => void;
-};
-
-type HintLogSubscriptionHandler = {
-  type: "hint_log";
-  dataset: Dataset;
-  slug: string;
+  computeFromActivityLogEntry: (
+    entry: InternalActivityLogEntry & { slug: string },
+  ) => T | undefined;
   stop: () => void;
 };
 
@@ -264,8 +289,7 @@ type PollResponseSubscriptionHandler = {
 type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
   | ActivityLogSubscriptionHandler<T>
-  | GuessLogSubscriptionHandler
-  | HintLogSubscriptionHandler
+  | ActivityLogWithSlugSubscriptionHandler<T>
   | TeamRegistrationSubscriptionHandler<T>
   | PuzzleStateLogSubscriptionHandler
   | InteractionStateLogSubscriptionHandler
@@ -283,16 +307,10 @@ function isActivityLogSubscription<T>(
   return sub.type === "activity_log";
 }
 
-function isGuessLogSubscription<T>(
+function isActivityLogWithSlugSubscription<T>(
   sub: SubscriptionHandler<T>,
-): sub is GuessLogSubscriptionHandler {
-  return sub.type === "guess_log";
-}
-
-function isHintLogSubscription<T>(
-  sub: SubscriptionHandler<T>,
-): sub is HintLogSubscriptionHandler {
-  return sub.type === "hint_log";
+): sub is ActivityLogWithSlugSubscriptionHandler<T> {
+  return sub.type === "activity_log_with_slug";
 }
 
 function isTeamRegistrationSubscription<T>(
@@ -341,14 +359,7 @@ type ObserverProvider = {
     conn: ConnHandler,
   ): ObserveResult;
 
-  observeGuessLog(
-    teamId: number,
-    slug: string,
-    subId: string,
-    conn: ConnHandler,
-  ): ObserveResult;
-
-  observeHintLog(
+  observeActivityLogWithSlug(
     teamId: number,
     slug: string,
     subId: string,
@@ -472,10 +483,7 @@ class ConnHandler {
           case "activity_log":
             sub.stop();
             break;
-          case "guess_log":
-            sub.stop();
-            break;
-          case "hint_log":
+          case "activity_log_with_slug":
             sub.stop();
             break;
           case "puzzle_state_log":
@@ -583,45 +591,19 @@ class ConnHandler {
     }
   }
 
-  public appendGuessLogEntry(
+  public appendActivityLogWithSlugEntry(
     subId: string,
-    entry: InternalActivityLogEntry & { type: "puzzle_guess_submitted" },
+    entry: InternalActivityLogEntry & { slug: string },
   ) {
     const sub = this.subs.get(subId);
-    if (sub && isGuessLogSubscription(sub)) {
-      this.send({
-        subId,
-        type: "update",
-        value: {
-          id: entry.id,
-          status: entry.data.status,
-          canonical_input: entry.data.canonical_input,
-          link: entry.data.link,
-          response: entry.data.response,
-          timestamp: entry.timestamp,
-        },
-      });
-    }
-  }
-
-  public appendHintLogEntry(
-    subId: string,
-    entry: InternalActivityLogEntry & {
-      type: "puzzle_hint_requested" | "puzzle_hint_responded";
-    },
-  ) {
-    const sub = this.subs.get(subId);
-    if (sub && isHintLogSubscription(sub)) {
-      this.send({
-        subId,
-        type: "update",
-        value: {
-          id: entry.id,
-          timestamp: entry.timestamp,
-          type: entry.type,
-          data: entry.data,
-        },
-      });
+    if (
+      sub &&
+      isActivityLogWithSlugSubscription(sub) &&
+      sub.slug === entry.slug
+    ) {
+      const mappedEntry = sub.computeFromActivityLogEntry(entry);
+      if (!mappedEntry) return;
+      this.send({ subId, type: "update", value: mappedEntry });
     }
   }
 
@@ -767,7 +749,7 @@ class ConnHandler {
             });
           break;
         }
-        case "guess_log": {
+        case "activity_log_with_slug": {
           if (!params?.slug) {
             this.send({
               rpc,
@@ -776,21 +758,23 @@ class ConnHandler {
             });
             return;
           }
-          const subHandler: SubscriptionHandler<object> = {
-            type: "guess_log",
+          const subHandler: SubscriptionHandler<ObjectWithId> = {
+            type: "activity_log_with_slug",
             dataset,
             slug: params.slug,
+            computeFromActivityLogEntry: datasetHandler.callback,
             stop: () => {
               /* stub */
             },
           };
           this.subs.set(subId, subHandler);
-          const { stop, readyPromise } = this.observerProvider.observeGuessLog(
-            this.teamId,
-            params.slug,
-            subId,
-            this,
-          );
+          const { stop, readyPromise } =
+            this.observerProvider.observeActivityLogWithSlug(
+              this.teamId,
+              params.slug,
+              subId,
+              this,
+            );
           subHandler.stop = stop;
           readyPromise
             .then(() => {
@@ -800,45 +784,7 @@ class ConnHandler {
               this.send({
                 rpc,
                 type: "fail" as const,
-                error: "guess log ready promise rejected",
-              });
-            });
-          break;
-        }
-        case "hint_log": {
-          if (!params?.slug) {
-            this.send({
-              rpc,
-              type: "fail" as const,
-              error: `No slug provided to sub to ${dataset}`,
-            });
-            return;
-          }
-          const subHandler: SubscriptionHandler<object> = {
-            type: "hint_log",
-            dataset,
-            slug: params.slug,
-            stop: () => {
-              /* stub */
-            },
-          };
-          this.subs.set(subId, subHandler);
-          const { stop, readyPromise } = this.observerProvider.observeHintLog(
-            this.teamId,
-            params.slug,
-            subId,
-            this,
-          );
-          subHandler.stop = stop;
-          readyPromise
-            .then(() => {
-              this.send({ rpc, type: "sub" as const, subId });
-            })
-            .catch(() => {
-              this.send({
-                rpc,
-                type: "fail" as const,
-                error: "hint log ready promise rejected",
+                error: "puzzle activity log ready promise rejected",
               });
             });
           break;
@@ -1225,7 +1171,7 @@ export class WebsocketManager implements ObserverProvider {
     };
   }
 
-  public observeGuessLog(
+  public observeActivityLogWithSlug(
     teamId: number,
     slug: string,
     subId: string,
@@ -1235,43 +1181,15 @@ export class WebsocketManager implements ObserverProvider {
       (entries: InternalActivityLogEntry[]) => {
         entries.forEach((entry) => {
           if (
-            entry.team_id === teamId &&
-            entry.type === "puzzle_guess_submitted" &&
+            (entry.team_id === teamId || entry.team_id === undefined) &&
+            "slug" in entry &&
             entry.slug === slug
           ) {
-            conn.appendGuessLogEntry(subId, entry);
+            conn.appendActivityLogWithSlugEntry(subId, entry);
           }
         });
       },
     );
-
-    return {
-      stop,
-      readyPromise: this.activityLogTailer.readyPromise(),
-    };
-  }
-
-  public observeHintLog(
-    teamId: number,
-    slug: string,
-    subId: string,
-    conn: ConnHandler,
-  ): ObserveResult {
-    const stop = this.activityLogTailer.watchLog(
-      (entries: InternalActivityLogEntry[]) => {
-        entries.forEach((entry) => {
-          if (
-            entry.team_id === teamId &&
-            (entry.type === "puzzle_hint_requested" ||
-              entry.type === "puzzle_hint_responded") &&
-            entry.slug === slug
-          ) {
-            conn.appendHintLogEntry(subId, entry);
-          }
-        });
-      },
-    );
-
     return {
       stop,
       readyPromise: this.activityLogTailer.readyPromise(),
