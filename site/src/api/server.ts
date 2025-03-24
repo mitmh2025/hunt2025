@@ -65,12 +65,15 @@ import {
   orderedQuixoticSubpuzzleSlugs,
   quixoticSubpuzzleDataBySlug,
 } from "../frontend/puzzles/quixotic-shoe";
+import archiveMode from "../frontend/utils/archiveMode";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
 import { fixData } from "../utils/fixData";
 import { fixTimestamp } from "../utils/fixTimestamp";
 import { omit } from "../utils/omit";
-import teamIsImmutable from "../utils/teamIsImmutable";
+import teamIsImmutable, {
+  IMMUTABLE_TEAM_USERNAMES,
+} from "../utils/teamIsImmutable";
 import {
   activityLog,
   puzzleStateLog,
@@ -560,9 +563,31 @@ export async function getRouter({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- want to override 4th type parameter to Request and the 2nd and 3rd default to any and I don't want to constrain them in middleware if I can avoid it
   type RequestHandlerWithQuery = RequestHandler<unknown, any, any, Query>;
 
-  const authMiddleware = passport.authenticate("teamJwt", {
+  const passportAuthMiddleware = passport.authenticate("teamJwt", {
     session: false,
   }) as RequestHandlerWithQuery;
+  const archiveAuthMiddleware: RequestHandlerWithQuery = (req, _, next) => {
+    knex("teams")
+      .where({
+        username: IMMUTABLE_TEAM_USERNAMES[0],
+        deactivated: false,
+      })
+      .select("id")
+      .first()
+      .then((publicAccessTeam) => {
+        if (!publicAccessTeam) {
+          throw new Error("Public access team not found");
+        }
+        req.user = publicAccessTeam.id;
+        next();
+      })
+      .catch((err: unknown) => {
+        next(err);
+      });
+  };
+  const authMiddleware = archiveMode
+    ? archiveAuthMiddleware
+    : passportAuthMiddleware;
 
   const adminAuthMiddleware = passport.authenticate(adminStrategies, {
     session: false,

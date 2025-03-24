@@ -6,6 +6,7 @@ import disconnectedIcon from "../../assets/disconnected-icon.svg";
 import diamondIcon from "../../assets/logo.svg";
 import { type TeamVirtualInteractionsState } from "../interactions/types";
 import type { EventsState } from "../rounds/events/types";
+import archiveMode from "../utils/archiveMode";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
 import rootUrl from "../utils/rootUrl";
 import { BuyAnswerModal, ExchangeClueModal } from "./ClueModals";
@@ -434,12 +435,16 @@ const NavBar = ({
             <li>
               <NavLink href={`${rootUrl}/team`}>Manage Team</NavLink>
             </li>
-            <li>
-              <NavLink href={`${rootUrl}/contact`}>Contact HQ</NavLink>
-            </li>
-            <li>
-              <NavLink href={`${rootUrl}/logout`}>Log Out</NavLink>
-            </li>
+            {!archiveMode && (
+              <>
+                <li>
+                  <NavLink href={`${rootUrl}/contact`}>Contact HQ</NavLink>
+                </li>
+                <li>
+                  <NavLink href={`${rootUrl}/logout`}>Log Out</NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </Dropdown>
         <ConnectionState>
