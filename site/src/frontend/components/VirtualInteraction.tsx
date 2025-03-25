@@ -324,19 +324,26 @@ const VotesView = ({
   node: ExternalInteractionNode;
   onAdvance: (vote: string | undefined) => void;
 }) => {
-  const voteRef = useRef<string | undefined>(undefined);
+  const [vote, setVote] = useState<{ v: string; t: number } | undefined>(
+    undefined,
+  );
+
+  const timeout = Math.min(
+    node.ts + node.timeout_msec,
+    ...(vote ? [vote.t] : []),
+  );
 
   useEffect(() => {
-    const autoadvanceTime = node.ts + node.timeout_msec;
+    const autoadvanceTime = timeout;
     const autoadvanceDelay = autoadvanceTime - Date.now();
 
     const handle = setTimeout(() => {
-      onAdvance(voteRef.current);
+      onAdvance(vote?.v);
     }, autoadvanceDelay);
     return () => {
       clearTimeout(handle);
     };
-  }, [node.ts, node.timeout_msec, onAdvance]);
+  }, [vote, timeout, onAdvance]);
 
   return (
     <ButtonAndCountdownWrapper>
@@ -349,7 +356,7 @@ const VotesView = ({
               value={choice.key}
               id={choice.key}
               onChange={(e) => {
-                voteRef.current = e.target.value;
+                setVote({ v: e.target.value, t: Date.now() });
               }}
             />
             <label htmlFor={choice.key}>
@@ -363,7 +370,7 @@ const VotesView = ({
           width={80}
           height={80}
           startTime={node.ts}
-          endTime={node.ts + node.timeout_msec}
+          endTime={timeout}
           color="#f8f8f6"
         />
       </CountdownWrapper>
