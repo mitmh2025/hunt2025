@@ -7,7 +7,7 @@ const puzzle: PuzzleDefinition = {
   slug: "a_b_c_easy_as_1_2_3",
   code_name: "brilliant-row",
   initial_description: "A series of song lyrics.",
-  answer: "TODO PENDING",
+  answer: "PLACEHOLDER ANSWER",
   authors: ["Teddy McArthur"],
   editors: [
     "Chris Gatesman",
@@ -79,7 +79,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["SPELL FOR US"],
       reply:
-        "Show off your spelling skills! Come to the Gala, tell the bartender you’re here to spell for them, and then perform a rewritten version of the chorus to “Hot to Go” using a seven-letter word or phrase of your choice. Arm-spelling is mandatory!",
+        "Show off your spelling skills! Come to the Gala, tell the bartender you’re here to spell for them, and then perform a rewritten version of the chorus to “Hot to Go” using a seven-letter word or phrase of your choice. Arm-spelling is mandatory!\n\nSince this puzzle was never used during Mystery Hunt, it does not have a real answer assigned. However, we will accept the answer PLACEHOLDER ANSWER.",
     },
   ],
 };

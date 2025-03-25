@@ -10,7 +10,7 @@ const puzzle: PuzzleDefinition = {
   slug: HANDY_GLASS_SLUG, // and remember to update this variable too.
   code_name: "handy-glass",
   initial_description: "Crossword puzzle.",
-  answer: "TODO PENDING",
+  answer: "PLACEHOLDER ANSWER",
   authors: ["Hubert Hwang", "Teddy McArthur"],
   editors: ["James Douberley", "Sid Creutz", "Steve Banzaert"],
   additional_credits: [],

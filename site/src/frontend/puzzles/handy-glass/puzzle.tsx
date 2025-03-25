@@ -1,6 +1,7 @@
 import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
 import Crossword, { calculateNumberLabels } from "../../components/Crossword";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 
 export const LABELS = calculateNumberLabels(
   `
@@ -75,6 +76,11 @@ const CluesWrapper = styled.div`
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <AuthorsNote>
+        This puzzle was written and tested but held in reserve in case we needed
+        to make a last-minute swap. As such, it has a placeholder answer and
+        will not grant you a key for solving.
+      </AuthorsNote>
       <StyledCrossword
         labels={LABELS}
         labelsForEmptyCopy={LABELS}

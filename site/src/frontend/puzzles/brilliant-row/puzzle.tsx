@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import Blanks from "../../components/Blanks";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 
 const LYRICS: ReactNode[][] = [
   [
@@ -299,6 +300,11 @@ const LYRICS: ReactNode[][] = [
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <AuthorsNote>
+        This puzzle was written and tested but held in reserve in case we needed
+        to make a last-minute swap. As such, it has a placeholder answer and
+        will not grant you a key for solving.
+      </AuthorsNote>
       <p className="puzzle-flavor">
         I think this lyrics site might be a knockoff.
       </p>

@@ -664,14 +664,6 @@ export async function seed(knex: Knex): Promise<void> {
     "evg02",
   ];
 
-  const UNRELEASED_PUZZLES = [
-    "a_b_c_easy_as_1_2_3",
-    "hello_darkness_my_old_friend",
-    "wouthit_porbelm",
-    "infiltrating_the_criminal_underworld",
-    "re_infiltrating_the_criminal_underworld",
-  ];
-
   await createTeam("public_access", async (team_id, mutator) => {
     // For the "public_access" team: create puzzle_unlocked entries for all rounds & puzzles
     for (const round of HUNT.rounds) {
@@ -686,9 +678,7 @@ export async function seed(knex: Knex): Promise<void> {
     }
 
     for (const slug of slugs) {
-      if (!UNRELEASED_PUZZLES.includes(slug)) {
-        await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
-      }
+      await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
     }
 
     for (const gate of PUBLIC_GATES) {

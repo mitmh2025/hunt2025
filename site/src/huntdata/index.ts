@@ -1809,9 +1809,14 @@ const HUNT: Hunt = {
       title: "Floaters",
       final_puzzle_slot: "",
       puzzles: [
-        { id: "flp01", unlock_cost: 1, slug: "a_b_c_easy_as_1_2_3" },
-        { id: "flp02", unlock_cost: 1, slug: "wouthit_porbelm" },
-        { id: "flp03", unlock_cost: 1, slug: "hello_darkness_my_old_friend" },
+        { id: "flp01", unlock_cost: 1, slug: "a_b_c_easy_as_1_2_3", prize: 0 },
+        { id: "flp02", unlock_cost: 1, slug: "wouthit_porbelm", prize: 0 },
+        {
+          id: "flp03",
+          unlock_cost: 1,
+          slug: "hello_darkness_my_old_friend",
+          prize: 0,
+        },
         {
           id: "flp04",
           unlock_cost: 1,

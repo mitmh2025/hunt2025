@@ -7,7 +7,7 @@ const puzzle: PuzzleDefinition = {
   slug: "hello_darkness_my_old_friend",
   code_name: "that-bell",
   initial_description: "A block of monospaced text and a bunch of circles",
-  answer: "TODO PLACEHOLDER TODO PLACEHOLDER",
+  answer: "PLACEHOLDER ANSWER",
   authors: ["Wesley Graybill", "Eric Broder", "Sue Broder"],
   editors: ["Cyrus Eyster", "Kevin Hwang", "Robin Deits", "Steve Banzaert"],
   additional_credits: [],
@@ -93,12 +93,8 @@ const puzzle: PuzzleDefinition = {
     },
     {
       guess: ["MAKE PARODY OF BONNIE TYLER HIT"],
-      reply: "Correct! Please record a parody of a Bonnie Tyler song and ",
-      link: {
-        display:
-          "send your parody to info@mitmh2025.com. Include your team name and the phrase MAKE PARODY OF BONNIE TYLER HIT in the subject line.",
-        href: "mailto:info@mitmh2025.com?subject=PARODY OF BONNIE TYLER HIT",
-      },
+      reply:
+        "Correct! Please record a parody of a Bonnie Tyler song and send your parody to info@mitmh2025.com. Include your team name and the phrase MAKE PARODY OF BONNIE TYLER HIT in the subject line.\n\nSince this puzzle was never used during Mystery Hunt, it does not have a real answer assigned. However, we will accept the answer PLACEHOLDER ANSWER.",
     },
   ],
 };

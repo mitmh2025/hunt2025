@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { reduceCoordinatesToIndices } from "../../components/Crossword";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import image from "./assets/image.png";
 
 const StyledP = styled.p`
@@ -805,6 +806,11 @@ const CIRCLES: {
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <AuthorsNote>
+        This puzzle was written and tested but held in reserve in case we needed
+        to make a last-minute swap. As such, it has a placeholder answer and
+        will not grant you a key for solving.
+      </AuthorsNote>
       <p className="puzzle-flavor">
         I went to Mexico in April last year and enjoyed a beer with lime on the
         beach. No wait, maybe that wasn’t a beer…

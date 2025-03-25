@@ -1,7 +1,8 @@
 import React from "react";
 import { styled, type CSSProperties } from "styled-components";
 import Crossword from "../../../components/Crossword";
-import { MailtoLink } from "../../../components/StyledUI";
+import { AuthorsNote } from "../../../components/PuzzleLayout";
+import { MailtoLink, Mono, PuzzleAnswer } from "../../../components/StyledUI";
 import rootUrl from "../../../utils/rootUrl";
 import { HANDY_GLASS_SLUG } from "../constants";
 
@@ -82,6 +83,13 @@ const Puzzle = (): JSX.Element => {
         <MailtoLink subject={"MAKE US ONE OF THESE"} />. Ildncue yuor taem nmae
         and the psrahe MAKE US ONE OF THESE in the sjeucbt lnie.
       </p>
+
+      <AuthorsNote>
+        Scine tihs pulzze was nveer uesd duinrg Mtysrey Hnut, it deos not hvae a
+        rael aeswnr aseisgnd. Heovwer, we wlil apecct the asenwr{" "}
+        <Mono>PCAELOLEHDR AESNWR</Mono>. Ahem,{" "}
+        <PuzzleAnswer>PLACEHOLDER ANSWER</PuzzleAnswer>
+      </AuthorsNote>
     </>
   );
 };
