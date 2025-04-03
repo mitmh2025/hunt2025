@@ -499,9 +499,13 @@ export const bookcasePostHandler: RequestHandler<
   }
 });
 
-const IllegalSearchRoundPage = () => {
+const IllegalSearchRoundPage = ({
+  teamState,
+}: {
+  teamState: TeamHuntState;
+}) => {
   // Embed the initial node JSON in the page, as well as the team state, and all puzzle metadata
-  const inlineScript = `window.puzzleMetadata = ${JSON.stringify(puzzles)}`;
+  const inlineScript = `window.puzzleMetadata = ${JSON.stringify(puzzles)}; window.initialTeamState = ${JSON.stringify(teamState)};`;
 
   return (
     <div>

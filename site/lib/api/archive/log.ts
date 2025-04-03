@@ -194,7 +194,11 @@ export const fetchActivityLog = () => {
 
 const ensureUnlocked = async (
   mutator: ActivityLogMutator,
-  type: "round_unlocked" | "puzzle_unlocked" | "interaction_unlocked",
+  type:
+    | "round_unlocked"
+    | "puzzle_unlocked"
+    | "interaction_unlocked"
+    | "gate_completed",
   slug: string,
 ) => {
   if (mutator.log.some((e) => e.type === type && e.slug === slug)) {
@@ -278,6 +282,12 @@ export const generateCompleteLogs = async () => {
     // Make sure all puzzles are unlocked
     for (const slug of Object.values(getSlugsBySlot(HUNT))) {
       await ensureUnlocked(mutator, "puzzle_unlocked", slug);
+    }
+
+    // Mark all gates from the Illegal Search as completed
+    const round = HUNT.rounds.find((r) => r.slug === "illegal_search");
+    for (const gate of round?.gates ?? []) {
+      await ensureUnlocked(mutator, "gate_completed", gate.id);
     }
 
     // Make sure all interactions show up (this is mostly for the benefit of the hub page)

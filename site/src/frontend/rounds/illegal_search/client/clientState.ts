@@ -1,4 +1,3 @@
-import { type TeamHuntState } from "../../../../../lib/api/client";
 import {
   MAX_TOLERANCE_DEGREES,
   isRoughlyEqual,
@@ -13,38 +12,10 @@ import {
   filteredForFrontend,
 } from "../graph";
 import { type PluginName, type PostcodeResponse, type Node } from "../types";
-
-export function illegalSearchTeamState(): TeamHuntState {
-  const gatesStr = localStorage.getItem("illegalSearchGates") ?? "";
-  const gates = gatesStr.split(",");
-
-  return {
-    gates_satisfied: gates,
-    rounds: {
-      illegal_search: {
-        slots: {},
-        title: "The Illegal Search",
-        interactions: {},
-        gates,
-      },
-    },
-    epoch: 1,
-    currency: 0,
-    outstanding_hint_requests: [],
-    puzzles: {},
-    strong_currency: 0,
-  };
-}
-
-export function markGateSatisfied(gateId: string): void {
-  const gatesStr = localStorage.getItem("illegalSearchGates") ?? "";
-  const gates = gatesStr.split(",");
-
-  if (!gates.includes(gateId)) {
-    gates.push(gateId);
-    localStorage.setItem("illegalSearchGates", gates.join(","));
-  }
-}
+import {
+  getTeamState,
+  markGateSatisfied,
+} from "@hunt_client/illegal_search_state";
 
 export function getIllegalSearchPuzzleMetadata(): Puzzles {
   const { puzzleMetadata } = window as unknown as { puzzleMetadata: Puzzles };
@@ -59,13 +30,15 @@ export function fetchNode(nodeId: string): Node {
 
   const { puzzleMetadata } = window as unknown as { puzzleMetadata: Puzzles };
 
-  return filteredForFrontend(node, illegalSearchTeamState(), {
+  const state = getTeamState();
+
+  return filteredForFrontend(node, state, {
     immutable: true,
     puzzles: puzzleMetadata,
   });
 }
 
-export function fetchModal(postCode: string): PostcodeResponse {
+export async function fetchModal(postCode: string): Promise<PostcodeResponse> {
   let match: { slotId: string; gateId: string } | undefined;
   const postcodeMatch = MODALS_BY_POSTCODE.get(postCode);
   const extraMatch = MODALS_BY_EXTRA_POSTCODE.get(postCode);
@@ -88,7 +61,7 @@ export function fetchModal(postCode: string): PostcodeResponse {
   }
 
   const { slotId, gateId } = match;
-  markGateSatisfied(gateId);
+  await markGateSatisfied(gateId);
 
   const puzzle = Object.values(getIllegalSearchPuzzleMetadata()).find(
     (p) => p.slotId === slotId,
@@ -105,10 +78,10 @@ export function fetchModal(postCode: string): PostcodeResponse {
   };
 }
 
-export function submitLock(
+export async function submitLock(
   lock: Exclude<PluginName, "extra" | "telephone" | "safe">,
   submitted: string,
-): Node | undefined {
+): Promise<Node | undefined> {
   const lockData = LOCK_DATA[lock];
 
   const { gateId, node } = lockData;
@@ -122,15 +95,15 @@ export function submitLock(
   }
 
   if (correct) {
-    markGateSatisfied(gateId);
+    await markGateSatisfied(gateId);
     return fetchNode(node);
   }
   return undefined;
 }
 
-export function submitSafe(
+export async function submitSafe(
   tumblers: [number, number, number],
-): Node | undefined {
+): Promise<Node | undefined> {
   const lockData = LOCK_DATA.painting1;
 
   const { gateId, node } = lockData;
@@ -153,7 +126,7 @@ export function submitSafe(
       },
     )
   ) {
-    markGateSatisfied(gateId);
+    await markGateSatisfied(gateId);
     return fetchNode(node);
   }
 

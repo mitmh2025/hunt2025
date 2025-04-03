@@ -31,3 +31,11 @@ declare module "@hunt_client/interactions" {
     result: string,
   ): Promise<void>;
 }
+
+declare module "@hunt_client/illegal_search_state" {
+  import type { TeamHuntState } from "lib/api/client";
+
+  export function markGateSatisfied(gateId: string): Promise<void>;
+  export function getTeamState(): TeamHuntState;
+  export function useTeamState(initialTeamState: TeamHuntState): TeamHuntState;
+}

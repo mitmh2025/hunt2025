@@ -1614,7 +1614,8 @@ function modalFromModalInternal(
 
   if (solvedAssets) {
     const isSolved =
-      immutable || (slug !== undefined && !!teamState.puzzles[slug]?.answer);
+      (immutable && typeof window === "undefined") ||
+      (slug !== undefined && !!teamState.puzzles[slug]?.answer);
     if (isSolved) {
       if (solvedAssets.modalAsset) {
         obj.asset = solvedAssets.modalAsset;

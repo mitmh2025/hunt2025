@@ -327,17 +327,21 @@ const Safe = ({
       // just do it
       openDoor();
     } else {
-      const result = submitSafe(tumblers);
-
-      if (result) {
-        console.log("Correct:", tumblers);
-        console.log("Response:", result);
-        setNode(result);
-        openDoor();
-      } else {
-        console.log("Incorrect:", tumblers);
-        playSound(stuck);
-      }
+      submitSafe(tumblers)
+        .then((result) => {
+          if (result) {
+            console.log("Correct:", tumblers);
+            console.log("Response:", result);
+            setNode(result);
+            openDoor();
+          } else {
+            console.log("Incorrect:", tumblers);
+            playSound(stuck);
+          }
+        })
+        .catch(() => {
+          console.log("unexpected error");
+        });
     }
   }, [gateOpen, setNode, tumblers, openDoor]);
 
