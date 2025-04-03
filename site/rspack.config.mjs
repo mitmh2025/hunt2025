@@ -559,6 +559,7 @@ export default function createConfigs(_env, argv) {
       hints: "./src/frontend/client/hints.tsx",
       virtual_radio: "./src/frontend/client/virtual_radio.tsx",
 
+      archive_flash_prevention: "./src/frontend/archives/flash_prevention.ts",
       archive_stats: "./src/frontend/archives/stats/client.tsx",
       archive_puzzle_stats: "./src/frontend/archives/stats/puzzle_client.tsx",
       archive_radio: "./src/frontend/archives/radio/client.tsx",

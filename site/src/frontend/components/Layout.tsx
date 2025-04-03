@@ -4,6 +4,7 @@ import AppleTouchIcon from "../../assets/apple-touch-icon.png";
 import FaviconIco from "../../assets/favicon.ico";
 import Favicon from "../../assets/favicon.svg";
 import { lookupScripts, lookupStylesheets } from "../server/assets";
+import archiveMode from "../utils/archiveMode.js";
 
 function dedupedOrderedItems(scripts: string[]): string[] {
   // Dedupe included scripts.  We only need to load each chunk once.
@@ -21,6 +22,7 @@ function dedupedOrderedItems(scripts: string[]): string[] {
 export const BaseLayout = ({
   innerHTML,
   scripts,
+  earlyScripts,
   stylesheets,
   styleElements,
   title,
@@ -28,6 +30,7 @@ export const BaseLayout = ({
 }: {
   innerHTML: string;
   scripts?: string[];
+  earlyScripts?: string[];
   stylesheets?: string[];
   styleElements?: React.JSX.Element[];
   headElements?: ReactNode[];
@@ -35,10 +38,14 @@ export const BaseLayout = ({
 }) => {
   const orderedStylesheets = dedupedOrderedItems(stylesheets ?? []);
   const orderedScripts = dedupedOrderedItems(scripts ?? []);
+  const orderedEarlyScripts = dedupedOrderedItems(earlyScripts ?? []);
   return (
     <html lang="en">
       <head>
         {title && <title>{title}</title>}
+        {orderedEarlyScripts.map((s) => (
+          <script key={s} type="text/javascript" src={s} />
+        ))}
         {orderedScripts.map((s) => (
           <link key={`preload-${s}`} rel="preload" href={s} as="script" />
         ))}
@@ -87,6 +94,9 @@ const Layout = ({
     ...(scripts ?? []),
     ...devScripts,
   ];
+  const earlyScripts = archiveMode
+    ? lookupScripts("archive_flash_prevention")
+    : [];
 
   const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
 
@@ -107,6 +117,7 @@ const Layout = ({
     <BaseLayout
       innerHTML={innerHTML}
       scripts={allScripts}
+      earlyScripts={earlyScripts}
       stylesheets={allStyles}
       styleElements={styleElements}
       headElements={headElements}

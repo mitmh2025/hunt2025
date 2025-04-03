@@ -10,6 +10,7 @@ import { newAuthClient } from "../../../lib/api/auth_client";
 import { type TeamRegistrationState } from "../../../lib/api/contract";
 import ArchiveTeamManager from "../archives/ArchiveTeamManager";
 import apiUrl from "../utils/apiUrl";
+import clientIsBot from "../utils/clientIsBot";
 import {
   responseIsZodError,
   responseToZodErrors,
@@ -285,7 +286,7 @@ const TeamManager = ({
   return (
     <>
       {/* #!if TARGET === "client" && ARCHIVE_MODE */}
-      <ArchiveTeamManager />
+      {!clientIsBot && <ArchiveTeamManager />}
       {/* #!endif */}
       <form onSubmit={onSubmit}>
         <Section>

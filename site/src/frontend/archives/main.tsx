@@ -9,6 +9,7 @@ import {
 import { reduceTeamStateIntermediate } from "../../../lib/api/archive/reducers";
 import { AuthorsNoteBlock } from "../components/PuzzleLayout";
 import { Button } from "../components/StyledUI";
+import clientIsBot from "../utils/clientIsBot";
 import rootUrl from "../utils/rootUrl";
 
 const ModalBackdrop = styled.div`
@@ -158,18 +159,20 @@ const checkLocked = () => {
   }
 };
 
-if (huntPage && !huntStarted) {
-  const rootElem = document.createElement("div");
-  document.body.appendChild(rootElem);
-  const root = createRoot(rootElem);
-  root.render(
-    <InitializeActivityLogModal
-      unmount={() => {
-        root.unmount();
-        checkLocked();
-      }}
-    />,
-  );
-} else {
-  checkLocked();
+if (!clientIsBot) {
+  if (huntPage && !huntStarted) {
+    const rootElem = document.createElement("div");
+    document.body.appendChild(rootElem);
+    const root = createRoot(rootElem);
+    root.render(
+      <InitializeActivityLogModal
+        unmount={() => {
+          root.unmount();
+          checkLocked();
+        }}
+      />,
+    );
+  } else {
+    checkLocked();
+  }
 }
