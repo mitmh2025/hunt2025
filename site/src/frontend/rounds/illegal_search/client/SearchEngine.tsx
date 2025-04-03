@@ -576,7 +576,11 @@ const SearchEngine = () => {
 
       setNode(fetchNode(destId));
 
-      history.pushState({ node }, "", `/rounds/illegal_search?node=${destId}`);
+      history.pushState(
+        { node },
+        "",
+        `${rootUrl}/rounds/illegal_search?node=${destId}`,
+      );
     },
     [node],
   );
