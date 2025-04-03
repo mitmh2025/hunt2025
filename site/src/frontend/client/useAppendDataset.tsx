@@ -5,6 +5,7 @@ import {
   type ObjectWithId,
 } from "../../../lib/api/websocket";
 import archiveMode from "../utils/archiveMode";
+import clientIsBot from "../utils/clientIsBot";
 import globalDatasetManager from "@hunt_client/globalDatasetManager";
 
 function useAppendDataset<T extends ObjectWithId>(
@@ -13,9 +14,13 @@ function useAppendDataset<T extends ObjectWithId>(
   initialValue: T[],
 ): T[] {
   const [state, setState] = useState<T[]>(() =>
-    archiveMode ? [] : [...initialValue],
+    archiveMode && !clientIsBot ? [] : [...initialValue],
   );
   useEffect(() => {
+    if (archiveMode && clientIsBot) {
+      return;
+    }
+
     const stop = globalDatasetManager.watch(
       dataset,
       params,

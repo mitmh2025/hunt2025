@@ -4,6 +4,8 @@ import {
   type Dataset,
   type ObjectWithEpoch,
 } from "../../../lib/api/websocket";
+import archiveMode from "../utils/archiveMode";
+import clientIsBot from "../utils/clientIsBot";
 import globalDatasetManager from "@hunt_client/globalDatasetManager";
 
 function useDataset<T extends ObjectWithEpoch>(
@@ -13,6 +15,10 @@ function useDataset<T extends ObjectWithEpoch>(
 ): T {
   const [state, setState] = useState<T>(initialValue);
   useEffect(() => {
+    if (archiveMode && clientIsBot) {
+      return;
+    }
+
     const stop = globalDatasetManager.watch(
       dataset,
       params,
