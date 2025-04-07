@@ -39,3 +39,11 @@ declare module "@hunt_client/illegal_search_state" {
   export function getTeamState(): TeamHuntState;
   export function useTeamState(initialTeamState: TeamHuntState): TeamHuntState;
 }
+
+declare module "@hunt_client/puzzles/follow_the_rules" {
+  import type { Outputs } from "src/frontend/puzzles/right-palm/shared";
+
+  export function getLights(
+    inputs: number[],
+  ): Promise<{ outputs: Outputs; additionalText?: string }>;
+}
