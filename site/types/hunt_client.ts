@@ -47,3 +47,19 @@ declare module "@hunt_client/puzzles/follow_the_rules" {
     inputs: number[],
   ): Promise<{ outputs: Outputs; additionalText?: string }>;
 }
+
+declare module "@hunt_client/puzzles/deepfrost" {
+  export function sendCommand({
+    command,
+    state,
+  }: {
+    command: string;
+    state: unknown;
+  }): Promise<{
+    message: string;
+    haveKey: boolean;
+    error?: string;
+    previousCommand: string;
+    state: unknown;
+  }>;
+}

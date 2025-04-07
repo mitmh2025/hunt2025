@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
-import rootUrl from "../../utils/rootUrl";
+import { sendCommand } from "@hunt_client/puzzles/deepfrost";
 
 const Message = styled.div`
   word-break: break-word;
@@ -54,32 +54,13 @@ const App = () => {
     async (command: string) => {
       setLoading(true);
       try {
-        const response = await fetch(`${rootUrl}/puzzles/deepfrost/command`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({ command, state }),
-        });
-        if (!response.ok) {
-          setError("An unexpected error occurred.");
-          return;
-        }
-
         const {
           message,
           haveKey,
           error,
           previousCommand,
           state: newState,
-        } = (await response.json()) as {
-          message: string;
-          haveKey: boolean;
-          error: string | undefined;
-          previousCommand: string;
-          state: unknown;
-        };
+        } = await sendCommand({ command, state });
         setMessage(message);
         setHaveKey(haveKey);
         setError(error);
@@ -87,6 +68,8 @@ const App = () => {
         setState(newState);
         setCommand("");
         inputRef.current?.focus();
+      } catch {
+        setError("An unexpected error occurred.");
       } finally {
         setLoading(false);
       }
