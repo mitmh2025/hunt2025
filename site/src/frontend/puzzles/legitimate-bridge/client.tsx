@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
-import rootUrl from "../../utils/rootUrl";
 import GroupViewer from "./puzzle-components/GroupViewer";
 import PanelViewer from "./puzzle-components/PanelViewer";
 import {
@@ -13,14 +12,13 @@ import Square from "./puzzle-components/Square";
 import {
   type Group,
   type MinimalGroup,
-  type MinimalPuzzle,
   NonPuzzleColor,
-  type Puzzle,
   type PuzzleColor,
 } from "./puzzle-components/Typedefs";
 import usePuzzleState, {
   PuzzleActionType,
 } from "./puzzle-components/usePuzzleState";
+import { getState, makeGuess } from "@hunt_client/puzzles/jargon";
 
 const Wrapper = styled.div`
   font-family: "Jargon";
@@ -54,26 +52,13 @@ const App = (): JSX.Element => {
   ] = usePuzzleState();
 
   useEffect(() => {
-    fetch(`${rootUrl}/puzzles/jargon/state`, {
-      method: "POST",
-      body: JSON.stringify({ solvedUuids: [...solvedUuids] }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    }).then(
-      async (response) => {
-        if (response.ok) {
-          const { tutorialPuzzles, puzzleGroups } = (await response.json()) as {
-            tutorialPuzzles: Record<PuzzleColor, (MinimalPuzzle | Puzzle)[]>;
-            puzzleGroups?: (Group | MinimalGroup)[];
-          };
-          dispatch({
-            type: PuzzleActionType.REFRESH_STATE,
-            tutorialPuzzles: tutorialPuzzles,
-            puzzleGroups: puzzleGroups,
-          });
-        }
+    getState(solvedUuids).then(
+      ({ tutorialPuzzles, puzzleGroups }) => {
+        dispatch({
+          type: PuzzleActionType.REFRESH_STATE,
+          tutorialPuzzles: tutorialPuzzles,
+          puzzleGroups: puzzleGroups,
+        });
       },
       (rejectionReason) => {
         console.log("request failed", rejectionReason);
@@ -93,18 +78,8 @@ const App = (): JSX.Element => {
       correctCallback: () => void;
       incorrectCallback: (value: string) => void;
     }) => {
-      fetch(`${rootUrl}/puzzles/jargon/puzzle/${uuid}`, {
-        method: "POST",
-        body: JSON.stringify({ guess }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }).then(
-        async (response) => {
-          const { solutionUuid } = (await response.json()) as {
-            solutionUuid?: string;
-          };
+      makeGuess({ uuid, guess }).then(
+        ({ solutionUuid }) => {
           if (solutionUuid) {
             correctCallback();
             if (HAS_STORAGE) {

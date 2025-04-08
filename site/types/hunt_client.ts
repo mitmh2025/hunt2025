@@ -93,3 +93,27 @@ declare module "@hunt_client/puzzles/the_annual_massachusetts_spelling_bee" {
     guessResponses: GuessResponsesByUuid;
   }>;
 }
+
+declare module "@hunt_client/puzzles/jargon" {
+  import type {
+    Group,
+    MinimalGroup,
+    MinimalPuzzle,
+    Puzzle,
+    PuzzleColor,
+  } from "src/frontend/puzzles/legitimate-bridge/puzzle-components/Typedefs";
+
+  export function makeGuess({
+    uuid,
+    guess,
+  }: {
+    uuid: string;
+    guess: string;
+  }): Promise<{
+    solutionUuid?: string;
+  }>;
+  export function getState(solvedUuids: Set<string>): Promise<{
+    tutorialPuzzles: Record<PuzzleColor, (MinimalPuzzle | Puzzle)[]>;
+    puzzleGroups?: (Group | MinimalGroup)[];
+  }>;
+}
