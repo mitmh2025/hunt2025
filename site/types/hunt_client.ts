@@ -77,3 +77,19 @@ declare module "@hunt_client/puzzles/chatgpt" {
     state: unknown;
   }>;
 }
+
+declare module "@hunt_client/puzzles/the_annual_massachusetts_spelling_bee" {
+  import type {
+    GuessResponsesByUuid,
+    MinimalRounds,
+  } from "src/frontend/puzzles/few-nail/puzzle-components/Typedefs";
+
+  export function getState({
+    guessesByUuid,
+  }: {
+    guessesByUuid: Record<string, string>;
+  }): Promise<{
+    rounds: MinimalRounds;
+    guessResponses: GuessResponsesByUuid;
+  }>;
+}

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import rootUrl from "../../utils/rootUrl";
 import {
   CLEANSTRING_REGEX,
   HAS_STORAGE,
@@ -9,14 +8,11 @@ import {
 import RoundView from "./puzzle-components/RoundView";
 import { StyledDiv } from "./puzzle-components/Shared";
 import SpellingBeeStatusViewProps from "./puzzle-components/SpellingBeeStatusView";
-import type {
-  GuessResponsesByUuid,
-  MinimalRounds,
-} from "./puzzle-components/Typedefs";
 import { getGuessesByUuid } from "./puzzle-components/Util";
 import usePuzzleState, {
   PuzzleActionType,
 } from "./puzzle-components/usePuzzleState";
+import { getState } from "@hunt_client/puzzles/the_annual_massachusetts_spelling_bee";
 
 const App = (): JSX.Element => {
   const [
@@ -31,19 +27,10 @@ const App = (): JSX.Element => {
   ] = usePuzzleState();
 
   const refreshState = useCallback(() => {
-    fetch(`${rootUrl}/puzzles/the_annual_massachusetts_spelling_bee/state`, {
-      method: "POST",
-      body: JSON.stringify({ guessesByUuid: getGuessesByUuid() }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
+    getState({
+      guessesByUuid: getGuessesByUuid(),
     }).then(
-      async (response) => {
-        const { rounds, guessResponses } = (await response.json()) as {
-          rounds: MinimalRounds;
-          guessResponses: GuessResponsesByUuid;
-        };
+      ({ rounds, guessResponses }) => {
         dispatch({
           type: PuzzleActionType.REFRESH_STATE,
           availableRounds: rounds,
