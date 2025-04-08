@@ -63,3 +63,17 @@ declare module "@hunt_client/puzzles/deepfrost" {
     state: unknown;
   }>;
 }
+
+declare module "@hunt_client/puzzles/chatgpt" {
+  export function chat({
+    message,
+    state,
+  }: {
+    message: string;
+    state: unknown;
+  }): Promise<{
+    response: string;
+    success: boolean;
+    state: unknown;
+  }>;
+}
