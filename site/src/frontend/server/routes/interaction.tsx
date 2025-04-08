@@ -8,6 +8,7 @@ import teamIsImmutable from "../../../utils/teamIsImmutable";
 import { getBackgroundCheckManifestOverrides } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import { type InteractionDefinition, INTERACTIONS } from "../../interactions";
+import archiveMode from "../../utils/archiveMode";
 import rootUrl from "../../utils/rootUrl";
 import {
   type ComponentManifest,
@@ -135,11 +136,13 @@ function virtualInteractionHandler(
         {preloadImages.map((src) => (
           <link key={src} rel="preload" as="image" href={src} />
         ))}
-        {interaction.virtual && process.env.NODE_ENV === "development" && (
-          <form method="POST" action={`${rootUrl}/interactions/${slug}/skip`}>
-            <button type="submit">[DEV MODE] Skip interaction</button>
-          </form>
-        )}
+        {interaction.virtual &&
+          process.env.NODE_ENV === "development" &&
+          !archiveMode && (
+            <form method="POST" action={`${rootUrl}/interactions/${slug}/skip`}>
+              <button type="submit">[DEV MODE] Skip interaction</button>
+            </form>
+          )}
       </div>
     </>
   );
@@ -200,7 +203,7 @@ function liveInteractionHandler(
         </HeaderComponent>
         <MainComponent id="interaction-content" className="interaction-content">
           <ContentComponent interactionState={interactionState} />
-          {process.env.NODE_ENV === "development" && (
+          {process.env.NODE_ENV === "development" && !archiveMode && (
             <>
               <p>
                 This is a stub for advancing interaction structure in

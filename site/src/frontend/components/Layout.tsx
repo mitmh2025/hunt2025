@@ -54,7 +54,7 @@ export const BaseLayout = ({
           <link key={s} rel="stylesheet" href={s} />
         ))}
         {styleElements}
-        {process.env.NODE_ENV === "development" && (
+        {process.env.NODE_ENV === "development" && !archiveMode && (
           <script src="http://localhost:35729/livereload.js?snipver=1" />
         )}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -86,7 +86,8 @@ const Layout = ({
   title?: string;
   teamState?: TeamHuntState;
 }) => {
-  const injectDevScript = process.env.NODE_ENV === "development" && !!teamState;
+  const injectDevScript =
+    process.env.NODE_ENV === "development" && !archiveMode && !!teamState;
   const devScripts = injectDevScript ? lookupScripts("dev") : [];
   // Scripts are deduped by BaseLayout
   const allScripts = [
