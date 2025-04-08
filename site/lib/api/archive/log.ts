@@ -180,7 +180,34 @@ export const mutateActivityLog = async <T>(
 ): Promise<T> => {
   const mutator = new ActivityLogMutator(log);
   const ret = await fn(mutator);
-  await recalculateTeamState(HUNT, ARCHIVE_TEAM_ID, mutator);
+
+  // Special logic for archive mode: automatically mark live interactions as
+  // complete, and then re-calculate again in case that unlocks anything else
+  for (;;) {
+    await recalculateTeamState(HUNT, ARCHIVE_TEAM_ID, mutator);
+    const state = mutator.getTeamState(HUNT, ARCHIVE_TEAM_ID);
+    const live_interactions = Object.entries(INTERACTIONS)
+      .filter(([, i]) => i.type === "live")
+      .map(([slug]) => slug);
+    const incomplete_live_interactions = state.interactions_unlocked
+      .difference(state.interactions_completed)
+      .intersection(new Set(live_interactions));
+    if (incomplete_live_interactions.size === 0) {
+      break;
+    }
+
+    for (const slug of incomplete_live_interactions) {
+      await mutator.appendLog({
+        team_id: ARCHIVE_TEAM_ID,
+        type: "interaction_completed",
+        slug,
+        data: {
+          result: "",
+        },
+      });
+    }
+  }
+
   if (mutator.mutated) {
     activityLog.set(mutator.log);
   }
