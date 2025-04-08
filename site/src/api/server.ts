@@ -60,7 +60,7 @@ import {
   type VirtualInteractionHandler,
 } from "../frontend/interactions/virtual_interaction_handler";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
-import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
+import { generateLogEntries } from "../frontend/puzzles/new-ketchup/logic";
 import {
   orderedQuixoticSubpuzzleSlugs,
   quixoticSubpuzzleDataBySlug,
@@ -3708,7 +3708,11 @@ export async function getRouter({
               const teamName = await getCurrentTeamName(team_id, trx);
               if (teamName) {
                 // Do whatever puzzle logic is involved
-                const newEntries = generateLogEntries(teamName, mutator.log);
+                const newEntries = generateLogEntries(
+                  team_id,
+                  teamName,
+                  mutator.log,
+                );
                 for (const entry of newEntries) {
                   await mutator.appendLog({
                     team_id,

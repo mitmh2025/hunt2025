@@ -117,3 +117,7 @@ declare module "@hunt_client/puzzles/jargon" {
     puzzleGroups?: (Group | MinimalGroup)[];
   }>;
 }
+
+declare module "@hunt_client/puzzles/what_do_they_call_you" {
+  export function speak(): Promise<void>;
+}
