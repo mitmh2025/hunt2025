@@ -15,36 +15,34 @@ import activityLog from "./assets/activity_log.csv";
 
 activity_log.csv was generated with the following SQL query:
 
-WITH all_team_names AS (
-	SELECT
-		timestamp,
-		team_id,
-		data ->> 'name' AS name
-	FROM
-		team_registration_log
-	WHERE
-		timestamp < timestamp with time zone '2025-01-17 12:00 America/New_York'
-),
-latest_team_names AS (
-	SELECT
-		team_id,
-		first_value(name) OVER (PARTITION BY team_id ORDER BY timestamp DESC) AS team_name
-FROM
-	all_team_names
-	WHERE
-		name IS NOT NULL
-),
-team_names AS (
-	SELECT DISTINCT
-		team_id,
-		team_name
-	FROM
-		latest_team_names
-	ORDER BY
-		team_id
+WITH team_names AS (
+  SELECT
+    team_id,
+    data->>'name' AS team_name
+  FROM
+    team_registration_log l
+  WHERE
+    id = (
+      SELECT
+        id
+      FROM
+        team_registration_log
+      WHERE
+        team_id = l.team_id
+        AND data->>'name' IS NOT NULL
+        AND timestamp < timestamp with time zone '2025-01-17 12:00 America/New_York'
+      ORDER BY
+        timestamp DESC
+      LIMIT 1
+    )
 )
 SELECT
-	timestamp AT TIME ZONE 'America/New_York' AS timestamp,
+	CASE type
+  WHEN 'team_hints_unlocked' THEN
+    (data ->> 'hints_available_at')::timestamptz
+  ELSE
+    timestamp
+  END AT TIME ZONE 'America/New_York' AS timestamp,
 	team_name,
 	CASE type
 	WHEN 'strong_currency_adjusted' THEN
@@ -53,6 +51,8 @@ SELECT
 		'clue_exchanged'
 	WHEN 'currency_adjusted' THEN
 		'keys_adjusted'
+  WHEN 'team_hints_unlocked' THEN
+    'puzzle_hints_unlocked'
 	ELSE
 		type
 	END,
@@ -83,10 +83,29 @@ WHERE
 	t.username NOT LIKE 'dnm-%'
 	AND t.username NOT IN ('public', 'public_access')
 	AND NOT t.deactivated
-	AND type IN ('currency_adjusted', 'interaction_completed', 'interaction_started', 'interaction_unlocked', 'puzzle_answer_bought', 'puzzle_guess_submitted', 'puzzle_partially_solved', 'puzzle_solved', 'puzzle_unlockable', 'puzzle_unlocked', 'rate_limits_reset', 'round_unlocked', 'strong_currency_adjusted', 'strong_currency_exchanged')
+	AND type IN (
+    'currency_adjusted',
+    'interaction_completed',
+    'interaction_started',
+    'interaction_unlocked',
+    'puzzle_answer_bought',
+    'puzzle_guess_submitted',
+    'puzzle_hint_requested',
+    'puzzle_hint_responded',
+    'puzzle_partially_solved',
+    'puzzle_solved',
+    'puzzle_unlockable',
+    'puzzle_unlocked',
+    'rate_limits_reset',
+    'round_unlocked',
+    'strong_currency_adjusted',
+    'strong_currency_exchanged',
+    'team_hints_unlocked'
+  )
 	AND timestamp < TIMESTAMP WITH TIME ZONE '2025-01-20 12:45:00 America/New_York'
 ORDER BY
-	timestamp
+	timestamp,
+  al.id
 
 team_info.csv was generated with the following query:
 
@@ -140,6 +159,17 @@ FROM
   JOIN team_names tn ON ts.team_id = tn.team_id
 ORDER BY
   team_name;
+
+hint_availability.csv was generated with the following query:
+
+SELECT
+  timestamp AT TIME ZONE 'America/New_York' AS timestamp,
+  slug
+FROM
+  activity_log
+WHERE
+  type = 'global_hints_unlocked'
+
 */
 
 const statsHandler: PageRenderer<ParamsDictionary> = () => {
@@ -170,9 +200,12 @@ const statsHandler: PageRenderer<ParamsDictionary> = () => {
             <li>
               Roughly <strong>5,000</strong> people participated in the Hunt
               (according to teams’ self-reported sizes), of which roughly{" "}
-              <strong>2,300</strong> joined us on-campus at MIT. Those 5,000
-              people were split across <strong>219</strong> teams that
-              registered for Hunt, of which <strong>103</strong> had any
+              <strong>2,300</strong> joined us on-campus at MIT.
+            </li>
+
+            <li>
+              Those 5,000 people were split across <strong>219</strong> teams
+              that registered for Hunt, of which <strong>103</strong> had any
               on-campus presence.
             </li>
 

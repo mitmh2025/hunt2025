@@ -4,6 +4,7 @@ import {
   BarElement,
   CategoryScale,
   Colors,
+  Legend,
   LinearScale,
   LineElement,
   PointElement,
@@ -13,9 +14,9 @@ import {
   type ActiveElement,
   type ChartEvent,
   type ChartOptions,
-  type ScaleOptions,
   type ChartType,
   type ChartDataset,
+  type ChartData,
 } from "chart.js";
 import Zoom from "chartjs-plugin-zoom";
 import type { ZoomPluginOptions } from "chartjs-plugin-zoom/types/options";
@@ -44,6 +45,7 @@ import { INTERACTIONS } from "../../interactions";
 import rootUrl from "../../utils/rootUrl";
 import Loading from "./Loading";
 import activityLogUrl from "./assets/activity_log.csv";
+import hintAvailabilityUrl from "./assets/hint_availability.csv";
 import teamInfoUrl from "./assets/team_info.csv";
 
 ChartJS.register(
@@ -60,6 +62,7 @@ ChartJS.register(
 
 const HuntStart = DateTime.fromISO("2025-01-17T12:00:00-05:00");
 const HuntEnd = DateTime.fromISO("2025-01-20T12:45:00-05:00");
+const HuntHQClose = DateTime.fromISO("2025-01-19T22:00:00-05:00");
 
 const slugToSlot = generateSlugToSlotMap(HUNT);
 const puzzleSlugs = [...slugToSlot.entries()].map(([slug, _]) => slug);
@@ -74,20 +77,22 @@ type CSVRow = {
   timestamp: DateTime;
   team_name: string;
   type:
-    | "puzzle_unlockable"
-    | "round_unlocked"
-    | "puzzle_unlocked"
-    | "puzzle_guess_submitted"
-    | "puzzle_solved"
-    | "puzzle_partially_solved"
-    | "keys_adjusted"
-    | "interaction_unlocked"
-    | "interaction_started"
-    | "interaction_completed"
     | "clue_exchanged"
-    | "puzzle_answer_bought"
     | "clues_adjusted"
-    | "rate_limits_reset";
+    | "interaction_completed"
+    | "interaction_started"
+    | "interaction_unlocked"
+    | "keys_adjusted"
+    | "puzzle_answer_bought"
+    | "puzzle_guess_submitted"
+    | "puzzle_hint_requested"
+    | "puzzle_hint_responded"
+    | "puzzle_partially_solved"
+    | "puzzle_solved"
+    | "puzzle_unlockable"
+    | "puzzle_unlocked"
+    | "rate_limits_reset"
+    | "round_unlocked";
   slug?: string;
   result?: string;
   keys_delta: number;
@@ -95,6 +100,7 @@ type CSVRow = {
 };
 
 type TeamInfo = Map<string, { people: number }>;
+type HintAvailabilityRow = { timestamp: DateTime; slug: string };
 
 const Chart = styled.div`
   position: relative;
@@ -103,22 +109,28 @@ const Chart = styled.div`
   background-color: var(--white);
 `;
 
-const TimeAxisOptions: ScaleOptions = {
-  type: "time",
-  min: HuntStart.toJSDate().valueOf(),
-  max: HuntEnd.toJSDate().valueOf(),
+const TimeAxisOptions = ({
+  start = HuntStart,
+  end = HuntEnd,
+}: {
+  start?: DateTime;
+  end?: DateTime;
+} = {}) => ({
+  type: "time" as const,
+  min: start.toJSDate().valueOf(),
+  max: end.toJSDate().valueOf(),
   adapters: {
     date: {
       zone: "America/New_York",
     },
   },
   time: {
-    unit: "hour",
+    unit: "hour" as const,
     displayFormats: {
       hour: "EEE h a",
     },
   },
-};
+});
 
 const ZoomConfig: ZoomPluginOptions = {
   pan: {
@@ -314,7 +326,7 @@ const SolveGraph = ({
     },
     onClick: onChartClick,
     scales: {
-      x: TimeAxisOptions,
+      x: TimeAxisOptions(),
       y: {
         title: {
           text: "Solves",
@@ -601,6 +613,135 @@ const GuessVsSolveGraph = ({
   );
 };
 
+const HintGraph = ({
+  activityLog,
+  hintAvailability,
+}: {
+  activityLog: CSVRow[];
+  hintAvailability: HintAvailabilityRow[];
+}) => {
+  const data: ChartData<"line", { x: DateTime; y: number }[]> = useMemo(() => {
+    const requestsByHour = new Map<number, number>();
+    const responsesByHour = new Map<number, number>();
+
+    // Iterate from HuntStart to HuntHQClose and fill in any missing hours
+    const start = HuntStart.startOf("hour");
+    const end = HuntHQClose;
+    const allHours: number[] = [];
+    for (let hour = start; hour <= end; hour = hour.plus({ hours: 1 })) {
+      allHours.push(hour.toMillis());
+    }
+    activityLog.forEach((row) => {
+      const hour = allHours.findLast((h) => h <= row.timestamp.toMillis());
+      if (!hour || row.timestamp > HuntHQClose) {
+        return;
+      }
+
+      if (row.type === "puzzle_hint_requested") {
+        requestsByHour.set(hour, (requestsByHour.get(hour) ?? 0) + 1);
+      }
+      if (row.type === "puzzle_hint_responded") {
+        responsesByHour.set(hour, (responsesByHour.get(hour) ?? 0) + 1);
+      }
+    });
+
+    const hintData: { x: DateTime; y: number }[] = [{ x: HuntStart, y: 0 }];
+    hintAvailability.forEach((row) => {
+      const last = hintData[hintData.length - 1];
+      if (last && row.timestamp.diff(last.x).as("minutes") < 5) {
+        last.y += 1;
+      } else {
+        hintData.push({ x: row.timestamp, y: 1 });
+      }
+    });
+    hintData.push({ x: HuntEnd, y: 0 });
+    let cumulativeHints = 0;
+    hintData.forEach((row) => {
+      cumulativeHints += row.y;
+      row.y = cumulativeHints;
+    });
+
+    return {
+      datasets: [
+        {
+          label: "Requests",
+          data: allHours.map((hour) => ({
+            x: DateTime.fromMillis(hour),
+            y: requestsByHour.get(hour) ?? 0,
+          })),
+        },
+        {
+          label: "Responses",
+          data: allHours.map((hour) => ({
+            x: DateTime.fromMillis(hour),
+            y: responsesByHour.get(hour) ?? 0,
+          })),
+        },
+        {
+          label: "Puzzles with Hints Available",
+          yAxisID: "y2",
+          data: hintData,
+        },
+      ],
+    };
+  }, [activityLog, hintAvailability]);
+
+  const options: ChartOptions<"line"> = {
+    responsive: true,
+    animation: {
+      duration: 200,
+    },
+    datasets: {
+      line: {
+        cubicInterpolationMode: "monotone",
+      },
+    },
+    scales: {
+      x: TimeAxisOptions({ end: HuntHQClose }),
+      y: {
+        title: {
+          text: "Hints",
+          display: true,
+        },
+        min: 0,
+      },
+      y2: {
+        position: "right",
+        title: {
+          text: "Puzzles with Hints Available",
+          display: true,
+        },
+        min: 0,
+        max: Math.max(
+          0,
+          ...data.datasets.map((d) =>
+            d.yAxisID === "y2" ? d.data[d.data.length - 1]?.y ?? 0 : 0,
+          ),
+        ),
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
+    },
+    plugins: {
+      zoom: ZoomConfig,
+    },
+    transitions: {
+      zoom: {
+        animation: {
+          duration: 0,
+        },
+      },
+    },
+  };
+
+  return (
+    <Chart>
+      <Line plugins={[Legend]} options={options} data={data} />
+    </Chart>
+  );
+};
+
 const InteractionResultGraph = ({ activityLog }: { activityLog: CSVRow[] }) => {
   const options: ChartOptions<"bar"> = {
     datasets: {
@@ -677,9 +818,11 @@ const InteractionResultGraph = ({ activityLog }: { activityLog: CSVRow[] }) => {
 const App = ({
   activityLog,
   teamInfo,
+  hintAvailability,
 }: {
   activityLog: CSVRow[];
   teamInfo: TeamInfo;
+  hintAvailability: HintAvailabilityRow[];
 }) => {
   const { activityLogByTeam, teamColors, teamSort } = useMemo(() => {
     const teamNames = new Set(activityLog.map((row) => row.team_name));
@@ -880,6 +1023,18 @@ const App = ({
         clearHighlight={clearHighlight}
       />
 
+      <h2>Hints</h2>
+      <p>
+        This does not include in-person hints given out at the Gala by our Press
+        Corps. It is also possible that there are more responses than requests,
+        as our hinters were able to provide unsolicited replies (if, e.g., they
+        needed to follow up on a previous response).
+      </p>
+      <HintGraph
+        activityLog={activityLog}
+        hintAvailability={hintAvailability}
+      />
+
       <h2>Virtual Interactions</h2>
       <p>
         Each of the virtual witness interviews gave teams an item that remained
@@ -952,24 +1107,51 @@ const fetchTeamInfo = async ({ signal }: { signal: AbortSignal }) => {
   return new Map(info.map((row) => [row.team_name, { people: row.people }]));
 };
 
+const fetchHintAvailability = async ({ signal }: { signal: AbortSignal }) => {
+  const response = await fetch(hintAvailabilityUrl, {
+    signal,
+  });
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch hint availability: ${response.status} ${response.statusText}`,
+    );
+  }
+  const raw = await response.text();
+  const log = parse(raw, {
+    columns: true,
+    cast: (value, context) => {
+      if (context.column === "timestamp") {
+        return DateTime.fromSQL(value, { zone: "America/New_York" });
+      }
+      return value;
+    },
+  }) as HintAvailabilityRow[];
+  return log;
+};
+
 const ActivityLogLoader = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
   const [activityLog, setActivityLog] = useState<CSVRow[]>([]);
   const [teamInfo, setTeamInfo] = useState<TeamInfo | undefined>(undefined);
+  const [hintAvailability, setHintAvailability] = useState<
+    HintAvailabilityRow[]
+  >([]);
 
   useEffect(() => {
     const abort = new AbortController();
     setLoading(true);
     void (async () => {
       try {
-        const [log, info] = await Promise.all([
+        const [log, info, hintAvailability] = await Promise.all([
           fetchActivityLog({ signal: abort.signal }),
           fetchTeamInfo({ signal: abort.signal }),
+          fetchHintAvailability({ signal: abort.signal }),
         ]);
 
         setActivityLog(log);
         setTeamInfo(info);
+        setHintAvailability(hintAvailability);
       } catch (e) {
         setError(e);
       } finally {
@@ -994,7 +1176,13 @@ const ActivityLogLoader = () => {
     );
   }
 
-  return <App activityLog={activityLog} teamInfo={teamInfo} />;
+  return (
+    <App
+      activityLog={activityLog}
+      teamInfo={teamInfo}
+      hintAvailability={hintAvailability}
+    />
+  );
 };
 
 const elem = document.getElementById("stats-root");
