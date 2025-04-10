@@ -37,6 +37,7 @@ import seedrandom from "seedrandom";
 import { styled } from "styled-components";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import { ErrorText } from "../../components/StyledUI";
+import Loading from "./Loading";
 import activityLogUrl from "./assets/activity_log.csv";
 import teamInfoUrl from "./assets/team_info.csv";
 import "chartjs-adapter-luxon";
@@ -890,7 +891,7 @@ const ActivityLogLoader = () => {
   }, []);
 
   if (loading) {
-    return <p>Computing additional statistics...</p>;
+    return <Loading />;
   }
 
   if (error || !teamInfo) {

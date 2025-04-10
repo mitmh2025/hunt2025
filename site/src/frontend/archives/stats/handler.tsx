@@ -8,6 +8,7 @@ import {
 } from "../../components/PageLayout";
 import { type PageRenderer } from "../../utils/renderApp";
 import rootUrl from "../../utils/rootUrl";
+import Loading from "./Loading";
 import activityLog from "./assets/activity_log.csv";
 
 /*
@@ -204,7 +205,7 @@ const statsHandler: PageRenderer<ParamsDictionary> = () => {
 
           <noscript>Additional statistics displays require Javascript</noscript>
           <div id="stats-root">
-            <p>Computing additional statistics...</p>
+            <Loading />
           </div>
 
           <h2>Activity Log</h2>
