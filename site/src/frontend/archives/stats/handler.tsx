@@ -87,6 +87,58 @@ WHERE
 ORDER BY
 	timestamp
 
+team_info.csv was generated with the following query:
+
+WITH team_sizes AS (
+  SELECT
+    team_id,
+    data->>'peopleTotal' AS people
+  FROM
+    team_registration_log l
+  WHERE
+    id = (
+      SELECT
+        id
+      FROM
+        team_registration_log
+      WHERE
+        team_id = l.team_id
+        AND data->>'peopleTotal' IS NOT NULL
+        AND timestamp < timestamp with time zone '2025-01-17 12:00 America/New_York'
+      ORDER BY
+        timestamp DESC
+      LIMIT 1
+    )
+),
+team_names AS (
+  SELECT
+    team_id,
+    data->>'name' AS name
+  FROM
+    team_registration_log l
+  WHERE
+    id = (
+      SELECT
+        id
+      FROM
+        team_registration_log
+      WHERE
+        team_id = l.team_id
+        AND data->>'name' IS NOT NULL
+        AND timestamp < timestamp with time zone '2025-01-17 12:00 America/New_York'
+      ORDER BY
+        timestamp DESC
+      LIMIT 1
+    )
+)
+SELECT
+  tn.name AS team_name,
+  ts.people
+FROM
+  team_sizes ts
+  JOIN team_names tn ON ts.team_id = tn.team_id
+ORDER BY
+  team_name;
 */
 
 const statsHandler: PageRenderer<ParamsDictionary> = () => {
@@ -115,8 +167,12 @@ const statsHandler: PageRenderer<ParamsDictionary> = () => {
 
           <ul>
             <li>
-              <strong>219</strong> teams registered for Hunt, of which{" "}
-              <strong>103</strong> were on campus.
+              Roughly <strong>5,000</strong> people participated in the Hunt
+              (according to teams’ self-reported sizes), of which roughly{" "}
+              <strong>2,300</strong> joined us on-campus at MIT. Those 5,000
+              people were split across <strong>219</strong> teams that
+              registered for Hunt, of which <strong>103</strong> had any
+              on-campus presence.
             </li>
 
             <li>
