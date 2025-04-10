@@ -1,5 +1,8 @@
+import "chartjs-adapter-luxon";
 import {
   Chart as ChartJS,
+  BarElement,
+  CategoryScale,
   Colors,
   LinearScale,
   LineElement,
@@ -25,7 +28,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Bubble, Line, Scatter } from "react-chartjs-2";
+import { Bar, Bubble, Line, Scatter } from "react-chartjs-2";
 import { createRoot } from "react-dom/client";
 import Select, {
   components,
@@ -37,12 +40,15 @@ import seedrandom from "seedrandom";
 import { styled } from "styled-components";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import { ErrorText } from "../../components/StyledUI";
+import { INTERACTIONS } from "../../interactions";
+import rootUrl from "../../utils/rootUrl";
 import Loading from "./Loading";
 import activityLogUrl from "./assets/activity_log.csv";
 import teamInfoUrl from "./assets/team_info.csv";
-import "chartjs-adapter-luxon";
 
 ChartJS.register(
+  BarElement,
+  CategoryScale,
   Colors,
   LinearScale,
   LineElement,
@@ -595,6 +601,79 @@ const GuessVsSolveGraph = ({
   );
 };
 
+const InteractionResultGraph = ({ activityLog }: { activityLog: CSVRow[] }) => {
+  const options: ChartOptions<"bar"> = {
+    datasets: {
+      bar: {
+        maxBarThickness: 100,
+      },
+    },
+    scales: { y: { stacked: true } },
+  };
+
+  const data = useMemo(() => {
+    const resultLogs = activityLog.filter(
+      (
+        row,
+      ): row is CSVRow & {
+        type: "interaction_completed";
+        slug: string;
+        result: string;
+      } =>
+        row.type === "interaction_completed" &&
+        row.slug !== undefined &&
+        row.result !== undefined,
+    );
+
+    const allResults = new Map<
+      string /* slug */,
+      Map<string /* result */, number>
+    >();
+    resultLogs.forEach(({ slug, result }) => {
+      if (!allResults.has(slug)) {
+        allResults.set(slug, new Map());
+      }
+      const resultMap = allResults.get(slug);
+      if (resultMap) {
+        resultMap.set(result, (resultMap.get(result) ?? 0) + 1);
+      }
+    });
+
+    // Filter to just slugs that have more than one result
+    const results = new Map(
+      [...allResults.entries()].filter(([_, resultMap]) => resultMap.size > 1),
+    );
+
+    const label = (slug: string) => INTERACTIONS[slug]?.title ?? slug;
+    const labels = [...results.keys()].map((slug) => label(slug)).sort();
+
+    const datasets = [...results.entries()].flatMap(([slug, resultMap]) => {
+      const title = INTERACTIONS[slug]?.title ?? slug;
+      return [...resultMap.entries()]
+        .toSorted(([r1], [r2]) => (r1 < r2 ? -1 : 1))
+        .map(([result, count]) => {
+          const formatResult = result
+            .split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+          return {
+            label: formatResult,
+            data: [{ x: title, y: count }],
+            stack: "bar",
+          };
+        });
+    });
+
+    return { labels, datasets };
+  }, [activityLog]);
+
+  return (
+    <Chart>
+      <Bar options={options} data={data} />
+    </Chart>
+  );
+};
+
 const App = ({
   activityLog,
   teamInfo,
@@ -800,6 +879,19 @@ const App = ({
         toggleHighlight={toggleHighlight}
         clearHighlight={clearHighlight}
       />
+
+      <h2>Virtual Interactions</h2>
+      <p>
+        Each of the virtual witness interviews gave teams an item that remained
+        pinned to their cork board, based on the choices they made. Here is the
+        breakdown of results for each of the three interactions with multiple
+        potential rewards (the{" "}
+        <a href={`${rootUrl}/interactions/interview_at_the_jewelry_store`}>
+          Interview at the Jewelry Store
+        </a>{" "}
+        always resulted in getting Micah’s phone number)
+      </p>
+      <InteractionResultGraph activityLog={activityLog} />
     </>
   );
 };
