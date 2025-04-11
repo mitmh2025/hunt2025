@@ -730,23 +730,31 @@ const KeyGraphDistribution = ({
   };
 
   const distributions = useMemo(() => {
-    return keysOverTime.map(({ timestamp, keys }) => {
-      const values = [...shownTeams]
-        .flatMap((t) => {
-          const value = keys.get(t);
-          return value !== undefined ? [value] : [];
-        })
-        .sort((a, b) => a - b);
-      const p1 = values[Math.floor(values.length * 0.01)] ?? 0;
-      const p10 = values[Math.floor(values.length * 0.1)] ?? 0;
-      const p25 = values[Math.floor(values.length * 0.25)] ?? 0;
-      const p50 = values[Math.floor(values.length * 0.5)] ?? 0;
-      const p75 = values[Math.floor(values.length * 0.75)] ?? 0;
-      const p90 = values[Math.floor(values.length * 0.9)] ?? 0;
-      const p99 = values[Math.floor(values.length * 0.99)] ?? 0;
+    return keysOverTime
+      .reduce<KeysOverTime>((acc, { timestamp, keys }) => {
+        const last = acc[acc.length - 1];
+        if (!last || timestamp.diff(last.timestamp).as("minutes") > 5) {
+          acc.push({ timestamp, keys });
+        }
+        return acc;
+      }, [])
+      .map(({ timestamp, keys }) => {
+        const values = [...shownTeams]
+          .flatMap((t) => {
+            const value = keys.get(t);
+            return value !== undefined ? [value] : [];
+          })
+          .sort((a, b) => a - b);
+        const p1 = values[Math.floor(values.length * 0.01)] ?? 0;
+        const p10 = values[Math.floor(values.length * 0.1)] ?? 0;
+        const p25 = values[Math.floor(values.length * 0.25)] ?? 0;
+        const p50 = values[Math.floor(values.length * 0.5)] ?? 0;
+        const p75 = values[Math.floor(values.length * 0.75)] ?? 0;
+        const p90 = values[Math.floor(values.length * 0.9)] ?? 0;
+        const p99 = values[Math.floor(values.length * 0.99)] ?? 0;
 
-      return { x: timestamp, p1, p10, p25, p50, p75, p90, p99 };
-    });
+        return { x: timestamp, p1, p10, p25, p50, p75, p90, p99 };
+      });
   }, [keysOverTime, shownTeams]);
 
   const blue = (a: number) => `rgba(54, 162, 235, ${a})`;
