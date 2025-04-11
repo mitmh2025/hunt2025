@@ -44,6 +44,7 @@ import { styled } from "styled-components";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import { ErrorText } from "../../components/StyledUI";
 import { INTERACTIONS } from "../../interactions";
+import { PUZZLES } from "../../puzzles";
 import rootUrl from "../../utils/rootUrl";
 import Loading from "./Loading";
 import activityLogUrl from "./assets/activity_log.csv";
@@ -881,6 +882,40 @@ const KeyGraph = ({
   );
 };
 
+const MostLeastSolvedPuzzleGraph = ({
+  activityLog,
+  mode,
+}: {
+  activityLog: CSVRow[];
+  mode: "most" | "least";
+}) => {
+  const ShowCount = 20;
+
+  const data = useMemo(() => {
+    const solves = activityLog.reduce((acc, row) => {
+      if (row.type === "puzzle_solved" && row.slug) {
+        acc.set(row.slug, (acc.get(row.slug) ?? 0) + 1);
+      }
+      return acc;
+    }, new Map<string, number>());
+    const sorted = [...solves.entries()]
+      .sort((a, b) => a[1] - b[1])
+      .map(([slug, count]) => ({ x: PUZZLES[slug]?.title ?? slug, y: count }));
+
+    if (mode === "most") {
+      return sorted.slice(-ShowCount).reverse();
+    } else {
+      return sorted.slice(0, ShowCount);
+    }
+  }, [activityLog, mode]);
+
+  return (
+    <Chart>
+      <Bar data={{ datasets: [{ data }] }} />
+    </Chart>
+  );
+};
+
 const HintGraph = ({
   activityLog,
   hintAvailability,
@@ -1303,6 +1338,12 @@ const App = ({
         shownTeams={shownTeams}
         highlightedTeams={highlightedTeams}
       />
+
+      <h2>Most Solved Puzzles</h2>
+      <MostLeastSolvedPuzzleGraph activityLog={activityLog} mode="most" />
+
+      <h2>Least Solved Puzzles</h2>
+      <MostLeastSolvedPuzzleGraph activityLog={activityLog} mode="least" />
 
       <h2>Hints</h2>
       <p>
