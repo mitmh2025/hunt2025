@@ -916,6 +916,36 @@ const MostLeastSolvedPuzzleGraph = ({
   );
 };
 
+const MostPurchasedPuzzleGraph = ({
+  activityLog,
+}: {
+  activityLog: CSVRow[];
+}) => {
+  // Show puzzles that were purchased more than Threshold times
+  const Threshold = 5;
+
+  const data = useMemo(() => {
+    const purchases = activityLog.reduce((acc, row) => {
+      if (row.type === "puzzle_answer_bought" && row.slug) {
+        acc.set(row.slug, (acc.get(row.slug) ?? 0) + 1);
+      }
+      return acc;
+    }, new Map<string, number>());
+    const sorted = [...purchases.entries()]
+      .sort((a, b) => a[1] - b[1])
+      .map(([slug, count]) => ({ x: PUZZLES[slug]?.title ?? slug, y: count }))
+      .filter(({ y }) => y > Threshold)
+      .reverse();
+    return sorted;
+  }, [activityLog]);
+
+  return (
+    <Chart>
+      <Bar data={{ datasets: [{ data }] }} />
+    </Chart>
+  );
+};
+
 const HintGraph = ({
   activityLog,
   hintAvailability,
@@ -1344,6 +1374,9 @@ const App = ({
 
       <h2>Least Solved Puzzles</h2>
       <MostLeastSolvedPuzzleGraph activityLog={activityLog} mode="least" />
+
+      <h2>Most Purchased Answers</h2>
+      <MostPurchasedPuzzleGraph activityLog={activityLog} />
 
       <h2>Hints</h2>
       <p>
