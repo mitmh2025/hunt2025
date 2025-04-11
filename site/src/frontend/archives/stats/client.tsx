@@ -17,6 +17,8 @@ import {
   type ChartType,
   type ChartDataset,
   type ChartData,
+  Filler,
+  Decimation,
 } from "chart.js";
 import Zoom from "chartjs-plugin-zoom";
 import type { ZoomPluginOptions } from "chartjs-plugin-zoom/types/options";
@@ -613,6 +615,272 @@ const GuessVsSolveGraph = ({
   );
 };
 
+type KeysOverTime = { timestamp: DateTime; keys: Map<string, number> }[];
+
+const KeyGraphSingle = ({
+  keysOverTime,
+  teamName,
+}: {
+  keysOverTime: KeysOverTime;
+  teamName: string;
+}) => {
+  const options: ChartOptions<"line"> = {
+    responsive: true,
+    animation: {
+      duration: 200,
+    },
+    scales: {
+      x: TimeAxisOptions(),
+      y: {
+        title: {
+          text: "Keys",
+          display: true,
+        },
+      },
+    },
+    datasets: {
+      line: {
+        stepped: true,
+      },
+    },
+    plugins: {
+      zoom: ZoomConfig,
+    },
+    transitions: {
+      zoom: {
+        animation: {
+          duration: 0,
+        },
+      },
+    },
+  };
+
+  const data = useMemo(() => {
+    const data = keysOverTime.map(({ timestamp, keys }) => ({
+      x: timestamp,
+      y: keys.get(teamName) ?? 0,
+    }));
+    return {
+      datasets: [
+        {
+          data: data.reduce<{ x: DateTime; y: number }[]>((acc, e) => {
+            const last = acc[acc.length - 1];
+            if (!last || last.y !== e.y) {
+              acc.push(e);
+            }
+            return acc;
+          }, []),
+        },
+      ],
+    };
+  }, [keysOverTime, teamName]);
+
+  return (
+    <Chart>
+      <Line options={options} data={data} />
+    </Chart>
+  );
+};
+
+const KeyGraphDistribution = ({
+  keysOverTime,
+  shownTeams,
+}: {
+  keysOverTime: KeysOverTime;
+  shownTeams: Set<string>;
+}) => {
+  const options: ChartOptions<"line"> = {
+    responsive: true,
+    animation: {
+      duration: 200,
+    },
+    datasets: {
+      line: {
+        pointStyle: false,
+      },
+    },
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
+    scales: {
+      x: TimeAxisOptions(),
+      y: {
+        title: {
+          text: "Keys",
+          display: true,
+        },
+      },
+    },
+    plugins: {
+      decimation: {
+        enabled: true,
+        algorithm: "lttb",
+      },
+      zoom: ZoomConfig,
+    },
+    transitions: {
+      zoom: {
+        animation: {
+          duration: 0,
+        },
+      },
+    },
+  };
+
+  const distributions = useMemo(() => {
+    return keysOverTime.map(({ timestamp, keys }) => {
+      const values = [...shownTeams]
+        .flatMap((t) => {
+          const value = keys.get(t);
+          return value !== undefined ? [value] : [];
+        })
+        .sort((a, b) => a - b);
+      const p1 = values[Math.floor(values.length * 0.01)] ?? 0;
+      const p10 = values[Math.floor(values.length * 0.1)] ?? 0;
+      const p25 = values[Math.floor(values.length * 0.25)] ?? 0;
+      const p50 = values[Math.floor(values.length * 0.5)] ?? 0;
+      const p75 = values[Math.floor(values.length * 0.75)] ?? 0;
+      const p90 = values[Math.floor(values.length * 0.9)] ?? 0;
+      const p99 = values[Math.floor(values.length * 0.99)] ?? 0;
+
+      return { x: timestamp, p1, p10, p25, p50, p75, p90, p99 };
+    });
+  }, [keysOverTime, shownTeams]);
+
+  const blue = (a: number) => `rgba(54, 162, 235, ${a})`;
+
+  const data = {
+    datasets: [
+      {
+        label: "p1",
+        data: distributions,
+        parsing: {
+          yAxisKey: "p1",
+        },
+        fill: "+1",
+        borderColor: blue(0.1),
+        backgroundColor: blue(0.1),
+      },
+      {
+        label: "p10",
+        data: distributions,
+        parsing: {
+          yAxisKey: "p10",
+        },
+        fill: "+1",
+        borderColor: blue(0.25),
+        backgroundColor: blue(0.25),
+      },
+      {
+        label: "p25",
+        data: distributions,
+        parsing: {
+          yAxisKey: "p25",
+        },
+        fill: "+1",
+        borderColor: blue(0.5),
+        backgroundColor: blue(0.5),
+      },
+      {
+        label: "Median",
+        data: distributions,
+        parsing: {
+          yAxisKey: "p50",
+        },
+        borderColor: blue(1),
+        backgroundColor: blue(1),
+      },
+      {
+        label: "p75",
+        data: distributions,
+        parsing: {
+          yAxisKey: "p75",
+        },
+        fill: "-1",
+        borderColor: blue(0.5),
+        backgroundColor: blue(0.5),
+      },
+      {
+        label: "p90",
+        data: distributions,
+        parsing: {
+          yAxisKey: "p90",
+        },
+        fill: "-1",
+        borderColor: blue(0.25),
+        backgroundColor: blue(0.25),
+      },
+      {
+        label: "p99",
+        data: distributions,
+        parsing: {
+          yAxisKey: "p99",
+        },
+        fill: "-1",
+        borderColor: blue(0.1),
+        backgroundColor: blue(0.1),
+      },
+    ],
+  };
+
+  return (
+    <Chart>
+      <Line
+        plugins={[Decimation, Legend, Filler]}
+        options={options}
+        data={data}
+      />
+    </Chart>
+  );
+};
+
+const KeyGraph = ({
+  activityLog,
+  teamSort,
+  shownTeams,
+  highlightedTeams,
+}: {
+  activityLog: CSVRow[];
+  teamSort: string[];
+  shownTeams: Set<string>;
+  highlightedTeams: Set<string>;
+}) => {
+  const keysOverTime = useMemo(() => {
+    const runningTally = new Map(teamSort.map((t) => [t, 9]));
+    const keysOverTime: KeysOverTime = [
+      { timestamp: HuntStart, keys: new Map(runningTally) },
+    ];
+
+    activityLog.forEach(({ timestamp, team_name, keys_delta }) => {
+      if (keys_delta === 0) return;
+
+      runningTally.set(
+        team_name,
+        (runningTally.get(team_name) ?? 0) + keys_delta,
+      );
+      keysOverTime.push({ timestamp, keys: new Map(runningTally) });
+    });
+
+    keysOverTime.push({ timestamp: HuntEnd, keys: new Map(runningTally) });
+    return keysOverTime;
+  }, [activityLog, teamSort]);
+
+  const chosen =
+    highlightedTeams.size !== 0
+      ? shownTeams.intersection(highlightedTeams)
+      : shownTeams;
+
+  if (chosen.size === 1) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we just checked that shownTeams.size === 1
+    const teamName = [...chosen][0]!;
+    return <KeyGraphSingle keysOverTime={keysOverTime} teamName={teamName} />;
+  }
+  return (
+    <KeyGraphDistribution keysOverTime={keysOverTime} shownTeams={chosen} />
+  );
+};
+
 const HintGraph = ({
   activityLog,
   hintAvailability,
@@ -1021,6 +1289,19 @@ const App = ({
         highlightedTeams={highlightedTeams}
         toggleHighlight={toggleHighlight}
         clearHighlight={clearHighlight}
+      />
+
+      <h2>Available Keys Over Time</h2>
+      <p>
+        If exactly one team is highlighted (or is the only team shown), this
+        shows the number of keys available to that team over time. Otherwise, it
+        shows the distribution of all highlighted teams.
+      </p>
+      <KeyGraph
+        activityLog={activityLog}
+        teamSort={teamSort}
+        shownTeams={shownTeams}
+        highlightedTeams={highlightedTeams}
       />
 
       <h2>Hints</h2>
