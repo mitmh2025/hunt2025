@@ -105,10 +105,12 @@ type CSVRow = {
 type TeamInfo = Map<string, { people: number }>;
 type HintAvailabilityRow = { timestamp: DateTime; slug: string };
 
-const Chart = styled.div`
+const Chart = styled.div<{ $aspectRatio?: number }>`
   position: relative;
   width: calc(min(1080px, 100vw) - 10rem);
-  height: calc(0.5 * (min(1080px, 100vw) - 10rem));
+  height: calc(
+    ${({ $aspectRatio = 0.5 }) => $aspectRatio} * (min(1080px, 100vw) - 10rem)
+  );
   background-color: var(--white);
 `;
 
@@ -616,17 +618,27 @@ const GuessVsSolveGraph = ({
   );
 };
 
-type KeysOverTime = { timestamp: DateTime; keys: Map<string, number> }[];
+type ResourceOverTime = {
+  timestamp: DateTime;
+  resources: Map<string, number>;
+}[];
 
-const KeyGraphSingle = ({
-  keysOverTime,
+const ResourceOverTimeSingle = ({
+  resourcesOverTime,
+  resource,
   teamName,
+  baseColor,
+  aspectRatio,
 }: {
-  keysOverTime: KeysOverTime;
+  resourcesOverTime: ResourceOverTime;
+  resource: string;
   teamName: string;
+  baseColor: [r: number, g: number, b: number];
+  aspectRatio?: number;
 }) => {
   const options: ChartOptions<"line"> = {
     responsive: true,
+    aspectRatio: aspectRatio ? 1 / aspectRatio : undefined,
     animation: {
       duration: 200,
     },
@@ -634,7 +646,7 @@ const KeyGraphSingle = ({
       x: TimeAxisOptions(),
       y: {
         title: {
-          text: "Keys",
+          text: resource,
           display: true,
         },
       },
@@ -657,47 +669,66 @@ const KeyGraphSingle = ({
   };
 
   const data = useMemo(() => {
-    const data = keysOverTime.map(({ timestamp, keys }) => ({
-      x: timestamp,
-      y: keys.get(teamName) ?? 0,
-    }));
+    const data = resourcesOverTime
+      .map(({ timestamp, resources }) => ({
+        x: timestamp,
+        y: resources.get(teamName) ?? 0,
+      }))
+      .reduce<{ x: DateTime; y: number }[]>((acc, e) => {
+        const last = acc[acc.length - 1];
+        if (!last || last.y !== e.y) {
+          acc.push(e);
+        }
+        return acc;
+      }, []);
+
+    const last = data[data.length - 1];
+    if (last) {
+      data.push({ x: HuntEnd, y: last.y });
+    }
+
+    const color = `rgb(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]})`;
     return {
       datasets: [
         {
-          data: data.reduce<{ x: DateTime; y: number }[]>((acc, e) => {
-            const last = acc[acc.length - 1];
-            if (!last || last.y !== e.y) {
-              acc.push(e);
-            }
-            return acc;
-          }, []),
+          data,
+          backgroundColor: color,
+          borderColor: color,
         },
       ],
     };
-  }, [keysOverTime, teamName]);
+  }, [baseColor, resourcesOverTime, teamName]);
 
   return (
-    <Chart>
+    <Chart $aspectRatio={aspectRatio}>
       <Line options={options} data={data} />
     </Chart>
   );
 };
 
-const KeyGraphDistribution = ({
-  keysOverTime,
+const ResourceOverTimeDistribution = ({
+  resourcesOverTime,
+  resource,
   shownTeams,
+  baseColor,
+  aspectRatio,
 }: {
-  keysOverTime: KeysOverTime;
+  resourcesOverTime: ResourceOverTime;
+  resource: string;
   shownTeams: Set<string>;
+  baseColor: [r: number, g: number, b: number];
+  aspectRatio?: number;
 }) => {
   const options: ChartOptions<"line"> = {
     responsive: true,
+    aspectRatio: aspectRatio ? 1 / aspectRatio : undefined,
     animation: {
       duration: 200,
     },
     datasets: {
       line: {
         pointStyle: false,
+        stepped: true,
       },
     },
     interaction: {
@@ -708,7 +739,7 @@ const KeyGraphDistribution = ({
       x: TimeAxisOptions(),
       y: {
         title: {
-          text: "Keys",
+          text: resource,
           display: true,
         },
       },
@@ -730,21 +761,24 @@ const KeyGraphDistribution = ({
   };
 
   const distributions = useMemo(() => {
-    return keysOverTime
-      .reduce<KeysOverTime>((acc, { timestamp, keys }) => {
+    return resourcesOverTime
+      .reduce<ResourceOverTime>((acc, { timestamp, resources }) => {
         const last = acc[acc.length - 1];
-        if (!last || timestamp.diff(last.timestamp).as("minutes") > 5) {
-          acc.push({ timestamp, keys });
+        if (last && timestamp.diff(last.timestamp).as("minutes") < 1) {
+          last.resources = resources;
+        } else if (!last || timestamp.diff(last.timestamp).as("minutes") > 5) {
+          acc.push({ timestamp, resources });
         }
         return acc;
       }, [])
-      .map(({ timestamp, keys }) => {
+      .map(({ timestamp, resources }) => {
         const values = [...shownTeams]
           .flatMap((t) => {
-            const value = keys.get(t);
+            const value = resources.get(t);
             return value !== undefined ? [value] : [];
           })
           .sort((a, b) => a - b);
+        const p0 = values[0] ?? 0;
         const p1 = values[Math.floor(values.length * 0.01)] ?? 0;
         const p10 = values[Math.floor(values.length * 0.1)] ?? 0;
         const p25 = values[Math.floor(values.length * 0.25)] ?? 0;
@@ -752,15 +786,25 @@ const KeyGraphDistribution = ({
         const p75 = values[Math.floor(values.length * 0.75)] ?? 0;
         const p90 = values[Math.floor(values.length * 0.9)] ?? 0;
         const p99 = values[Math.floor(values.length * 0.99)] ?? 0;
+        const p100 = values[values.length - 1] ?? 0;
 
-        return { x: timestamp, p1, p10, p25, p50, p75, p90, p99 };
+        return { x: timestamp, p0, p1, p10, p25, p50, p75, p90, p99, p100 };
       });
-  }, [keysOverTime, shownTeams]);
+  }, [resourcesOverTime, shownTeams]);
 
-  const blue = (a: number) => `rgba(54, 162, 235, ${a})`;
+  const color = (a: number) =>
+    `rgba(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]}, ${a})`;
 
   const data = {
     datasets: [
+      {
+        label: "min",
+        data: distributions,
+        parsing: {
+          yAxisKey: "p0",
+        },
+        borderColor: color(0.1),
+      },
       {
         label: "p1",
         data: distributions,
@@ -768,8 +812,8 @@ const KeyGraphDistribution = ({
           yAxisKey: "p1",
         },
         fill: "+1",
-        borderColor: blue(0.1),
-        backgroundColor: blue(0.1),
+        borderColor: color(0.2),
+        backgroundColor: color(0.2),
       },
       {
         label: "p10",
@@ -778,8 +822,8 @@ const KeyGraphDistribution = ({
           yAxisKey: "p10",
         },
         fill: "+1",
-        borderColor: blue(0.25),
-        backgroundColor: blue(0.25),
+        borderColor: color(0.4),
+        backgroundColor: color(0.4),
       },
       {
         label: "p25",
@@ -788,8 +832,8 @@ const KeyGraphDistribution = ({
           yAxisKey: "p25",
         },
         fill: "+1",
-        borderColor: blue(0.5),
-        backgroundColor: blue(0.5),
+        borderColor: color(0.6),
+        backgroundColor: color(0.6),
       },
       {
         label: "Median",
@@ -797,8 +841,8 @@ const KeyGraphDistribution = ({
         parsing: {
           yAxisKey: "p50",
         },
-        borderColor: blue(1),
-        backgroundColor: blue(1),
+        borderColor: color(1),
+        backgroundColor: color(1),
       },
       {
         label: "p75",
@@ -807,8 +851,8 @@ const KeyGraphDistribution = ({
           yAxisKey: "p75",
         },
         fill: "-1",
-        borderColor: blue(0.5),
-        backgroundColor: blue(0.5),
+        borderColor: color(0.6),
+        backgroundColor: color(0.6),
       },
       {
         label: "p90",
@@ -817,8 +861,8 @@ const KeyGraphDistribution = ({
           yAxisKey: "p90",
         },
         fill: "-1",
-        borderColor: blue(0.25),
-        backgroundColor: blue(0.25),
+        borderColor: color(0.4),
+        backgroundColor: color(0.4),
       },
       {
         label: "p99",
@@ -827,14 +871,22 @@ const KeyGraphDistribution = ({
           yAxisKey: "p99",
         },
         fill: "-1",
-        borderColor: blue(0.1),
-        backgroundColor: blue(0.1),
+        borderColor: color(0.2),
+        backgroundColor: color(0.2),
+      },
+      {
+        label: "max",
+        data: distributions,
+        parsing: {
+          yAxisKey: "p100",
+        },
+        borderColor: color(0.1),
       },
     ],
   };
 
   return (
-    <Chart>
+    <Chart $aspectRatio={aspectRatio}>
       <Line
         plugins={[Decimation, Legend, Filler]}
         options={options}
@@ -844,7 +896,44 @@ const KeyGraphDistribution = ({
   );
 };
 
-const KeyGraph = ({
+const ResourceOverTimeGraph = ({
+  resourcesOverTime,
+  resource,
+  chosenTeams,
+  baseColor,
+  aspectRatio,
+}: {
+  resourcesOverTime: ResourceOverTime;
+  resource: string;
+  chosenTeams: Set<string>;
+  baseColor: [r: number, g: number, b: number];
+  aspectRatio?: number;
+}) => {
+  if (chosenTeams.size === 1) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we just checked that shownTeams.size === 1
+    const teamName = [...chosenTeams][0]!;
+    return (
+      <ResourceOverTimeSingle
+        resourcesOverTime={resourcesOverTime}
+        resource={resource}
+        teamName={teamName}
+        baseColor={baseColor}
+        aspectRatio={aspectRatio}
+      />
+    );
+  }
+  return (
+    <ResourceOverTimeDistribution
+      resourcesOverTime={resourcesOverTime}
+      resource={resource}
+      shownTeams={chosenTeams}
+      baseColor={baseColor}
+      aspectRatio={aspectRatio}
+    />
+  );
+};
+
+const KeysCluesPuzzlesGraph = ({
   activityLog,
   teamSort,
   shownTeams,
@@ -855,24 +944,77 @@ const KeyGraph = ({
   shownTeams: Set<string>;
   highlightedTeams: Set<string>;
 }) => {
-  const keysOverTime = useMemo(() => {
-    const runningTally = new Map(teamSort.map((t) => [t, 9]));
-    const keysOverTime: KeysOverTime = [
-      { timestamp: HuntStart, keys: new Map(runningTally) },
+  const { keysOverTime, cluesOverTime, puzzlesOverTime } = useMemo(() => {
+    const runningKeyTally = new Map<string, number>(
+      teamSort.map((t) => [t, 0]),
+    );
+    const keysOverTime: ResourceOverTime = [];
+    const runningClueTally = new Map<string, number>(
+      teamSort.map((t) => [t, 0]),
+    );
+    const cluesOverTime: ResourceOverTime = [
+      { timestamp: HuntStart, resources: new Map(runningClueTally) },
+    ];
+    const runningPuzzleTally = new Map<string, number>(
+      teamSort.map((t) => [t, 0]),
+    );
+    const puzzlesOverTime: ResourceOverTime = [
+      { timestamp: HuntStart, resources: new Map(runningPuzzleTally) },
     ];
 
-    activityLog.forEach(({ timestamp, team_name, keys_delta }) => {
-      if (keys_delta === 0) return;
+    activityLog.forEach(
+      ({ timestamp, team_name, keys_delta, clues_delta, type }) => {
+        const ts = timestamp < HuntStart ? HuntStart : timestamp;
+        if (keys_delta !== 0) {
+          runningKeyTally.set(
+            team_name,
+            (runningKeyTally.get(team_name) ?? 0) + keys_delta,
+          );
+          keysOverTime.push({
+            timestamp: ts,
+            resources: new Map(runningKeyTally),
+          });
+        }
 
-      runningTally.set(
-        team_name,
-        (runningTally.get(team_name) ?? 0) + keys_delta,
-      );
-      keysOverTime.push({ timestamp, keys: new Map(runningTally) });
+        if (clues_delta !== 0) {
+          runningClueTally.set(
+            team_name,
+            (runningClueTally.get(team_name) ?? 0) + clues_delta,
+          );
+          cluesOverTime.push({
+            timestamp: ts,
+            resources: new Map(runningClueTally),
+          });
+        }
+
+        const puzzleDelta =
+          type === "puzzle_unlocked" ? 1 : type === "puzzle_solved" ? -1 : 0;
+        if (puzzleDelta !== 0) {
+          runningPuzzleTally.set(
+            team_name,
+            (runningPuzzleTally.get(team_name) ?? 0) + puzzleDelta,
+          );
+          puzzlesOverTime.push({
+            timestamp: ts,
+            resources: new Map(runningPuzzleTally),
+          });
+        }
+      },
+    );
+
+    keysOverTime.push({
+      timestamp: HuntEnd,
+      resources: new Map(runningKeyTally),
     });
-
-    keysOverTime.push({ timestamp: HuntEnd, keys: new Map(runningTally) });
-    return keysOverTime;
+    cluesOverTime.push({
+      timestamp: HuntEnd,
+      resources: new Map(runningClueTally),
+    });
+    puzzlesOverTime.push({
+      timestamp: HuntEnd,
+      resources: new Map(runningPuzzleTally),
+    });
+    return { keysOverTime, cluesOverTime, puzzlesOverTime };
   }, [activityLog, teamSort]);
 
   const chosen =
@@ -880,13 +1022,28 @@ const KeyGraph = ({
       ? shownTeams.intersection(highlightedTeams)
       : shownTeams;
 
-  if (chosen.size === 1) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we just checked that shownTeams.size === 1
-    const teamName = [...chosen][0]!;
-    return <KeyGraphSingle keysOverTime={keysOverTime} teamName={teamName} />;
-  }
   return (
-    <KeyGraphDistribution keysOverTime={keysOverTime} shownTeams={chosen} />
+    <>
+      <ResourceOverTimeGraph
+        resourcesOverTime={puzzlesOverTime}
+        resource="Unlocked Puzzles"
+        chosenTeams={chosen}
+        baseColor={[255, 99, 132]}
+      />
+      <ResourceOverTimeGraph
+        resourcesOverTime={keysOverTime}
+        resource="Keys 🗝️"
+        chosenTeams={chosen}
+        baseColor={[54, 162, 235]}
+      />
+      <ResourceOverTimeGraph
+        resourcesOverTime={cluesOverTime}
+        resource="Clues 🔎"
+        chosenTeams={chosen}
+        baseColor={[255, 159, 64]}
+        aspectRatio={0.25}
+      />
+    </>
   );
 };
 
@@ -1022,6 +1179,7 @@ const HintGraph = ({
           label: "Puzzles with Hints Available",
           yAxisID: "y2",
           data: hintData,
+          stepped: true,
         },
       ],
     };
@@ -1364,13 +1522,13 @@ const App = ({
         clearHighlight={clearHighlight}
       />
 
-      <h2>Available Keys Over Time</h2>
+      <h2>Available Puzzles, Keys, and Clues Over Time</h2>
       <p>
         If exactly one team is highlighted (or is the only team shown), this
-        shows the number of keys available to that team over time. Otherwise, it
-        shows the distribution of all highlighted teams.
+        shows the number of puzzles, keys, and clues available to that team over
+        time. Otherwise, it shows the distribution of all highlighted teams.
       </p>
-      <KeyGraph
+      <KeysCluesPuzzlesGraph
         activityLog={activityLog}
         teamSort={teamSort}
         shownTeams={shownTeams}

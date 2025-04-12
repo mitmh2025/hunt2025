@@ -35,6 +35,24 @@ WITH team_names AS (
         timestamp DESC
       LIMIT 1
     )
+),
+expanded_activity_log AS (
+  SELECT
+    al.id,
+    timestamp,
+    type,
+    slug,
+    data,
+    currency_delta,
+    strong_currency_delta,
+    teams.id AS team_id
+  FROM
+    activity_log al
+  CROSS JOIN
+    teams
+  WHERE
+    al.team_id IS NULL
+    OR al.team_id = teams.id
 )
 SELECT
 	CASE type
@@ -76,12 +94,13 @@ SELECT
 	currency_delta AS keys_delta,
 	strong_currency_delta AS clues_delta
 FROM
-	activity_log al
+	expanded_activity_log al
 	JOIN team_names tn ON al.team_id = tn.team_id
 	JOIN teams t ON al.team_id = t.id
 WHERE
 	t.username NOT LIKE 'dnm-%'
 	AND t.username NOT IN ('public', 'public_access')
+  AND al.team_id != 69
 	AND NOT t.deactivated
 	AND type IN (
     'currency_adjusted',
