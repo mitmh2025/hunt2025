@@ -42,6 +42,7 @@ import Select, {
 import seedrandom from "seedrandom";
 import { styled } from "styled-components";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
+import { MI, Math as MathML } from "../../components/MathML";
 import { ErrorText } from "../../components/StyledUI";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
@@ -1241,6 +1242,98 @@ const HintGraph = ({
   );
 };
 
+const RoundDistributionGraph = ({
+  activityLogByTeam,
+}: {
+  activityLogByTeam: Map<string, CSVRow[]>;
+}) => {
+  const options: ChartOptions<"line"> = {
+    responsive: true,
+    animation: {
+      duration: 200,
+    },
+    datasets: {
+      line: {
+        cubicInterpolationMode: "monotone",
+      },
+    },
+    scales: {
+      x: {
+        type: "linear",
+      },
+      y: {
+        min: 0,
+        stacked: true,
+      },
+    },
+    plugins: {
+      zoom: ZoomConfig,
+    },
+    transitions: {
+      zoom: {
+        animation: {
+          duration: 0,
+        },
+      },
+    },
+  };
+  const data = useMemo(() => {
+    const maxUnlocks = Math.max(
+      ...[...activityLogByTeam.values()].map(
+        (t) =>
+          t.filter((e) => e.type === "puzzle_unlocked" && e.keys_delta !== 0)
+            .length,
+      ),
+    );
+
+    const unlocks = new Map<string, number[]>(
+      HUNT.rounds.map((r) => [r.slug, Array<number>(maxUnlocks).fill(0)]),
+    );
+
+    activityLogByTeam.forEach((log) => {
+      let solveCount = 0;
+      log.forEach((e) => {
+        if (e.type !== "puzzle_unlocked" || e.keys_delta === 0) return;
+
+        const { roundSlug } = slugToSlot.get(e.slug ?? "") ?? {};
+        if (!roundSlug) return;
+
+        const roundUnlocks = unlocks.get(roundSlug);
+        if (!roundUnlocks) return;
+
+        roundUnlocks[solveCount] = (roundUnlocks[solveCount] ?? 0) + 1;
+        solveCount += 1;
+      });
+    });
+
+    return {
+      datasets: [...unlocks.entries()]
+        .filter(
+          ([roundSlug]) =>
+            roundSlug !== "missing_diamond" &&
+            roundSlug !== "floaters" &&
+            roundSlug !== "events" &&
+            roundSlug !== "endgame",
+        )
+        .map(([roundSlug, roundUnlocks], i) => {
+          const label =
+            HUNT.rounds.find((r) => r.slug === roundSlug)?.title ?? roundSlug;
+          return {
+            label,
+            data: roundUnlocks.map((v, i) => ({ x: i + 1, y: v })),
+            fill: i === 0 ? "origin" : "-1",
+          };
+        }),
+    };
+  }, [activityLogByTeam]);
+
+  return (
+    <Chart>
+      <Line plugins={[Filler, Legend]} options={options} data={data} />
+    </Chart>
+  );
+};
+
 const InteractionResultGraph = ({ activityLog }: { activityLog: CSVRow[] }) => {
   const options: ChartOptions<"bar"> = {
     datasets: {
@@ -1534,6 +1627,20 @@ const App = ({
         shownTeams={shownTeams}
         highlightedTeams={highlightedTeams}
       />
+
+      <h2>Unlock Round Distribution</h2>
+      <p>
+        This graph attempts to show if teams consistently chose to focus on
+        rounds in the same sequence as they progressed through the Hunt. It
+        shows, for the{" "}
+        <MathML>
+          <MI>n</MI>
+        </MathML>
+        th puzzle that a team unlocked, which round it was in. (It only
+        considers puzzles which required a key to unlock, not puzzles which were
+        released by us via Stray Leads).
+      </p>
+      <RoundDistributionGraph activityLogByTeam={activityLogByTeam} />
 
       <h2>Most Solved Puzzles</h2>
       <MostLeastSolvedPuzzleGraph activityLog={activityLog} mode="most" />
