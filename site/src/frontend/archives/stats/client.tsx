@@ -1202,6 +1202,14 @@ const MostLeastSolvedPuzzleGraph = ({
         hoverBorderWidth: 2,
       },
     },
+    scales: {
+      x: {
+        type: "category",
+        ticks: {
+          callback: generateTruncatedTick,
+        },
+      },
+    },
   };
 
   const data = useMemo(() => {
@@ -1247,6 +1255,14 @@ const MostPurchasedPuzzleGraph = ({
     datasets: {
       bar: {
         hoverBorderWidth: 2,
+      },
+    },
+    scales: {
+      x: {
+        type: "category",
+        ticks: {
+          callback: generateTruncatedTick,
+        },
       },
     },
   };
