@@ -1,5 +1,6 @@
 import { type PuzzleDefinition } from "../types";
 import Puzzle from "./puzzle";
+import router from "./server";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
@@ -13,7 +14,7 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [],
   content: {
     component: Puzzle,
-    entrypoint: "puzzle_unfit_tower",
+    entrypoint: "puzzle_unfit_tower_parent",
     copyable: false,
   },
   solution: {
@@ -85,6 +86,9 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   canned_responses: [],
+  // #!if TARGET !== "client" || !ARCHIVE_MODE
+  router,
+  // #!endif
 };
 
 export default puzzle;

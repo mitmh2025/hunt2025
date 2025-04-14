@@ -190,6 +190,7 @@ export type Room = {
   southEdge: Edge;
   westEdge: Edge;
   lookId: string;
+  doorLookId: string;
   talkId?: string;
 
   northId?: string;
@@ -257,6 +258,7 @@ export const rooms: Room[][] = new Array(MazeDimension)
         southEdge: parseEdge(south),
         westEdge: parseEdge(west),
         lookId: generateId(),
+        doorLookId: generateId(),
         talkId: character !== undefined ? generateId() : undefined,
       };
     }),
@@ -265,18 +267,16 @@ export const rooms: Room[][] = new Array(MazeDimension)
 // Add the room IDs
 rooms.forEach((row, rowIndex) => {
   row.forEach((room, colIndex) => {
-    room.northId =
-      room.northEdge !== "wall"
-        ? (rooms[rowIndex - 1] ?? [])[colIndex]?.lookId
-        : undefined;
-    room.southId =
-      room.southEdge !== "wall"
-        ? (rooms[rowIndex + 1] ?? [])[colIndex]?.lookId
-        : undefined;
-    room.eastId =
-      room.eastEdge !== "wall" ? row[colIndex + 1]?.lookId : undefined;
-    room.westId =
-      room.westEdge !== "wall" ? row[colIndex - 1]?.lookId : undefined;
+    const getId = (edge: Edge, room: Room | undefined) =>
+      edge === "door"
+        ? room?.doorLookId
+        : edge === "passage"
+          ? room?.lookId
+          : undefined;
+    room.northId = getId(room.northEdge, (rooms[rowIndex - 1] ?? [])[colIndex]);
+    room.southId = getId(room.southEdge, (rooms[rowIndex + 1] ?? [])[colIndex]);
+    room.eastId = getId(room.eastEdge, row[colIndex + 1]);
+    room.westId = getId(room.westEdge, row[colIndex - 1]);
   });
 });
 

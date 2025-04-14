@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
+import rootUrl from "../../utils/rootUrl";
 
 const AppContainer = styled.div`
   flex-grow: 1;
@@ -34,12 +35,9 @@ const CommandInput = styled.input`
 `;
 
 type NavData = {
+  currentId: string;
   lookId: string;
   talkId?: string;
-  northEdge: string;
-  southEdge: string;
-  eastEdge: string;
-  westEdge: string;
   northId?: string;
   southId?: string;
   eastId?: string;
@@ -59,15 +57,19 @@ const App = () => {
     return parsed;
   }, []);
 
+  useEffect(() => {
+    window.parent.postMessage({
+      type: "setCurrentRoom",
+      roomId: navigationData.currentId,
+    });
+  }, [navigationData]);
+
   const [error, setError] = useState<string | undefined>();
   const [command, setCommand] = useState("");
 
-  const goToRoom = useCallback((id: string, door?: boolean) => {
-    const params = new URLSearchParams({ room: id });
-    if (door) {
-      params.set("door", "1");
-    }
-    window.location.search = params.toString();
+  const goToRoom = useCallback((id: string) => {
+    const url = `${rootUrl}/puzzles/maze_of_lies/rooms/${id}`;
+    window.location.href = url;
   }, []);
 
   const navigate = useCallback(
@@ -82,7 +84,6 @@ const App = () => {
         return;
       }
 
-      const edge = navigationData[`${direction}Edge` as const];
       const id = navigationData[`${direction}Id` as const];
 
       if (!id) {
@@ -93,7 +94,7 @@ const App = () => {
       setError(undefined);
       setCommand("");
 
-      goToRoom(id, edge === "door");
+      goToRoom(id);
     },
     [goToRoom, navigationData],
   );
@@ -189,14 +190,14 @@ const App = () => {
   const onCommandFocus = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
       e.preventDefault();
-      e.target.focus({ preventScroll: true });
+      e.target.focus();
     },
     [],
   );
 
   const inputRef = React.useRef<HTMLInputElement>(null);
   useEffect(() => {
-    inputRef.current?.focus({ preventScroll: true });
+    inputRef.current?.focus();
   }, []);
 
   return (

@@ -556,6 +556,8 @@ export default function createConfigs(_env, argv) {
         "./src/frontend/puzzles/sorrowful-glass/client.tsx",
       puzzle_sinful_turkey: "./src/frontend/puzzles/sinful-turkey/client.tsx",
       puzzle_unfit_tower: "./src/frontend/puzzles/unfit-tower/client.tsx",
+      puzzle_unfit_tower_parent:
+        "./src/frontend/puzzles/unfit-tower/parent.tsx",
       puzzle_unhealthy_mint: "./src/frontend/puzzles/unhealthy-mint/client.tsx",
       puzzle_wiry_ray: "./src/frontend/puzzles/wiry-ray/client.tsx",
 
