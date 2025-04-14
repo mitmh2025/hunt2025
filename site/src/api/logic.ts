@@ -421,14 +421,11 @@ export async function recalculateTeamState(
   team_id: number,
   mutator: ActivityLogMutatorInterface,
 ) {
-  const start = performance.now();
-
   // What is already present in the activity log?
   const old = mutator.getTeamState(hunt, team_id);
 
   // What /should/ be in the activity log, based on the hunt description?
   const next = old.recalculateTeamState(hunt);
-  const calculate_team_state_done = performance.now();
 
   // Compute the differences, and generate the requisite inserts.
   for (const slug of next.rounds_unlocked.difference(old.rounds_unlocked)) {
@@ -438,7 +435,6 @@ export async function recalculateTeamState(
       slug,
     });
   }
-  const unlock_rounds_done = performance.now();
   // These diff against the next state to make sure we don't insert an activity log entry out-of-order.
   const diff = {
     // puzzles_visible: next.puzzles_visible.difference(old.puzzles_visible),
@@ -453,7 +449,6 @@ export async function recalculateTeamState(
       .difference(next.interactions_started),
     gates_satisfied: next.gates_satisfied.difference(old.gates_satisfied),
   };
-  const diff_done = performance.now();
   for (const slug of diff.puzzles_unlockable) {
     await mutator.appendLog({
       team_id,
@@ -461,7 +456,6 @@ export async function recalculateTeamState(
       slug,
     });
   }
-  const puzzles_unlockable_done = performance.now();
   for (const slug of diff.puzzles_unlocked) {
     await mutator.appendLog({
       team_id,
@@ -469,7 +463,6 @@ export async function recalculateTeamState(
       slug,
     });
   }
-  const puzzles_unlock_done = performance.now();
   for (const id of diff.interactions_unlocked) {
     await mutator.appendLog({
       team_id,
@@ -477,7 +470,6 @@ export async function recalculateTeamState(
       slug: id,
     });
   }
-  const interactions_unlock_done = performance.now();
   for (const id of diff.gates_satisfied) {
     await mutator.appendLog({
       team_id,
@@ -485,7 +477,6 @@ export async function recalculateTeamState(
       slug: id,
     });
   }
-  const gates_completed_done = performance.now();
   for (const [slug, timestamp] of next.team_hints_unlocked_timestamp) {
     if (!old.team_hints_unlocked_timestamp.has(slug)) {
       await mutator.appendLog({
@@ -498,16 +489,6 @@ export async function recalculateTeamState(
       });
     }
   }
-  const team_hints_unlocked_done = performance.now();
-  console.log(`recalculateTeamState for team ${team_id}: ${interactions_unlock_done - start} msec
-  * calculateTeamState:  ${calculate_team_state_done - start} msec
-  * unlock rounds:       ${unlock_rounds_done - calculate_team_state_done} msec
-  * compute diffs:       ${diff_done - unlock_rounds_done} msec
-  * unlockable puzzles:  ${puzzles_unlockable_done - diff_done} msec
-  * unlock puzzles:      ${puzzles_unlock_done - puzzles_unlockable_done} msec
-  * unlock interactions: ${interactions_unlock_done - puzzles_unlock_done} msec
-  * complete gates:      ${gates_completed_done - interactions_unlock_done} msec
-  * unlock hints:        ${team_hints_unlocked_done - gates_completed_done}msec`);
   return next;
 }
 

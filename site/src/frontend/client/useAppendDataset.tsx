@@ -32,7 +32,6 @@ function useAppendDataset<T extends ObjectWithId>(
             prevState.findIndex((entry) => entry.id === (value as T).id) === -1
           ) {
             const newState = [...prevState, value as T];
-            console.log("log is now", newState);
             return newState;
           } else {
             return prevState;
