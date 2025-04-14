@@ -78,7 +78,7 @@ const supermetaSlugs = [...slugToSlot.entries()]
   .filter(([_, lookup]) => lookup.slot.is_supermeta)
   .map(([slug, _]) => slug);
 
-type CSVRow = {
+type ActivityLogRow = {
   timestamp: DateTime;
   team_name: string;
   type:
@@ -307,7 +307,7 @@ const SolveGraph = ({
   toggleHighlight,
   clearHighlight,
 }: {
-  activityLogByTeam: Map<string, CSVRow[]>;
+  activityLogByTeam: Map<string, ActivityLogRow[]>;
   teamColors: Map<string, string>;
   teamSort: string[];
   shownTeams: Set<string>;
@@ -449,7 +449,7 @@ const RoundSolveGraph = ({
   shownTeams,
   highlightedTeams,
 }: {
-  activityLogByTeam: Map<string, CSVRow[]>;
+  activityLogByTeam: Map<string, ActivityLogRow[]>;
   teamSort: string[];
   shownTeams: Set<string>;
   highlightedTeams: Set<string>;
@@ -549,7 +549,7 @@ const TeamSizeVsSolveGraph = ({
   toggleHighlight,
   clearHighlight,
 }: {
-  activityLogByTeam: Map<string, CSVRow[]>;
+  activityLogByTeam: Map<string, ActivityLogRow[]>;
   teamInfo: TeamInfo;
   teamColors: Map<string, string>;
   teamSort: string[];
@@ -656,7 +656,7 @@ const GuessVsSolveGraph = ({
   toggleHighlight,
   clearHighlight,
 }: {
-  activityLogByTeam: Map<string, CSVRow[]>;
+  activityLogByTeam: Map<string, ActivityLogRow[]>;
   teamInfo: TeamInfo;
   teamColors: Map<string, string>;
   teamSort: string[];
@@ -1077,7 +1077,7 @@ const KeysCluesPuzzlesGraph = ({
   shownTeams,
   highlightedTeams,
 }: {
-  activityLog: CSVRow[];
+  activityLog: ActivityLogRow[];
   teamSort: string[];
   shownTeams: Set<string>;
   highlightedTeams: Set<string>;
@@ -1189,7 +1189,7 @@ const MostLeastSolvedPuzzleGraph = ({
   activityLog,
   mode,
 }: {
-  activityLog: CSVRow[];
+  activityLog: ActivityLogRow[];
   mode: "most" | "least";
 }) => {
   const ShowCount = 20;
@@ -1244,7 +1244,7 @@ const MostLeastSolvedPuzzleGraph = ({
 const MostPurchasedPuzzleGraph = ({
   activityLog,
 }: {
-  activityLog: CSVRow[];
+  activityLog: ActivityLogRow[];
 }) => {
   // Show puzzles that were purchased more than Threshold times
   const Threshold = 5;
@@ -1292,7 +1292,7 @@ const MostPurchasedPuzzleGraph = ({
 const FastestSlowestUnlockGraphs = ({
   activityLogByTeam,
 }: {
-  activityLogByTeam: Map<string, CSVRow[]>;
+  activityLogByTeam: Map<string, ActivityLogRow[]>;
 }) => {
   const ShowCount = 20;
 
@@ -1394,7 +1394,7 @@ const HintGraph = ({
   activityLog,
   hintAvailability,
 }: {
-  activityLog: CSVRow[];
+  activityLog: ActivityLogRow[];
   hintAvailability: HintAvailabilityRow[];
 }) => {
   const data: ChartData<"line", { x: DateTime; y: number }[]> = useMemo(() => {
@@ -1523,7 +1523,7 @@ const HintGraph = ({
 const RoundDistributionGraph = ({
   activityLogByTeam,
 }: {
-  activityLogByTeam: Map<string, CSVRow[]>;
+  activityLogByTeam: Map<string, ActivityLogRow[]>;
 }) => {
   const options: ChartOptions<"line"> = {
     responsive: true,
@@ -1612,7 +1612,11 @@ const RoundDistributionGraph = ({
   );
 };
 
-const InteractionResultGraph = ({ activityLog }: { activityLog: CSVRow[] }) => {
+const InteractionResultGraph = ({
+  activityLog,
+}: {
+  activityLog: ActivityLogRow[];
+}) => {
   const options: ChartOptions<"bar"> = {
     datasets: {
       bar: {
@@ -1626,7 +1630,7 @@ const InteractionResultGraph = ({ activityLog }: { activityLog: CSVRow[] }) => {
     const resultLogs = activityLog.filter(
       (
         row,
-      ): row is CSVRow & {
+      ): row is ActivityLogRow & {
         type: "interaction_completed";
         slug: string;
         result: string;
@@ -1690,7 +1694,7 @@ const App = ({
   teamInfo,
   hintAvailability,
 }: {
-  activityLog: CSVRow[];
+  activityLog: ActivityLogRow[];
   teamInfo: TeamInfo;
   hintAvailability: HintAvailabilityRow[];
 }) => {
@@ -1708,7 +1712,7 @@ const App = ({
       }),
     );
 
-    const activityLogByTeam = new Map<string, CSVRow[]>();
+    const activityLogByTeam = new Map<string, ActivityLogRow[]>();
     activityLog.forEach((row) => {
       const teamActivity = activityLogByTeam.get(row.team_name) ?? [];
       teamActivity.push(row);
@@ -1993,7 +1997,7 @@ const fetchActivityLog = async ({ signal }: { signal: AbortSignal }) => {
       }
       return value;
     },
-  }) as CSVRow[];
+  }) as ActivityLogRow[];
 
   return log;
 };
@@ -2048,7 +2052,7 @@ const fetchHintAvailability = async ({ signal }: { signal: AbortSignal }) => {
 const ActivityLogLoader = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
-  const [activityLog, setActivityLog] = useState<CSVRow[]>([]);
+  const [activityLog, setActivityLog] = useState<ActivityLogRow[]>([]);
   const [teamInfo, setTeamInfo] = useState<TeamInfo | undefined>(undefined);
   const [hintAvailability, setHintAvailability] = useState<
     HintAvailabilityRow[]
