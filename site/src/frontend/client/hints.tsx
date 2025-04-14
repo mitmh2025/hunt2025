@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { hydrateRoot } from "react-dom/client";
 import { type z } from "zod";
 import { type TeamHuntState } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
+import renderRoot from "../../utils/renderRoot";
 import PuzzleHints from "../components/PuzzleHints";
 import useAppendDataset from "./useAppendDataset";
 import useDataset from "./useDataset";
@@ -64,7 +64,7 @@ if (puzzleHintsElem) {
   ).initialTeamState;
   // TODO: extract puzzleSlug from the URL instead of embedding it via script?
   const slug = (window as unknown as { puzzleSlug: string }).puzzleSlug;
-  hydrateRoot(
+  renderRoot(
     puzzleHintsElem,
     <HintsManager
       initialHints={initialHints}

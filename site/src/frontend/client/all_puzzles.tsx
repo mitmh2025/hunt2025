@@ -1,5 +1,5 @@
 import React from "react";
-import { hydrateRoot } from "react-dom/client";
+import renderRoot from "../../utils/renderRoot";
 import AllPuzzlesList from "../components/AllPuzzlesList";
 import { type AllPuzzlesState } from "./all_puzzles_types";
 import useDataset from "./useDataset";
@@ -19,7 +19,7 @@ if (allPuzzlesElem) {
   const initialAllPuzzlesState = (
     window as unknown as { initialAllPuzzlesState: AllPuzzlesState }
   ).initialAllPuzzlesState;
-  hydrateRoot(
+  renderRoot(
     allPuzzlesElem,
     <AllPuzzlesManager initialState={initialAllPuzzlesState} />,
   );

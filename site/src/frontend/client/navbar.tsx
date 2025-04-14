@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { hydrateRoot } from "react-dom/client";
 import { type SocketState } from "../../../lib/SocketManager";
 import type { ActivityLogEntry, TeamInfo } from "../../../lib/api/client";
 import celebration from "../../assets/radio/celebration.mp3";
+import renderRoot from "../../utils/renderRoot";
 import { HuntIcon, formatActivityLogEntry } from "../components/ActivityLog";
 import NavBar, { type NavBarState } from "../components/NavBar";
 import Notifications, {
@@ -188,7 +188,7 @@ if (navbarElem) {
   const initialNavbarState = (
     window as unknown as { initialNavBarState: NavBarState }
   ).initialNavBarState;
-  hydrateRoot(
+  renderRoot(
     navbarElem,
     <NavBarManager
       initialEventsState={initialEventsState}

@@ -1,6 +1,6 @@
 import React from "react";
-import { hydrateRoot } from "react-dom/client";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import renderRoot from "../../../utils/renderRoot";
 import useDataset from "../../client/useDataset";
 import MissingDiamondBody from "./MissingDiamondBody";
 import { type MissingDiamondState } from "./types";
@@ -24,7 +24,7 @@ if (elem) {
   ).initialMissingDiamondState;
   const teamState = (window as unknown as { initialTeamState: TeamHuntState })
     .initialTeamState;
-  hydrateRoot(
+  renderRoot(
     elem,
     <MissingDiamondManager initialState={state} initialTeamState={teamState} />,
   );

@@ -1,6 +1,6 @@
 import React from "react";
-import { hydrateRoot } from "react-dom/client";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import renderRoot from "../../../utils/renderRoot";
 import useDataset from "../../client/useDataset";
 import PaperTrailBody from "./PaperTrailBody";
 import { type PaperTrailState } from "./types";
@@ -24,7 +24,7 @@ if (elem) {
   ).initialPaperTrailState;
   const teamState = (window as unknown as { initialTeamState: TeamHuntState })
     .initialTeamState;
-  hydrateRoot(
+  renderRoot(
     elem,
     <PaperTrailManager initialState={state} initialTeamState={teamState} />,
   );

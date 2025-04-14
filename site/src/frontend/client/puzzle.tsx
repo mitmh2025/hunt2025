@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from "react";
-import { createRoot, hydrateRoot } from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { type z } from "zod";
 import { type TeamHuntState } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
 import type { PuzzleStateLogEntry } from "../../../lib/api/frontend_contract";
+import renderRoot from "../../utils/renderRoot";
 import CopyToClipboard from "../components/CopyToClipboard";
 import PuzzleGuessSection, {
   SubpuzzleGuessSection,
@@ -124,7 +125,7 @@ if (puzzleGuessSectionElem) {
   ).initialTeamState;
   // TODO: extract puzzleSlug from the URL instead of embedding it via script?
   const slug = (window as unknown as { puzzleSlug: string }).puzzleSlug;
-  hydrateRoot(
+  renderRoot(
     puzzleGuessSectionElem,
     <GuessSectionManager
       initialGuesses={initialGuesses}
@@ -139,7 +140,7 @@ if (puzzleGuessSectionElem) {
   // TODO: extract puzzleSlug from the URL instead of embedding it via script?
   const slug = (window as unknown as { puzzleSlug: string }).puzzleSlug;
   const parentSlug = (window as unknown as { parentSlug: string }).parentSlug;
-  hydrateRoot(
+  renderRoot(
     subpuzzleGuessSectionElem,
     <SubpuzzleGuessSectionManager
       initialPuzzleStateLog={initialPuzzleStateLog}
