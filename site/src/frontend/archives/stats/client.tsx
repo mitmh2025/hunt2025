@@ -17,6 +17,7 @@ import {
   type ChartType,
   type ChartDataset,
   type ChartData,
+  type Scale,
   Filler,
   Decimation,
 } from "chart.js";
@@ -216,6 +217,17 @@ const useFilteredDatasets = <TType extends ChartType, TData>({
   }, [shownTeams, highlightedTeams, datasets]);
 };
 
+const generateTruncatedTick = function (this: Scale, value: string | number) {
+  if (typeof value === "string") return value;
+
+  const labels = this.getLabels();
+  if (value < 0 || value >= labels.length) return value;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we just did a bounds check
+  const label = labels[value]!;
+  if (label.length < 25) return label;
+  return `${label.slice(0, 25)}…`;
+};
+
 type TeamSelectOption = { value: string; label: string };
 
 const TeamMultiSelectIndicatorSeparator = (
@@ -399,6 +411,102 @@ const SolveGraph = ({
         <Line options={chartOptions} data={{ datasets }} />
       </Chart>
     </>
+  );
+};
+
+const RoundSolveGraph = ({
+  activityLogByTeam,
+  teamSort,
+  shownTeams,
+  highlightedTeams,
+}: {
+  activityLogByTeam: Map<string, CSVRow[]>;
+  teamSort: string[];
+  shownTeams: Set<string>;
+  highlightedTeams: Set<string>;
+}) => {
+  const unfilteredData = useMemo(() => {
+    // Because we want the series in the graph to be rounds, we need to generate
+    // round -> [team, time][]
+
+    // Map<round title, supermeta slug>
+    const supermetas = new Map(
+      HUNT.rounds.flatMap((r) => {
+        const supermeta = r.puzzles.find((p) => p.is_supermeta);
+        if (!supermeta?.slug) return [];
+        return [[r.title, supermeta.slug]];
+      }),
+    );
+
+    const datasets = [...supermetas.entries()].map(([round, supermeta]) => {
+      return {
+        label: round.replace(/^The /, ""),
+        data: teamSort.flatMap((teamName) => {
+          const activity = activityLogByTeam.get(teamName) ?? [];
+          const solveTime = activity.find(
+            (e) => e.type === "puzzle_solved" && e.slug === supermeta,
+          )?.timestamp;
+          return solveTime ? [{ x: solveTime, y: teamName }] : [];
+        }),
+      };
+    });
+
+    return { datasets };
+  }, [activityLogByTeam, teamSort]);
+
+  const filterSet = useMemo(
+    () =>
+      highlightedTeams.size === 0
+        ? shownTeams
+        : shownTeams.intersection(highlightedTeams),
+    [highlightedTeams, shownTeams],
+  );
+
+  const filteredTeams = useMemo(
+    () => teamSort.filter((t) => filterSet.has(t)).slice(0, 20),
+    [teamSort, filterSet],
+  );
+
+  const data = useMemo(() => {
+    const { datasets } = unfilteredData;
+    const teamset = new Set(filteredTeams);
+
+    return {
+      datasets: datasets.map((d) => ({
+        ...d,
+        data: d.data.filter(({ y }) => teamset.has(y)),
+      })),
+    };
+  }, [unfilteredData, filteredTeams]);
+
+  const options: ChartOptions<"scatter"> = {
+    responsive: true,
+    aspectRatio: 4 / 3,
+    animation: {
+      duration: 200,
+    },
+    datasets: {
+      scatter: {
+        pointRadius: 8,
+      },
+    },
+    indexAxis: "y",
+    scales: {
+      x: TimeAxisOptions(),
+      y: {
+        type: "category",
+        labels: filteredTeams,
+        ticks: {
+          callback: generateTruncatedTick,
+        },
+      },
+    },
+  };
+
+  return (
+    <Chart $aspectRatio={0.75}>
+      <Scatter plugins={[Legend]} options={options} data={data} />
+    </Chart>
   );
 };
 
@@ -1589,6 +1697,14 @@ const App = ({
         highlightedTeams={highlightedTeams}
         toggleHighlight={toggleHighlight}
         clearHighlight={clearHighlight}
+      />
+
+      <h2>Round Solve Times</h2>
+      <RoundSolveGraph
+        activityLogByTeam={activityLogByTeam}
+        teamSort={teamSort}
+        shownTeams={shownTeams}
+        highlightedTeams={highlightedTeams}
       />
 
       <h2>Team Size vs. Solves</h2>
