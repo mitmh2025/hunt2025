@@ -1273,6 +1273,107 @@ const MostPurchasedPuzzleGraph = ({
   );
 };
 
+const FastestSlowestUnlockGraphs = ({
+  activityLogByTeam,
+}: {
+  activityLogByTeam: Map<string, CSVRow[]>;
+}) => {
+  const ShowCount = 20;
+
+  const averageUnlockDelay = useMemo(() => {
+    return puzzleSlugs
+      .flatMap((slug) => {
+        const unlockDelays = [...activityLogByTeam.values()].flatMap((log) => {
+          const unlockableIndex = log.findIndex(
+            (e) => e.type === "puzzle_unlockable" && e.slug === slug,
+          );
+          const unlockedIndex = log.findIndex(
+            (e) =>
+              e.type === "puzzle_unlocked" &&
+              e.slug === slug &&
+              e.keys_delta !== 0,
+          );
+
+          if (unlockableIndex === -1 || unlockedIndex === -1) return [];
+
+          return log
+            .slice(unlockableIndex, unlockedIndex)
+            .filter((e) => e.type === "puzzle_unlocked" && e.keys_delta !== 0)
+            .length;
+        });
+
+        if (unlockDelays.length === 0) return [];
+
+        return [
+          [
+            slug,
+            unlockDelays.reduce((a, b) => a + b, 0) / unlockDelays.length,
+          ] as const,
+        ];
+      })
+      .sort(([, a], [, b]) => a - b);
+  }, [activityLogByTeam]);
+
+  const formatData = (d: (readonly [string, number])[]) => ({
+    datasets: [
+      {
+        data: d.map(([slug, delay]) => ({
+          x: PUZZLES[slug]?.title ?? slug,
+          y: delay,
+          slug,
+        })),
+      },
+    ],
+  });
+
+  const fastestData = useMemo(
+    () => formatData(averageUnlockDelay.slice(0, ShowCount)),
+    [averageUnlockDelay],
+  );
+  const slowestData = useMemo(
+    () => formatData(averageUnlockDelay.slice(-ShowCount)),
+    [averageUnlockDelay],
+  );
+
+  const options: ChartOptions<"bar"> = {
+    onClick: puzzleClickHandler,
+    onHover: puzzleHoverHandler,
+    datasets: {
+      bar: {
+        hoverBorderWidth: 2,
+      },
+    },
+    scales: {
+      x: {
+        type: "category",
+        ticks: { callback: generateTruncatedTick },
+      },
+    },
+  };
+
+  return (
+    <>
+      <h2>Fastest Unlocks</h2>
+      <p>
+        This shows the puzzles that teams were most eager to unlock. For each
+        puzzle, it shows the average number of <em>other</em> puzzles that were
+        unlocked between when this puzzle became unlockable and when it was
+        unlocked.
+      </p>
+      <Chart>
+        <Bar options={options} data={fastestData} />
+      </Chart>
+      <h2>Slowest Unlocks</h2>
+      <p>
+        This shows the puzzles that teams were <em>least</em> eager to unlock.
+      </p>
+      <Chart>
+        <Bar options={options} data={slowestData} />
+      </Chart>
+    </>
+  );
+};
+
 const HintGraph = ({
   activityLog,
   hintAvailability,
@@ -1819,6 +1920,8 @@ const App = ({
 
       <h2>Most Purchased Answers</h2>
       <MostPurchasedPuzzleGraph activityLog={activityLog} />
+
+      <FastestSlowestUnlockGraphs activityLogByTeam={activityLogByTeam} />
 
       <h2>Hints</h2>
       <p>
