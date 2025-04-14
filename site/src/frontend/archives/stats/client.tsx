@@ -158,7 +158,7 @@ const ZoomConfig: ZoomPluginOptions = {
   },
 };
 
-const useChartClickHandler = ({
+const useHighlightClickHandler = ({
   toggleHighlight,
   clearHighlight,
 }: {
@@ -180,6 +180,35 @@ const useChartClickHandler = ({
     },
     [clearHighlight, toggleHighlight],
   );
+};
+
+const puzzleClickHandler = (
+  _: ChartEvent,
+  elements: ActiveElement[],
+  chart: ChartJS,
+) => {
+  const [element, ...rest] = elements;
+  if (!element || rest.length > 0) return;
+
+  const point = chart.data.datasets[element.datasetIndex]?.data[element.index];
+  if (
+    !point ||
+    typeof point !== "object" ||
+    !("slug" in point) ||
+    typeof point.slug !== "string"
+  )
+    return;
+
+  const { slug } = point;
+  window.open(`${rootUrl}/puzzles/${slug}`, "_blank");
+};
+
+const puzzleHoverHandler = (
+  _: ChartEvent,
+  elements: ActiveElement[],
+  chart: ChartJS,
+) => {
+  chart.canvas.style.cursor = elements.length > 0 ? "pointer" : "default";
 };
 
 const useFilteredDatasets = <TType extends ChartType, TData>({
@@ -332,7 +361,7 @@ const SolveGraph = ({
     });
   }, [activityLogByTeam, puzzleSet, teamColors, teamSort]);
 
-  const onChartClick = useChartClickHandler({
+  const onChartClick = useHighlightClickHandler({
     toggleHighlight,
     clearHighlight,
   });
@@ -538,7 +567,7 @@ const TeamSizeVsSolveGraph = ({
     [],
   );
 
-  const onChartClick = useChartClickHandler({
+  const onChartClick = useHighlightClickHandler({
     toggleHighlight,
     clearHighlight,
   });
@@ -647,7 +676,7 @@ const GuessVsSolveGraph = ({
     ];
   }, []);
 
-  const onChartClick = useChartClickHandler({
+  const onChartClick = useHighlightClickHandler({
     toggleHighlight,
     clearHighlight,
   });
@@ -1165,6 +1194,16 @@ const MostLeastSolvedPuzzleGraph = ({
 }) => {
   const ShowCount = 20;
 
+  const options: ChartOptions<"bar"> = {
+    onClick: puzzleClickHandler,
+    onHover: puzzleHoverHandler,
+    datasets: {
+      bar: {
+        hoverBorderWidth: 2,
+      },
+    },
+  };
+
   const data = useMemo(() => {
     const solves = activityLog.reduce((acc, row) => {
       if (row.type === "puzzle_solved" && row.slug) {
@@ -1174,7 +1213,11 @@ const MostLeastSolvedPuzzleGraph = ({
     }, new Map<string, number>());
     const sorted = [...solves.entries()]
       .sort((a, b) => a[1] - b[1])
-      .map(([slug, count]) => ({ x: PUZZLES[slug]?.title ?? slug, y: count }));
+      .map(([slug, count]) => ({
+        x: PUZZLES[slug]?.title ?? slug,
+        y: count,
+        slug,
+      }));
 
     if (mode === "most") {
       return sorted.slice(-ShowCount).reverse();
@@ -1185,7 +1228,7 @@ const MostLeastSolvedPuzzleGraph = ({
 
   return (
     <Chart>
-      <Bar data={{ datasets: [{ data }] }} />
+      <Bar options={options} data={{ datasets: [{ data }] }} />
     </Chart>
   );
 };
@@ -1197,6 +1240,16 @@ const MostPurchasedPuzzleGraph = ({
 }) => {
   // Show puzzles that were purchased more than Threshold times
   const Threshold = 5;
+
+  const options: ChartOptions<"bar"> = {
+    onClick: puzzleClickHandler,
+    onHover: puzzleHoverHandler,
+    datasets: {
+      bar: {
+        hoverBorderWidth: 2,
+      },
+    },
+  };
 
   const data = useMemo(() => {
     const purchases = activityLog.reduce((acc, row) => {
@@ -1215,7 +1268,7 @@ const MostPurchasedPuzzleGraph = ({
 
   return (
     <Chart>
-      <Bar data={{ datasets: [{ data }] }} />
+      <Bar options={options} data={{ datasets: [{ data }] }} />
     </Chart>
   );
 };
