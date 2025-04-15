@@ -1,12 +1,11 @@
 import React from "react";
-import { styled } from "styled-components";
-import { deviceMin } from "../utils/breakpoints";
+import { css, styled } from "styled-components";
 import { PuzzleMain } from "./PuzzleLayout";
 import { darkBgLinkStyles, Wrapper } from "./StyledUI";
 
 const BG = "var(--black)";
 
-const StyledWrapper = styled(Wrapper)`
+const StyledWrapper = styled(Wrapper)<{ $fullWidth?: boolean }>`
   display: grid;
   grid-template-columns: [outer-start] 0.5rem [mid-start] 0.5rem [inner-start] 1fr [inner-end] 0.5rem [mid-end] 0.5rem [outer-end];
   grid-template-rows: [inner-start] 0.5rem [mid-start] 0.5rem [outer-start] 1fr [outer-end] 0.5rem [mid-end] 0.5rem [inner-end];
@@ -15,9 +14,11 @@ const StyledWrapper = styled(Wrapper)`
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 
-  @media ${deviceMin.lg} {
-    width: calc(1080px - 1rem);
-  }
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      width: 100%;
+    `}
 `;
 
 const StairOuterLeft = styled.div`
@@ -148,9 +149,15 @@ export const PageMain = styled(PuzzleMain)`
   }
 `;
 
-export const PageWrapper = ({ children }: { children: JSX.Element }) => {
+export const PageWrapper = ({
+  children,
+  fullWidth,
+}: {
+  children: JSX.Element;
+  fullWidth?: boolean;
+}) => {
   return (
-    <StyledWrapper>
+    <StyledWrapper $fullWidth={fullWidth}>
       <InnerWrapper>
         <ContentsWrapper>{children}</ContentsWrapper>
         <GoldBorderTall />

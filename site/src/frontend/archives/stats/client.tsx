@@ -109,10 +109,8 @@ type HintAvailabilityRow = { timestamp: DateTime; slug: string };
 
 const Chart = styled.div<{ $aspectRatio?: number }>`
   position: relative;
-  width: calc(min(1080px, 100vw) - 10rem);
-  height: calc(
-    ${({ $aspectRatio = 0.5 }) => $aspectRatio} * (min(1080px, 100vw) - 10rem)
-  );
+  width: calc(100vw - 10rem);
+  height: calc(${({ $aspectRatio = 0.5 }) => $aspectRatio} * (100vw - 10rem));
   background-color: var(--white);
 `;
 

@@ -193,7 +193,7 @@ WHERE
 
 const statsHandler: PageRenderer<ParamsDictionary> = () => {
   const node = (
-    <PageWrapper>
+    <PageWrapper fullWidth>
       <>
         <PageHeader>
           <PageTitle>Statistics</PageTitle>
