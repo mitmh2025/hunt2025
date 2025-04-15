@@ -1,6 +1,7 @@
 import { type PuzzleDefinition } from "../types";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
+import virtual_ribbon from "./virtual_ribbon";
 
 const puzzle: PuzzleDefinition = {
   title: "Celestial Rope",
@@ -98,6 +99,7 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   canned_responses: [],
+  subpuzzles: [virtual_ribbon],
 };
 
 export default puzzle;

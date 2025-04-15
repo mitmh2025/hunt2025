@@ -343,6 +343,20 @@ export function registerUiRoutes({
       );
     }),
   );
+  authRouter.get(
+    "/virtual_ribbon",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(
+        subpuzzleHandler,
+        {
+          ...req,
+          params: { subpuzzleSlug: "virtual_ribbon" },
+        } as Request<SubpuzzleParams>,
+        res,
+        next,
+      );
+    }),
+  );
   const plainRouletteData = [
     { href: "/i_kid_ewe_knot", slug: "i_kid_ewe_knot", gate: "tmg01" },
     { href: "/stitchy_situation", slug: "stitchy_situation", gate: "tmg02" },

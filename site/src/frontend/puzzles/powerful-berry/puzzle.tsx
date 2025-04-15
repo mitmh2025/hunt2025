@@ -1,38 +1,51 @@
 import React from "react";
-import type { TeamHuntState } from "../../../../lib/api/client";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
-import { MailtoLink } from "../../components/StyledUI";
+import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import rootUrl from "../../utils/rootUrl";
+import rope from "./assets/rope.jpg";
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const pickupCompleted =
-    teamState.rounds.background_check?.gates?.includes("bgg01") ?? false;
+const StyledImage = styled(LinkedImage)`
+  & img {
+    max-width: 450px;
+  }
+`;
 
+const Puzzle = () => {
   return (
     <>
-      <ArchivalNotice />
+      <AuthorsNoteBlock>
+        <p>
+          During Mystery Hunt, teams were instructed to visit the Gala to pick
+          up their copy of this puzzle. When they did so, they received a very
+          long ribbon tangled up in a zipper lock bag with 19 paper tags
+          attached to it at uneven intervals.
+        </p>
 
-      {pickupCompleted ? (
-        <>
-          <p>Our records show you have picked up your copy of this puzzle.</p>
-          <p>
-            You should have received a very long ribbon with nineteen paper tags
-            attached. Please contact us at{" "}
-            <MailtoLink subject={"Missing pieces for Celestial Rope"} /> if it
-            seems that you are missing pieces.
-          </p>
-        </>
-      ) : (
-        <>
-          {" "}
-          <p>Please come to the Gala to pick up your copy of this puzzle.</p>
-          <p>
-            You should receive a very long ribbon with nineteen paper tags
-            attached. Please contact us at{" "}
-            <MailtoLink subject={"Missing pieces for Celestial Rope"} /> if it
-            seems that you are missing pieces.
-          </p>
-        </>
-      )}
+        <p>
+          <center>
+            <StyledImage
+              src={rope}
+              alt="A long ribbon stretched out along the hallway of building 16."
+            />
+            <br />
+            <em>A team begins to untangle their Celestial Rope</em>
+          </center>
+        </p>
+
+        <p>
+          If you’d like to solve this puzzle, we have created a{" "}
+          <a
+            href={`${rootUrl}/virtual_ribbon`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            virtual ribbon
+          </a>{" "}
+          as an alternative.
+        </p>
+      </AuthorsNoteBlock>
+
       <div>
         <div>(1 1 4 9 3)</div>
         <div>(3 4 5 5)</div>
