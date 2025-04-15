@@ -1814,109 +1814,117 @@ const App = ({
 
   return (
     <>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "max-content 1fr",
-          alignItems: "center",
-          gap: "0.5rem",
-        }}
-      >
-        <span>Show/hide team(s)</span>
-        <Select
-          components={{
-            IndicatorSeparator: TeamMultiSelectIndicatorSeparator,
+      <div style={{ position: "relative" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "max-content 1fr",
+            alignItems: "center",
+            gap: "0.5rem",
+            position: "sticky",
+            top: 0,
+            zIndex: 100,
+            background: "var(--black)",
+            padding: "1rem 0",
           }}
-          controlShouldRenderValue={showSelectValue.length <= 5}
-          placeholder={
-            showSelectValue.length === selectOptions.length
-              ? "All teams selected"
-              : `${showSelectValue.length} teams selected`
-          }
-          styles={selectStyles}
-          isClearable
-          isMulti
-          closeMenuOnSelect={false}
-          hideSelectedOptions={false}
-          value={showSelectValue}
-          onChange={onShowSelectChange}
-          options={selectOptions}
+        >
+          <span>Show/hide team(s)</span>
+          <Select
+            components={{
+              IndicatorSeparator: TeamMultiSelectIndicatorSeparator,
+            }}
+            controlShouldRenderValue={showSelectValue.length <= 5}
+            placeholder={
+              showSelectValue.length === selectOptions.length
+                ? "All teams selected"
+                : `${showSelectValue.length} teams selected`
+            }
+            styles={selectStyles}
+            isClearable
+            isMulti
+            closeMenuOnSelect={false}
+            hideSelectedOptions={false}
+            value={showSelectValue}
+            onChange={onShowSelectChange}
+            options={selectOptions}
+          />
+
+          <span>Highlight team(s)</span>
+          <Select
+            styles={selectStyles}
+            controlShouldRenderValue={highlightSelectValue.length <= 5}
+            placeholder={
+              highlightSelectValue.length === selectOptions.length
+                ? "All teams selected"
+                : `${highlightSelectValue.length} teams selected`
+            }
+            isClearable
+            isMulti
+            closeMenuOnSelect={false}
+            hideSelectedOptions={false}
+            value={highlightSelectValue}
+            onChange={onHighlightSelectChange}
+            options={selectOptions}
+          />
+        </div>
+
+        <h2>Solve Graph</h2>
+        <SolveGraph
+          activityLogByTeam={activityLogByTeam}
+          teamColors={teamColors}
+          teamSort={teamSort}
+          shownTeams={shownTeams}
+          highlightedTeams={highlightedTeams}
+          toggleHighlight={toggleHighlight}
+          clearHighlight={clearHighlight}
         />
 
-        <span>Highlight team(s)</span>
-        <Select
-          styles={selectStyles}
-          controlShouldRenderValue={highlightSelectValue.length <= 5}
-          placeholder={
-            highlightSelectValue.length === selectOptions.length
-              ? "All teams selected"
-              : `${highlightSelectValue.length} teams selected`
-          }
-          isClearable
-          isMulti
-          closeMenuOnSelect={false}
-          hideSelectedOptions={false}
-          value={highlightSelectValue}
-          onChange={onHighlightSelectChange}
-          options={selectOptions}
+        <h2>Round Solve Times</h2>
+        <RoundSolveGraph
+          activityLogByTeam={activityLogByTeam}
+          teamSort={teamSort}
+          shownTeams={shownTeams}
+          highlightedTeams={highlightedTeams}
+        />
+
+        <h2>Team Size vs. Solves</h2>
+        <TeamSizeVsSolveGraph
+          activityLogByTeam={activityLogByTeam}
+          teamInfo={teamInfo}
+          teamColors={teamColors}
+          teamSort={teamSort}
+          shownTeams={shownTeams}
+          highlightedTeams={highlightedTeams}
+          toggleHighlight={toggleHighlight}
+          clearHighlight={clearHighlight}
+        />
+
+        <h2>Guesses vs. Solves</h2>
+        <GuessVsSolveGraph
+          activityLogByTeam={activityLogByTeam}
+          teamInfo={teamInfo}
+          teamColors={teamColors}
+          teamSort={teamSort}
+          shownTeams={shownTeams}
+          highlightedTeams={highlightedTeams}
+          toggleHighlight={toggleHighlight}
+          clearHighlight={clearHighlight}
+        />
+
+        <h2>Available Puzzles, Keys, and Clues Over Time</h2>
+        <p>
+          If exactly one team is highlighted (or is the only team shown), this
+          shows the number of puzzles, keys, and clues available to that team
+          over time. Otherwise, it shows the distribution of all highlighted
+          teams.
+        </p>
+        <KeysCluesPuzzlesGraph
+          activityLog={activityLog}
+          teamSort={teamSort}
+          shownTeams={shownTeams}
+          highlightedTeams={highlightedTeams}
         />
       </div>
-
-      <h2>Solve Graph</h2>
-      <SolveGraph
-        activityLogByTeam={activityLogByTeam}
-        teamColors={teamColors}
-        teamSort={teamSort}
-        shownTeams={shownTeams}
-        highlightedTeams={highlightedTeams}
-        toggleHighlight={toggleHighlight}
-        clearHighlight={clearHighlight}
-      />
-
-      <h2>Round Solve Times</h2>
-      <RoundSolveGraph
-        activityLogByTeam={activityLogByTeam}
-        teamSort={teamSort}
-        shownTeams={shownTeams}
-        highlightedTeams={highlightedTeams}
-      />
-
-      <h2>Team Size vs. Solves</h2>
-      <TeamSizeVsSolveGraph
-        activityLogByTeam={activityLogByTeam}
-        teamInfo={teamInfo}
-        teamColors={teamColors}
-        teamSort={teamSort}
-        shownTeams={shownTeams}
-        highlightedTeams={highlightedTeams}
-        toggleHighlight={toggleHighlight}
-        clearHighlight={clearHighlight}
-      />
-
-      <h2>Guesses vs. Solves</h2>
-      <GuessVsSolveGraph
-        activityLogByTeam={activityLogByTeam}
-        teamInfo={teamInfo}
-        teamColors={teamColors}
-        teamSort={teamSort}
-        shownTeams={shownTeams}
-        highlightedTeams={highlightedTeams}
-        toggleHighlight={toggleHighlight}
-        clearHighlight={clearHighlight}
-      />
-
-      <h2>Available Puzzles, Keys, and Clues Over Time</h2>
-      <p>
-        If exactly one team is highlighted (or is the only team shown), this
-        shows the number of puzzles, keys, and clues available to that team over
-        time. Otherwise, it shows the distribution of all highlighted teams.
-      </p>
-      <KeysCluesPuzzlesGraph
-        activityLog={activityLog}
-        teamSort={teamSort}
-        shownTeams={shownTeams}
-        highlightedTeams={highlightedTeams}
-      />
 
       <h2>Unlock Round Distribution</h2>
       <p>
@@ -1931,7 +1939,6 @@ const App = ({
         released by us via Stray Leads).
       </p>
       <RoundDistributionGraph activityLogByTeam={activityLogByTeam} />
-
       <h2>Most Solved Puzzles</h2>
       <MostLeastSolvedPuzzleGraph activityLog={activityLog} mode="most" />
 
