@@ -1,29 +1,17 @@
-import "chartjs-adapter-luxon";
 import {
   Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  Colors,
+  Decimation,
+  Filler,
   Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  TimeScale,
-  Tooltip,
-  type TooltipItem,
   type ActiveElement,
+  type ChartData,
+  type ChartDataset,
   type ChartEvent,
   type ChartOptions,
   type ChartType,
-  type ChartDataset,
-  type ChartData,
-  type Scale,
-  Filler,
-  Decimation,
+  type TooltipItem,
 } from "chart.js";
-import Zoom from "chartjs-plugin-zoom";
-import type { ZoomPluginOptions } from "chartjs-plugin-zoom/types/options";
-import { parse } from "csv-parse/browser/esm/sync";
+import { type Options } from "csv-parse";
 import { DateTime } from "luxon";
 import React, {
   useCallback,
@@ -37,11 +25,10 @@ import { createRoot } from "react-dom/client";
 import Select, {
   components,
   type CSSObjectWithLabel,
-  type StylesConfig,
   type IndicatorSeparatorProps,
+  type StylesConfig,
 } from "react-select";
 import seedrandom from "seedrandom";
-import { styled } from "styled-components";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import { MI, Math as MathML } from "../../components/MathML";
 import { ErrorText } from "../../components/StyledUI";
@@ -49,25 +36,22 @@ import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 import rootUrl from "../../utils/rootUrl";
 import Loading from "./Loading";
-import activityLogUrl from "./assets/activity_log.csv";
+import {
+  HuntEnd,
+  HuntHQClose,
+  HuntStart,
+  useActivityLog,
+  type ActivityLogRow,
+} from "./activityLog";
 import hintAvailabilityUrl from "./assets/hint_availability.csv";
 import teamInfoUrl from "./assets/team_info.csv";
-
-ChartJS.register(
-  BarElement,
-  CategoryScale,
-  Colors,
-  LinearScale,
-  LineElement,
-  PointElement,
-  TimeScale,
-  Tooltip,
-  Zoom,
-);
-
-const HuntStart = DateTime.fromISO("2025-01-17T12:00:00-05:00");
-const HuntEnd = DateTime.fromISO("2025-01-20T12:45:00-05:00");
-const HuntHQClose = DateTime.fromISO("2025-01-19T22:00:00-05:00");
+import {
+  Chart,
+  TimeAxisOptions,
+  ZoomConfig,
+  generateTruncatedTick,
+} from "./charts";
+import useCSV from "./useCSV";
 
 const slugToSlot = generateSlugToSlotMap(HUNT);
 const puzzleSlugs = [...slugToSlot.entries()].map(([slug, _]) => slug);
@@ -78,83 +62,8 @@ const supermetaSlugs = [...slugToSlot.entries()]
   .filter(([_, lookup]) => lookup.slot.is_supermeta)
   .map(([slug, _]) => slug);
 
-type ActivityLogRow = {
-  timestamp: DateTime;
-  team_name: string;
-  type:
-    | "clue_exchanged"
-    | "clues_adjusted"
-    | "interaction_completed"
-    | "interaction_started"
-    | "interaction_unlocked"
-    | "keys_adjusted"
-    | "puzzle_answer_bought"
-    | "puzzle_guess_submitted"
-    | "puzzle_hint_requested"
-    | "puzzle_hint_responded"
-    | "puzzle_partially_solved"
-    | "puzzle_solved"
-    | "puzzle_unlockable"
-    | "puzzle_unlocked"
-    | "rate_limits_reset"
-    | "round_unlocked";
-  slug?: string;
-  result?: string;
-  keys_delta: number;
-  clues_delta: number;
-};
-
 type TeamInfo = Map<string, { people: number }>;
 type HintAvailabilityRow = { timestamp: DateTime; slug: string };
-
-const Chart = styled.div<{ $aspectRatio?: number }>`
-  position: relative;
-  width: calc(100vw - 10rem);
-  height: calc(${({ $aspectRatio = 0.5 }) => $aspectRatio} * (100vw - 10rem));
-  background-color: var(--white);
-`;
-
-const TimeAxisOptions = ({
-  start = HuntStart,
-  end = HuntEnd,
-}: {
-  start?: DateTime;
-  end?: DateTime;
-} = {}) => ({
-  type: "time" as const,
-  min: start.toJSDate().valueOf(),
-  max: end.toJSDate().valueOf(),
-  adapters: {
-    date: {
-      zone: "America/New_York",
-    },
-  },
-  time: {
-    unit: "hour" as const,
-    displayFormats: {
-      hour: "EEE h a",
-    },
-  },
-});
-
-const ZoomConfig: ZoomPluginOptions = {
-  pan: {
-    enabled: true,
-  },
-  zoom: {
-    wheel: {
-      enabled: true,
-    },
-    pinch: {
-      enabled: true,
-    },
-    scaleMode: "xy",
-  },
-  limits: {
-    x: { min: "original", max: "original" },
-    y: { min: "original", max: "original" },
-  },
-};
 
 const useHighlightClickHandler = ({
   toggleHighlight,
@@ -242,17 +151,6 @@ const useFilteredDatasets = <TType extends ChartType, TData>({
       ];
     });
   }, [shownTeams, highlightedTeams, datasets]);
-};
-
-const generateTruncatedTick = function (this: Scale, value: string | number) {
-  if (typeof value === "string") return value;
-
-  const labels = this.getLabels();
-  if (value < 0 || value >= labels.length) return value;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we just did a bounds check
-  const label = labels[value]!;
-  if (label.length < 25) return label;
-  return `${label.slice(0, 25)}…`;
 };
 
 type TeamSelectOption = { value: string; label: string };
@@ -515,6 +413,7 @@ const RoundSolveGraph = ({
     datasets: {
       scatter: {
         pointRadius: 8,
+        pointHoverRadius: 12,
       },
     },
     indexAxis: "y",
@@ -1345,7 +1244,7 @@ const FastestSlowestUnlockGraphs = ({
     [averageUnlockDelay],
   );
   const slowestData = useMemo(
-    () => formatData(averageUnlockDelay.slice(-ShowCount)),
+    () => formatData(averageUnlockDelay.slice(-ShowCount).reverse()),
     [averageUnlockDelay],
   );
 
@@ -1976,124 +1875,81 @@ const App = ({
   );
 };
 
-const fetchActivityLog = async ({ signal }: { signal: AbortSignal }) => {
-  const response = await fetch(activityLogUrl, {
-    signal,
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch activity log: ${response.status} ${response.statusText}`,
-    );
-  }
-
-  const raw = await response.text();
-  const log = parse(raw, {
-    columns: true,
-    cast: (value, context) => {
-      if (context.column === "timestamp") {
-        return DateTime.fromSQL(value, { zone: "America/New_York" });
-      }
-      if (context.column === "keys_delta") {
-        return parseInt(value, 10);
-      }
-      if (context.column === "clues_delta") {
-        return parseInt(value, 10);
-      }
-      return value;
-    },
-  }) as ActivityLogRow[];
-
-  return log;
+const TeamInfoParseOptions: Options = {
+  columns: true,
+  cast: (value, context) => {
+    if (context.column === "people") {
+      return parseInt(value, 10);
+    }
+    return value;
+  },
 };
 
-const fetchTeamInfo = async ({ signal }: { signal: AbortSignal }) => {
-  const response = await fetch(teamInfoUrl, {
-    signal,
+const useTeamInfo = () => {
+  const { loading, error, data } = useCSV<{
+    team_name: string;
+    people: number;
+  }>({
+    url: teamInfoUrl,
+    parseOptions: TeamInfoParseOptions,
   });
 
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch team info: ${response.status} ${response.statusText}`,
-    );
-  }
-
-  const raw = await response.text();
-  const info = parse(raw, {
-    columns: true,
-    cast: (value, context) => {
-      if (context.column === "people") {
-        return parseInt(value, 10);
-      }
-      return value;
-    },
-  }) as { team_name: string; people: number }[];
-
-  return new Map(info.map((row) => [row.team_name, { people: row.people }]));
+  return {
+    loading,
+    error,
+    data: new Map(data.map((row) => [row.team_name, { people: row.people }])),
+  };
 };
 
-const fetchHintAvailability = async ({ signal }: { signal: AbortSignal }) => {
-  const response = await fetch(hintAvailabilityUrl, {
-    signal,
+const HintAvailabilityParseOptions: Options = {
+  columns: true,
+  cast: (value, context) => {
+    if (context.column === "timestamp") {
+      return DateTime.fromSQL(value, { zone: "America/New_York" });
+    }
+    return value;
+  },
+};
+
+const useHintAvailability = () => {
+  const { loading, error, data } = useCSV<HintAvailabilityRow>({
+    url: hintAvailabilityUrl,
+    parseOptions: HintAvailabilityParseOptions,
   });
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch hint availability: ${response.status} ${response.statusText}`,
-    );
-  }
-  const raw = await response.text();
-  const log = parse(raw, {
-    columns: true,
-    cast: (value, context) => {
-      if (context.column === "timestamp") {
-        return DateTime.fromSQL(value, { zone: "America/New_York" });
-      }
-      return value;
-    },
-  }) as HintAvailabilityRow[];
-  return log;
+
+  return {
+    loading,
+    error,
+    data,
+  };
 };
 
 const ActivityLogLoader = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<unknown>(null);
-  const [activityLog, setActivityLog] = useState<ActivityLogRow[]>([]);
-  const [teamInfo, setTeamInfo] = useState<TeamInfo | undefined>(undefined);
-  const [hintAvailability, setHintAvailability] = useState<
-    HintAvailabilityRow[]
-  >([]);
+  const {
+    loading: activityLogLoading,
+    error: activityLogError,
+    data: activityLog,
+  } = useActivityLog();
+  const {
+    loading: teamInfoLoading,
+    error: teamInfoError,
+    data: teamInfo,
+  } = useTeamInfo();
+  const {
+    loading: hintAvailabilityLoading,
+    error: hintAvailabilityError,
+    data: hintAvailability,
+  } = useHintAvailability();
 
-  useEffect(() => {
-    const abort = new AbortController();
-    setLoading(true);
-    void (async () => {
-      try {
-        const [log, info, hintAvailability] = await Promise.all([
-          fetchActivityLog({ signal: abort.signal }),
-          fetchTeamInfo({ signal: abort.signal }),
-          fetchHintAvailability({ signal: abort.signal }),
-        ]);
-
-        setActivityLog(log);
-        setTeamInfo(info);
-        setHintAvailability(hintAvailability);
-      } catch (e) {
-        setError(e);
-      } finally {
-        setLoading(false);
-      }
-    })();
-
-    return () => {
-      abort.abort();
-    };
-  }, []);
+  const loading =
+    activityLogLoading || teamInfoLoading || hintAvailabilityLoading;
+  const error = activityLogError || teamInfoError || hintAvailabilityError;
 
   if (loading) {
     return <Loading />;
   }
 
-  if (error || !teamInfo) {
+  if (error) {
     return (
       <ErrorText>
         An error occurred while loading additional statistics: {String(error)}

@@ -4,6 +4,7 @@ import { type z } from "zod";
 import { type TeamHuntState, newClient } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
 import apiUrl from "../utils/apiUrl";
+import archiveMode from "../utils/archiveMode";
 import rootUrl from "../utils/rootUrl";
 import PuzzleHintLink from "./PuzzleHintLink";
 import Stamp from "./SparkleStamps";
@@ -88,7 +89,11 @@ const ErrorNotice = styled(RateLimitNotice)`
   color: var(--white);
 `;
 
-const SolutionsLink = styled.div``;
+const SolutionsLink = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+`;
 
 const PuzzleGuessForm = ({
   type,
@@ -311,6 +316,9 @@ const PuzzleGuessSection = ({
       {solutionAvailable && (
         <SolutionsLink>
           <a href={`${rootUrl}/puzzles/${slug}/solution`}>View solution</a>
+          {archiveMode && (
+            <a href={`${rootUrl}/puzzles/${slug}/stats`}>View stats</a>
+          )}
         </SolutionsLink>
       )}
       {!solved && puzzleState && !solutionAvailable && (

@@ -71,7 +71,7 @@ declare module "*.csv" {
   export default value;
 }
 
-declare module "*.csv?embed" {
+declare module "*.csv?raw" {
   const value: string;
   export default value;
 }

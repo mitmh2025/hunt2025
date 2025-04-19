@@ -53,6 +53,7 @@ import {
   subpuzzleGuessPostHandler,
   puzzleHintsHandler,
 } from "./routes/puzzle";
+import { puzzleStatsHandler } from "./routes/puzzle_stats";
 import { robotsHandler } from "./routes/robots";
 import { roundHandler, type RoundParams } from "./routes/round";
 import { virtualRadioHandler } from "./routes/virtual_radio";
@@ -263,6 +264,15 @@ export function registerUiRoutes({
       },
     ),
   );
+  authRouter.get(
+    "/puzzles/:puzzleSlug/stats",
+    asyncHandler(
+      async (req: Request<PuzzleParams>, res: Response, next: NextFunction) => {
+        await renderApp(puzzleStatsHandler, req, res, next);
+      },
+    ),
+  );
+
   authRouter.get(
     "/puzzles/:puzzleSlug/hints",
     asyncHandler(

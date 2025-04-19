@@ -10,6 +10,8 @@ import { type PageRenderer } from "../../utils/renderApp";
 import rootUrl from "../../utils/rootUrl";
 import Loading from "./Loading";
 import activityLog from "./assets/activity_log.csv";
+import { PUZZLE_STATS } from "./puzzles";
+import { PUZZLES } from "../../puzzles";
 
 /*
 
@@ -251,6 +253,29 @@ const statsHandler: PageRenderer<ParamsDictionary> = () => {
             <li>
               <strong>11</strong> teams finished the Hunt.
             </li>
+          </ul>
+
+          <p>
+            In addition to statistics about the Hunt as a whole on this page,
+            each puzzle also links to a stats page for that puzzle. A few
+            puzzles also include specialized statistics:
+          </p>
+
+          <ul>
+            {Object.keys(PUZZLE_STATS)
+              .flatMap((slug) => {
+                const puzzle = PUZZLES[slug];
+                if (!puzzle) return [];
+                return [{ slug, title: puzzle.title }];
+              })
+              .toSorted(({ title: a }, { title: b }) => a.localeCompare(b))
+              .map(({ slug, title }) => {
+                return [
+                  <li key={slug}>
+                    <a href={`${rootUrl}/puzzles/${slug}/stats`}>{title}</a>
+                  </li>,
+                ];
+              })}
           </ul>
 
           <p>(All timestamps below are in Eastern Standard Time.)</p>

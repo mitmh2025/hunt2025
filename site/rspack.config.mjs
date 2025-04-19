@@ -56,7 +56,6 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/shoddy-table/assets/10000sheets.xlsx",
   "src/frontend/puzzles/timely-head/assets/engagements-and-other-crimes.pdf",
   "src/frontend/puzzles/valuable-alps/assets/cross-dash-word.pdf",
-  "src/frontend/archives/stats/assets/activity_log.csv",
 ];
 // There are also 54 pages with predictable paths for the Murder in MITropolis meta
 for (let i = 1; i <= 54; i++) {
@@ -65,6 +64,12 @@ for (let i = 1; i <= 54; i++) {
     `src/frontend/rounds/murder_in_mitropolis/assets/pages/${pageStr}.pdf`,
   );
 }
+const statsAssetDir = "src/frontend/archives/stats/assets";
+fs.readdirSync(statsAssetDir).forEach((f) => {
+  if (path.extname(f) === ".csv") {
+    PRESERVE_FILENAME_ASSET_PATHS.push(path.join(statsAssetDir, f));
+  }
+});
 
 class RadioManifestPlugin {
   constructor(opts) {
@@ -368,6 +373,12 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const csvRawRule = {
+    test: /\.csv$/,
+    resourceQuery: /raw/,
+    type: "asset/source",
+  };
+
   const assetRules = [
     cssRule,
     // TODO: support importing other kinds of assets, and aliases for
@@ -390,6 +401,7 @@ export default function createConfigs(_env, argv) {
     xlsxRule,
     vttRule,
     csvRule,
+    csvRawRule,
   ];
 
   // Disable displayName classes on styled-components when not in dev mode.
@@ -518,6 +530,7 @@ export default function createConfigs(_env, argv) {
       virtual_radio: "./src/frontend/client/virtual_radio.tsx",
 
       archive_stats: "./src/frontend/archives/stats/client.tsx",
+      archive_puzzle_stats: "./src/frontend/archives/stats/puzzle_client.tsx",
 
       // Included on the round pages
       missing_diamond: "./src/frontend/rounds/missing_diamond/client.tsx",
