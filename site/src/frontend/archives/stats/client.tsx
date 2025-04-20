@@ -1561,22 +1561,24 @@ const InteractionResultGraph = ({
     const label = (slug: string) => INTERACTIONS[slug]?.title ?? slug;
     const labels = [...results.keys()].map((slug) => label(slug)).sort();
 
-    const datasets = [...results.entries()].flatMap(([slug, resultMap]) => {
-      const title = INTERACTIONS[slug]?.title ?? slug;
-      return [...resultMap.entries()]
-        .toSorted(([r1], [r2]) => (r1 < r2 ? -1 : 1))
-        .map(([result, count]) => {
-          const formatResult = result
-            .split("-")
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" ");
-          return {
-            label: formatResult,
-            data: [{ x: title, y: count }],
-            stack: "bar",
-          };
-        });
-    });
+    const datasets = [...results.entries()]
+      .toSorted(([a], [b]) => a.localeCompare(b))
+      .flatMap(([slug, resultMap]) => {
+        const title = INTERACTIONS[slug]?.title ?? slug;
+        return [...resultMap.entries()]
+          .toSorted(([r1], [r2]) => r1.localeCompare(r2))
+          .map(([result, count]) => {
+            const formatResult = result
+              .split("-")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ");
+            return {
+              label: formatResult,
+              data: [{ x: title, y: count }],
+              stack: "bar",
+            };
+          });
+      });
 
     return { labels, datasets };
   }, [activityLog]);

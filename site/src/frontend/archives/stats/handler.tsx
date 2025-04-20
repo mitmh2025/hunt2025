@@ -278,22 +278,19 @@ const statsHandler: PageRenderer<ParamsDictionary> = () => {
               })}
           </ul>
 
-          <p>(All timestamps below are in Eastern Standard Time.)</p>
+          <p>All timestamps are in Eastern Standard Time.</p>
+
+          <h2>Activity Log</h2>
+          <p>
+            You can download the <a href={activityLog}>full activity log</a>,
+            including unlocks, answer submissions, interactions requests, and
+            operations on both keys 🗝️ and clues 🔎.
+          </p>
 
           <noscript>Additional statistics displays require Javascript</noscript>
           <div id="stats-root">
             <Loading />
           </div>
-
-          <h2>Activity Log</h2>
-          <p>
-            Download the <a href={activityLog}>full activity log</a>, including
-            unlocks, answer submissions, interactions requests, and operations
-            on both keys 🗝️ and clues 🔎. As with everything, timestamps are in
-            Eastern Standard Time. (Note that hints were given out quite
-            liberally on Sunday, and we therefore do not consider any rankings
-            beyond first and second finish to be authoritative.)
-          </p>
         </PageMain>
       </>
     </PageWrapper>
