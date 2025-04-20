@@ -31,7 +31,7 @@ import Select, {
 import seedrandom from "seedrandom";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import { MI, Math as MathML } from "../../components/MathML";
-import { ErrorText } from "../../components/StyledUI";
+import { ErrorText, Mono } from "../../components/StyledUI";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 import rootUrl from "../../utils/rootUrl";
@@ -52,6 +52,8 @@ import {
   generateTruncatedTick,
 } from "./charts";
 import useCSV from "./useCSV";
+import canonicalizeInput from "../../../../lib/canonicalizeInput";
+import { PuzzleStatsTable } from "../../components/StatsLayout";
 
 const slugToSlot = generateSlugToSlotMap(HUNT);
 const puzzleSlugs = [...slugToSlot.entries()].map(([slug, _]) => slug);
@@ -1586,6 +1588,68 @@ const InteractionResultGraph = ({
   );
 };
 
+const MostBacksolvedTable = ({
+  activityLog,
+}: {
+  activityLog: ActivityLogRow[];
+}) => {
+  const data = useMemo(() => {
+    const allAnswers = new Map(
+      Object.entries(PUZZLES).map(([slug, puzzle]) => [
+        canonicalizeInput(puzzle.answer),
+        slug,
+      ]),
+    );
+
+    const wrongCount = activityLog.reduce<Map<string, number>>((acc, row) => {
+      if (row.type !== "puzzle_guess_submitted") return acc;
+      if (row.result === "correct") return acc;
+      if (!row.answer) return acc;
+
+      const correctSlug = allAnswers.get(row.answer);
+      if (!correctSlug) return acc;
+
+      acc.set(correctSlug, (acc.get(correctSlug) ?? 0) + 1);
+      return acc;
+    }, new Map());
+
+    return [...wrongCount.entries()]
+      .toSorted(([, a], [, b]) => b - a)
+      .filter(([, count]) => count >= 5)
+      .map(([slug, count]) => ({
+        slug,
+        title: PUZZLES[slug]?.title ?? slug,
+        answer: PUZZLES[slug]?.answer ?? "",
+        count,
+      }));
+  }, [activityLog]);
+
+  return (
+    <PuzzleStatsTable>
+      <thead>
+        <tr>
+          <th>Answer</th>
+          <th>Correct Puzzle</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map(({ slug, title, answer, count }) => (
+          <tr key={slug}>
+            <td>
+              <Mono>{answer}</Mono>
+            </td>
+            <td>
+              <a href={`${rootUrl}/puzzles/${slug}`}>{title}</a>
+            </td>
+            <td>{count}</td>
+          </tr>
+        ))}
+      </tbody>
+    </PuzzleStatsTable>
+  );
+};
+
 const App = ({
   activityLog,
   teamInfo,
@@ -1846,6 +1910,16 @@ const App = ({
       <MostPurchasedPuzzleGraph activityLog={activityLog} />
 
       <FastestSlowestUnlockGraphs activityLogByTeam={activityLogByTeam} />
+
+      <h2>Most Backsolved Answers</h2>
+      <p>
+        This table shows how many times an answer was submitted that{" "}
+        <em>would</em> have been correct…had it been submitted to the correct
+        puzzle. (Perhaps unsurprisingly, this table is dominated by answers to
+        the Shell Corporation metapuzzles from{" "}
+        <a href={`${rootUrl}/rounds/paper_trail`}>The Paper Trail</a>.)
+      </p>
+      <MostBacksolvedTable activityLog={activityLog} />
 
       <h2>Hints</h2>
       <p>
