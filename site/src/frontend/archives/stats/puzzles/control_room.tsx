@@ -2,7 +2,7 @@ import { type Options } from "csv-parse";
 import { DateTime } from "luxon";
 import React, { useMemo } from "react";
 import { styled } from "styled-components";
-import { PuzzleStatsTable } from "../../../components/StatsLayout";
+import { StyledPuzzleStatsTable } from "../../../components/StatsLayout";
 import { ErrorText } from "../../../components/StyledUI";
 import Loading from "../Loading";
 import instructionsCsvUrl from "../assets/control_room_instructions.csv";
@@ -88,7 +88,7 @@ const PuzzleStats = () => {
       <Tables>
         <div>
           <h3>Favorite Nouns</h3>
-          <PuzzleStatsTable>
+          <StyledPuzzleStatsTable>
             <thead>
               <tr>
                 <th>Noun</th>
@@ -103,12 +103,12 @@ const PuzzleStats = () => {
                 </tr>
               ))}
             </tbody>
-          </PuzzleStatsTable>
+          </StyledPuzzleStatsTable>
         </div>
 
         <div>
           <h3>Favorite Verbs</h3>
-          <PuzzleStatsTable>
+          <StyledPuzzleStatsTable>
             <thead>
               <tr>
                 <th>Verb</th>
@@ -123,12 +123,12 @@ const PuzzleStats = () => {
                 </tr>
               ))}
             </tbody>
-          </PuzzleStatsTable>
+          </StyledPuzzleStatsTable>
         </div>
       </Tables>
 
       <h3>Favorite Instructions</h3>
-      <PuzzleStatsTable>
+      <StyledPuzzleStatsTable>
         <thead>
           <tr>
             <th>Instruction</th>
@@ -143,7 +143,7 @@ const PuzzleStats = () => {
             </tr>
           ))}
         </tbody>
-      </PuzzleStatsTable>
+      </StyledPuzzleStatsTable>
     </>
   );
 };

@@ -2,7 +2,6 @@ import { parse } from "csv-parse/sync";
 import { type Request } from "express";
 import { type DateTime } from "luxon";
 import React from "react";
-import { styled } from "styled-components";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import {
   ActivityLogParseOptions,
@@ -18,8 +17,10 @@ import {
   PageTitle,
   PageWrapper,
 } from "../../components/PageLayout";
-import { PuzzleStatsTable } from "../../components/StatsLayout";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  PuzzleAnswerStatsTable,
+  PuzzleTeamStatsTable,
+} from "../../components/StatsLayout";
 import { PUZZLES } from "../../puzzles";
 import archiveMode from "../../utils/archiveMode";
 import rootUrl from "../../utils/rootUrl";
@@ -29,10 +30,6 @@ const activityLog = parse(
   activityLogRaw,
   ActivityLogParseOptions,
 ) as ActivityLogRow[];
-
-const NoWrapCell = styled.td`
-  white-space: nowrap;
-`;
 
 const slugToSlot = generateSlugToSlotMap(HUNT);
 
@@ -67,10 +64,15 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
   const { slot } = slugToSlot.get(slug) ?? {};
   const purchasable = !slot?.is_meta && !slot?.is_supermeta;
 
-  const log = activityLog.filter((row) => row.slug === slug);
-  const unlockCount = log.filter(
-    (row) => row.type === "puzzle_unlocked",
-  ).length;
+  // Special-case what "unlock" means for quixotic-shoe to be when ads started
+  const isQuixoticShoe = slug === "and_now_a_puzzling_word_from_our_sponsors";
+  const unlockEvent = isQuixoticShoe ? "ads_unlocked" : "puzzle_unlocked";
+
+  const log = activityLog.filter(
+    (row) =>
+      row.slug === slug || (isQuixoticShoe && row.type === "ads_unlocked"),
+  );
+  const unlockCount = log.filter((row) => row.type === unlockEvent).length;
   const solveCount = log.filter((row) => row.type === "puzzle_solved").length;
   const purchasedCount = log.filter(
     (row) => row.type === "puzzle_answer_bought",
@@ -94,7 +96,7 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
     >
   >((acc, row) => {
     const stats = acc.get(row.team_name) ?? { guessCount: 0 };
-    if (row.type === "puzzle_unlocked") {
+    if (row.type === unlockEvent) {
       stats.unlockTime = row.timestamp;
     } else if (row.type === "puzzle_solved") {
       stats.solveTime = row.timestamp;
@@ -168,6 +170,17 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
               <a href={`${rootUrl}/puzzles/${slug}`}>← Back to puzzle</a>
             </p>
 
+            {isQuixoticShoe && (
+              <p>
+                For this puzzle only, we consider the puzzle itself to be
+                unlocked in all stats below as of when advertisements began
+                playing on the radio, rather than when the puzzle itself was
+                unlocked (which only occurred after discovering and solving the
+                first ad minipuzzle). The minipuzzles are considered to be
+                unlocked when they are first accessed.
+              </p>
+            )}
+
             <p>
               Total unlocks: {unlockCount}
               <br />
@@ -204,92 +217,17 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
 
             <h2>Team Stats</h2>
 
-            <PuzzleStatsTable className="sortable">
-              <thead>
-                <tr>
-                  <th>Team</th>
-                  <th>Total Guesses</th>
-                  <th>Unlock Time</th>
-                  <th>Time to Solve</th>
-                  <th>Solve Time</th>
-                  {purchasable && <th>Purchased?</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {teamStats.map((team) => {
-                  return (
-                    <tr key={team.teamName}>
-                      <td>{team.teamName}</td>
-                      <td>{team.guessCount}</td>
-                      <NoWrapCell
-                        sorttable_customkey={team.unlockTime.toMillis()}
-                      >
-                        {team.unlockTime.toFormat("EEE, MMM d, TTT")}
-                      </NoWrapCell>
-                      <NoWrapCell
-                        sorttable_customkey={team.timeToSolve.toMillis()}
-                      >
-                        {team.timeToSolve
-                          .set({ milliseconds: 0 })
-                          .rescale()
-                          .toHuman({ unitDisplay: "short" })}
-                      </NoWrapCell>
-                      <NoWrapCell
-                        sorttable_customkey={team.solveTime.toMillis()}
-                      >
-                        {team.solveTime.toFormat("EEE, MMM d, TTT")}
-                      </NoWrapCell>
-                      {purchasable && <td>{team.purchased ? "✅" : "❌"}</td>}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </PuzzleStatsTable>
+            <PuzzleTeamStatsTable
+              purchasable={purchasable}
+              teamStats={teamStats}
+            />
 
             <h2>Answer Stats</h2>
 
-            <PuzzleStatsTable className="sortable">
-              <thead>
-                <tr>
-                  <th>Answer</th>
-                  <th>Submission Count</th>
-                </tr>
-              </thead>
-              <tbody>
-                {answerStats.map((answer) => {
-                  const answerResult = answerResults.get(answer.answer);
-                  let answerEmoji;
-                  switch (answerResult) {
-                    case "correct":
-                      answerEmoji = "✅";
-                      break;
-                    case "incorrect":
-                      answerEmoji = "❌";
-                      break;
-                    case "other":
-                      answerEmoji = "⚠️";
-                      break;
-                    default:
-                      answerEmoji = "❓";
-                      break;
-                  }
-                  const AnswerComponent =
-                    answer.answer === puzzle.answer ? PuzzleAnswer : Mono;
-
-                  return (
-                    <tr key={answer.answer}>
-                      <td>
-                        {answerEmoji}{" "}
-                        <AnswerComponent style={{ wordBreak: "break-all" }}>
-                          {answer.answer}
-                        </AnswerComponent>
-                      </td>
-                      <td>{answer.count}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </PuzzleStatsTable>
+            <PuzzleAnswerStatsTable
+              answerStats={answerStats}
+              answerResults={answerResults}
+            />
           </PageMain>
         </>
       </PageWrapper>

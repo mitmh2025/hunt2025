@@ -32,7 +32,7 @@ import seedrandom from "seedrandom";
 import canonicalizeInput from "../../../../lib/canonicalizeInput";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import { MI, Math as MathML } from "../../components/MathML";
-import { PuzzleStatsTable } from "../../components/StatsLayout";
+import { StyledPuzzleStatsTable } from "../../components/StatsLayout";
 import { ErrorText, Mono } from "../../components/StyledUI";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
@@ -1631,7 +1631,7 @@ const MostBacksolvedTable = ({
   }, [activityLog]);
 
   return (
-    <PuzzleStatsTable>
+    <StyledPuzzleStatsTable>
       <thead>
         <tr>
           <th>Answer</th>
@@ -1652,7 +1652,7 @@ const MostBacksolvedTable = ({
           </tr>
         ))}
       </tbody>
-    </PuzzleStatsTable>
+    </StyledPuzzleStatsTable>
   );
 };
 

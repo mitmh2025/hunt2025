@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import canonicalizeInput from "../../../../../lib/canonicalizeInput";
-import { PuzzleStatsTable } from "../../../components/StatsLayout";
+import { StyledPuzzleStatsTable } from "../../../components/StatsLayout";
 import { ErrorText, Mono } from "../../../components/StyledUI";
 import { FirstPerson, type Person } from "../../../puzzles/new-ketchup/data";
 import Loading from "../Loading";
@@ -460,7 +460,7 @@ const MostCommonWrongAnswers = ({
   }, [log]);
 
   return (
-    <PuzzleStatsTable className="sortable" ref={ref}>
+    <StyledPuzzleStatsTable className="sortable" ref={ref}>
       <thead>
         <tr>
           <th>Challenger</th>
@@ -486,7 +486,7 @@ const MostCommonWrongAnswers = ({
           );
         })}
       </tbody>
-    </PuzzleStatsTable>
+    </StyledPuzzleStatsTable>
   );
 };
 
