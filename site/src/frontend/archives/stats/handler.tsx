@@ -6,12 +6,12 @@ import {
   PageTitle,
   PageMain,
 } from "../../components/PageLayout";
+import { PUZZLES } from "../../puzzles";
 import { type PageRenderer } from "../../utils/renderApp";
 import rootUrl from "../../utils/rootUrl";
 import Loading from "./Loading";
 import activityLog from "./assets/activity_log.csv";
 import { PUZZLE_STATS } from "./puzzles";
-import { PUZZLES } from "../../puzzles";
 
 /*
 

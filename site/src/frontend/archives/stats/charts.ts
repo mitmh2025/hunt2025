@@ -5,16 +5,16 @@ import {
   Colors,
   LineElement,
   LinearScale,
-  Plugin,
+  type Plugin,
   PointElement,
-  Scale,
+  type Scale,
   TimeScale,
   Tooltip,
 } from "chart.js";
 import "chartjs-adapter-luxon";
 import Zoom from "chartjs-plugin-zoom";
 import type { ZoomPluginOptions } from "chartjs-plugin-zoom/types/options";
-import { DateTime } from "luxon";
+import { type DateTime } from "luxon";
 import { styled } from "styled-components";
 import { HuntEnd, HuntStart } from "./activityLog";
 
@@ -34,6 +34,7 @@ const LegendPaddingPlugin: Plugin = {
   id: "legendPadding",
   beforeInit(chart) {
     if (!chart.legend) return;
+    // eslint-disable-next-line @typescript-eslint/unbound-method -- we need to bind the method later
     const originalFit = chart.legend.fit;
     chart.legend.fit = function fit() {
       originalFit.bind(chart.legend)();

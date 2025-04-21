@@ -1,4 +1,4 @@
-import { ChartOptions, Legend } from "chart.js";
+import { type ChartOptions, Legend } from "chart.js";
 import { type Options } from "csv-parse";
 import { DateTime, Duration } from "luxon";
 import React, { useMemo } from "react";
@@ -6,7 +6,7 @@ import { Bar, Scatter } from "react-chartjs-2";
 import { MI, Math as MathML } from "../../../components/MathML";
 import { ErrorText, Mono } from "../../../components/StyledUI";
 import Loading from "../Loading";
-import { ActivityLogRow, useActivityLog } from "../activityLog";
+import { type ActivityLogRow, useActivityLog } from "../activityLog";
 import songsLogCsvUrl from "../assets/songs_on_the_radio_log.csv";
 import { Chart, generateTruncatedTick } from "../charts";
 import useCSV from "../useCSV";

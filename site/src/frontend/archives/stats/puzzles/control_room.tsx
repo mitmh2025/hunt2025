@@ -1,7 +1,7 @@
 import { type Options } from "csv-parse";
 import { DateTime } from "luxon";
 import React, { useMemo } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { PuzzleStatsTable } from "../../../components/StatsLayout";
 import { ErrorText } from "../../../components/StyledUI";
 import Loading from "../Loading";
@@ -54,7 +54,7 @@ const PuzzleStats = () => {
       favoriteInstructions.set(instruction, instructionCount + 1);
     }
 
-    const summarize = (d: Map<string, number>, n: number = 10) => {
+    const summarize = (d: Map<string, number>, n = 10) => {
       return [...d.entries()].toSorted(([, a], [, b]) => b - a).slice(0, n);
     };
 

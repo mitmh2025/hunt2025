@@ -1,4 +1,4 @@
-import { ChartOptions, TooltipItem } from "chart.js";
+import { type ChartOptions, type TooltipItem } from "chart.js";
 import { type Options } from "csv-parse";
 import { DateTime } from "luxon";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";

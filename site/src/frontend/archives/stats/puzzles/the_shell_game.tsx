@@ -1,6 +1,6 @@
 import {
   Chart as ChartJS,
-  Plugin,
+  type Plugin,
   type ChartData,
   type ChartOptions,
   type TooltipItem,

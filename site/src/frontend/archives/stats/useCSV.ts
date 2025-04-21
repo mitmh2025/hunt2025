@@ -1,6 +1,6 @@
+import { type Options } from "csv-parse";
 import { parse } from "csv-parse/browser/esm/sync";
 import { useEffect, useState } from "react";
-import { type Options } from "csv-parse";
 
 const useCSV = <T>({
   url,

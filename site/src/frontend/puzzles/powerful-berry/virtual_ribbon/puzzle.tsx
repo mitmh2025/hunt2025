@@ -5,29 +5,29 @@ import {
   COPY_ONLY_CLASS,
   NO_COPY_CLASS,
 } from "../../../components/CopyToClipboard";
-import rootUrl from "../../../utils/rootUrl";
 import { AuthorsNote } from "../../../components/PuzzleLayout";
 import { deviceMax, deviceMin } from "../../../utils/breakpoints";
+import rootUrl from "../../../utils/rootUrl";
 import tag from "./assets/tag.svg";
 import tag01 from "./assets/tag01.svg";
-import tag07Front from "./assets/tag07-front.svg";
 import tag07Back from "./assets/tag07-back.svg";
-import tag08Front from "./assets/tag08-front.svg";
+import tag07Front from "./assets/tag07-front.svg";
 import tag08Back from "./assets/tag08-back.svg";
-import tag10Front from "./assets/tag10-front.svg";
+import tag08Front from "./assets/tag08-front.svg";
 import tag10Back from "./assets/tag10-back.svg";
-import tag11Front from "./assets/tag11-front.svg";
+import tag10Front from "./assets/tag10-front.svg";
 import tag11Back from "./assets/tag11-back.svg";
-import tag13Front from "./assets/tag13-front.svg";
+import tag11Front from "./assets/tag11-front.svg";
 import tag13Back from "./assets/tag13-back.svg";
-import tag14Front from "./assets/tag14-front.svg";
+import tag13Front from "./assets/tag13-front.svg";
 import tag14Back from "./assets/tag14-back.svg";
-import tag16Front from "./assets/tag16-front.svg";
+import tag14Front from "./assets/tag14-front.svg";
 import tag16Back from "./assets/tag16-back.svg";
-import tag17Front from "./assets/tag17-front.svg";
+import tag16Front from "./assets/tag16-front.svg";
 import tag17Back from "./assets/tag17-back.svg";
-import tag18Front from "./assets/tag18-front.svg";
+import tag17Front from "./assets/tag17-front.svg";
 import tag18Back from "./assets/tag18-back.svg";
+import tag18Front from "./assets/tag18-front.svg";
 
 const Arrow = styled.span`
   color: var(--red-500);

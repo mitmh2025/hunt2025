@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 export const PUZZLE_STATS: Record<string, () => Promise<React.ComponentType>> =
   {

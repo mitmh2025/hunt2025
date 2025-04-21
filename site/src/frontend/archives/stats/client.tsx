@@ -1,5 +1,5 @@
 import {
-  Chart as ChartJS,
+  type Chart as ChartJS,
   Decimation,
   Filler,
   Legend,
@@ -29,8 +29,10 @@ import Select, {
   type StylesConfig,
 } from "react-select";
 import seedrandom from "seedrandom";
+import canonicalizeInput from "../../../../lib/canonicalizeInput";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import { MI, Math as MathML } from "../../components/MathML";
+import { PuzzleStatsTable } from "../../components/StatsLayout";
 import { ErrorText, Mono } from "../../components/StyledUI";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
@@ -52,8 +54,6 @@ import {
   generateTruncatedTick,
 } from "./charts";
 import useCSV from "./useCSV";
-import canonicalizeInput from "../../../../lib/canonicalizeInput";
-import { PuzzleStatsTable } from "../../components/StatsLayout";
 
 const slugToSlot = generateSlugToSlotMap(HUNT);
 const puzzleSlugs = [...slugToSlot.entries()].map(([slug, _]) => slug);
