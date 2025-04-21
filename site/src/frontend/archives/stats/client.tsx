@@ -1175,7 +1175,11 @@ const MostPurchasedPuzzleGraph = ({
     }, new Map<string, number>());
     const sorted = [...purchases.entries()]
       .sort((a, b) => a[1] - b[1])
-      .map(([slug, count]) => ({ x: PUZZLES[slug]?.title ?? slug, y: count }))
+      .map(([slug, count]) => ({
+        x: PUZZLES[slug]?.title ?? slug,
+        y: count,
+        slug,
+      }))
       .filter(({ y }) => y > Threshold)
       .reverse();
     return sorted;
