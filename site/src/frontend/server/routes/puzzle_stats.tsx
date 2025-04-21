@@ -3,6 +3,7 @@ import { type Request } from "express";
 import { type DateTime } from "luxon";
 import React from "react";
 import { styled } from "styled-components";
+import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import {
   ActivityLogParseOptions,
   type ActivityLogRow,
@@ -33,6 +34,8 @@ const NoWrapCell = styled.td`
   white-space: nowrap;
 `;
 
+const slugToSlot = generateSlugToSlotMap(HUNT);
+
 export function puzzleStatsHandler(req: Request<PuzzleParams>) {
   if (!req.teamState) {
     console.log("weird no team state");
@@ -60,6 +63,9 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
       req.teamState,
     );
   }
+
+  const { slot } = slugToSlot.get(slug) ?? {};
+  const purchasable = !slot?.is_meta && !slot?.is_supermeta;
 
   const log = activityLog.filter((row) => row.slug === slug);
   const unlockCount = log.filter(
@@ -165,8 +171,20 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
             <p>
               Total unlocks: {unlockCount}
               <br />
-              Total solves: {solveCount} (including {purchasedCount} with Clue
-              {purchasedCount !== 1 ? "s" : ""} 🔎)
+              Total solves: {solveCount}
+              {purchasable ? (
+                <>
+                  {" "}
+                  (including {purchasedCount} with Clue
+                  {purchasedCount !== 1 ? "s" : ""} 🔎)
+                </>
+              ) : (
+                <>
+                  {" "}
+                  (as a metapuzzle, this answer could not be purchased with
+                  Clues 🔎)
+                </>
+              )}
               <br />
               Total guesses: {guessCount}
               <br />
@@ -194,7 +212,7 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
                   <th>Unlock Time</th>
                   <th>Time to Solve</th>
                   <th>Solve Time</th>
-                  <th>Purchased?</th>
+                  {purchasable && <th>Purchased?</th>}
                 </tr>
               </thead>
               <tbody>
@@ -221,7 +239,7 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
                       >
                         {team.solveTime.toFormat("EEE, MMM d, TTT")}
                       </NoWrapCell>
-                      <td>{team.purchased ? "✅" : "❌"}</td>
+                      {purchasable && <td>{team.purchased ? "✅" : "❌"}</td>}
                     </tr>
                   );
                 })}
