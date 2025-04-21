@@ -175,7 +175,14 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
 
             <p>(Click on headers to sort)</p>
 
-            {PUZZLE_STATS[slug] && <div id="puzzle-bonus-stats-root" />}
+            {PUZZLE_STATS[slug] && (
+              <>
+                <noscript>
+                  This puzzle has additional statistics which require Javascript
+                </noscript>
+                <div id="puzzle-bonus-stats-root" />
+              </>
+            )}
 
             <h2>Team Stats</h2>
 
