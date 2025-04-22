@@ -39,6 +39,8 @@ const StyledSubpuzzleTabs = styled.div`
     list-style: none;
     padding: 1rem 0 0 0;
     margin: 0;
+    height: 3rem;
+    z-index: 1;
 
     li button {
       background: var(--gray-700);
@@ -62,6 +64,10 @@ const StyledSubpuzzleTabs = styled.div`
 
     &:not(.active) {
       display: none;
+    }
+
+    thead {
+      top: 3rem;
     }
   }
 `;

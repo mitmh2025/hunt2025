@@ -5,9 +5,16 @@ import { Mono, PuzzleAnswer } from "./StyledUI";
 
 export const StyledPuzzleStatsTable = styled.table`
   border-collapse: collapse;
+  position: relative;
+
+  thead {
+    position: sticky;
+    top: 0;
+    background-color: var(--black);
+  }
 
   th {
-    border-bottom: 3px solid var(--gray-500);
+    box-shadow: inset 0 -3px var(--gray-500);
     margin-bottom: 0.5rem;
   }
 
