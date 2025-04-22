@@ -143,9 +143,9 @@ const statsHandler: PageRenderer<ParamsDictionary> = () => {
           </ul>
 
           <p>
-            In addition to statistics about the Hunt as a whole on this page,
-            each puzzle also links to a stats page for that puzzle. A few
-            puzzles also include specialized statistics:
+            Statistics about the Hunt as a whole are on this page. Additionally,
+            each puzzle page includes a link to stats specific to that puzzle. A
+            few puzzles also include some bonus, specialized statistics:
           </p>
 
           <ul>
