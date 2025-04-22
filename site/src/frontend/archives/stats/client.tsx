@@ -67,6 +67,9 @@ const supermetaSlugs = [...slugToSlot.entries()]
 type TeamInfo = Map<string, { people: number }>;
 type HintAvailabilityRow = { timestamp: DateTime; slug: string };
 
+const makeBackgroundColor = (baseColor?: string) =>
+  baseColor?.replace(")", " / 50%)");
+
 const useHighlightClickHandler = ({
   toggleHighlight,
   clearHighlight,
@@ -147,7 +150,10 @@ const useFilteredDatasets = <TType extends ChartType, TData>({
           ...dataset,
           order: deselected ? 0 : -1,
           ...(deselected
-            ? { backgroundColor: deselectedColor, borderColor: deselectedColor }
+            ? {
+                backgroundColor: makeBackgroundColor(deselectedColor),
+                borderColor: deselectedColor,
+              }
             : {}),
         },
       ];
@@ -253,8 +259,8 @@ const SolveGraph = ({
             y: i + 1,
           })),
         ],
-        backgroundColor: teamColors.get(teamName),
-        borderColor: teamColors.get(teamName),
+        backgroundColor: makeBackgroundColor(teamColors.get(teamName)),
+        borderColor: makeBackgroundColor(teamColors.get(teamName)),
       };
     });
   }, [activityLogByTeam, puzzleSet, teamColors, teamSort]);
@@ -284,7 +290,9 @@ const SolveGraph = ({
     datasets: {
       line: {
         borderWidth: 2,
-        pointRadius: 2,
+        pointRadius: 0,
+        pointHoverRadius: 8,
+        pointHitRadius: 10,
         stepped: true,
       },
     },
@@ -528,7 +536,7 @@ const TeamSizeVsSolveGraph = ({
       return {
         label: teamName,
         data: [{ x: teamSize, y: solves }],
-        backgroundColor: color,
+        backgroundColor: makeBackgroundColor(color),
       };
     });
   }, [activityLogByTeam, teamColors, teamInfo, teamSort]);
@@ -633,7 +641,7 @@ const GuessVsSolveGraph = ({
       return {
         label: teamName,
         data: [{ x: guesses, y: solves, r: teamSize / SIZE_SCALE_FACTOR }],
-        backgroundColor: color,
+        backgroundColor: makeBackgroundColor(color),
         borderColor: color,
       };
     });
