@@ -42,15 +42,14 @@ WITH team_names AS (
     CROSS JOIN teams
   WHERE al.team_id IS NULL
     OR al.team_id = teams.id
-    AND timestamp < TIMESTAMP WITH TIME ZONE '2025-01-20 12:45:00 America/New_York'
 ),
 activity_log_entries AS (
   SELECT id,
     CASE
       type
-      WHEN 'team_hints_unlocked' THEN (data->>'hints_available_at')::timestamptz
+      WHEN 'team_hints_unlocked' THEN (data->>'hints_available_at')::timestamp
       ELSE timestamp
-    END AT TIME ZONE 'America/New_York' AS timestamp,
+    END AS timestamp,
     team_name,
     CASE
       type
@@ -138,7 +137,7 @@ activity_log_entries AS (
 ),
 puzzle_state_log_entries AS (
   SELECT id,
-    timestamp AT TIME ZONE 'America/New_York' AS timestamp,
+    timestamp,
     team_name,
     CASE
       data->>'type'
@@ -163,7 +162,7 @@ puzzle_state_log_entries AS (
       'ad_frequency'
     )
 )
-SELECT timestamp,
+SELECT timestamp AT TIME ZONE 'America/New_York' AS timestamp,
   team_name,
   type,
   slug,
@@ -177,10 +176,12 @@ FROM (
     UNION ALL
     SELECT *
     FROM puzzle_state_log_entries
-    ORDER BY timestamp,
-      id,
-      team_name
-  )
+)
+WHERE
+  timestamp < TIMESTAMP WITH TIME ZONE '2025-01-20 12:45:00 America/New_York'
+ORDER BY timestamp,
+  id,
+  team_name
 
 */
 
