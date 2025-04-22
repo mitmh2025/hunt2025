@@ -103,7 +103,7 @@ const CenterCell = styled.td`
   text-align: center;
 `;
 
-const ALL_GEOGUESSR_LOCATIONS = [
+export const ALL_GEOGUESSR_LOCATIONS = [
   "corner of 3-1 near building 1",
   "Great Sail, between 50 and 14N",
   "2-1, near 14N",

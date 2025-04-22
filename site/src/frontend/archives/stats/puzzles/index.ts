@@ -5,6 +5,8 @@ export const PUZZLE_STATS: Record<string, () => Promise<React.ComponentType>> =
     and_now_a_puzzling_word_from_our_sponsors: async () =>
       (await import("./and_now_a_puzzling_word_from_our_sponsors")).default,
     control_room: async () => (await import("./control_room")).default,
+    estimation_dot_jpg: async () =>
+      (await import("./estimation_dot_jpg")).default,
     songs_on_the_radio: async () =>
       (await import("./songs_on_the_radio")).default,
     the_shell_game: async () => (await import("./the_shell_game")).default,
