@@ -25,9 +25,14 @@ const puzzle: PuzzleDefinition = {
         "Robert “Fro” Myers",
       ],
     },
+    {
+      who: ["Font Awesome"],
+      for_what: "Person icons used under CC BY 4.0 license",
+    },
   ],
   content: {
     component: Puzzle,
+    entrypoint: "puzzle_rude_field",
   },
   solution: {
     component: Solution,
