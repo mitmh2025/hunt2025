@@ -5,11 +5,11 @@ import {
   Colors,
   LineElement,
   LinearScale,
-  type Plugin,
   PointElement,
-  type Scale,
   TimeScale,
   Tooltip,
+  type Plugin,
+  type Scale,
 } from "chart.js";
 import "chartjs-adapter-luxon";
 import Zoom from "chartjs-plugin-zoom";
