@@ -1,8 +1,8 @@
-import { ChartOptions, Legend } from "chart.js";
+import { type ChartOptions } from "chart.js";
 import { type Options } from "csv-parse";
 import { DateTime } from "luxon";
 import React, { useEffect, useMemo, useRef } from "react";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import "sorttable";
 import { styled } from "styled-components";
 import { geoguessrLookup } from "../../../../../ops/src/opsdata/desertedNinjaImages";
@@ -10,25 +10,15 @@ import {
   ALL_QUESTIONS,
   type FermitQuestion,
 } from "../../../../../ops/src/opsdata/desertedNinjaQuestions";
+import LinkedImage from "../../../components/LinkedImage";
 import { StyledPuzzleStatsTable } from "../../../components/StatsLayout";
 import { ErrorText } from "../../../components/StyledUI";
-import Loading from "../Loading";
-import {
-  HuntHQClose,
-  HuntStart,
-  useActivityLog,
-  type ActivityLogRow,
-} from "../activityLog";
-import puzzleLogUrl from "../assets/estimation_dot_jpg_log.csv";
-import {
-  Chart,
-  generateTruncatedTick,
-  TimeAxisOptions,
-  ZoomConfig,
-} from "../charts";
-import useCSV from "../useCSV";
-import LinkedImage from "../../../components/LinkedImage";
 import { ALL_GEOGUESSR_LOCATIONS } from "../../../puzzles/deserted-ninja/solution";
+import Loading from "../Loading";
+import { useActivityLog, type ActivityLogRow } from "../activityLog";
+import puzzleLogUrl from "../assets/estimation_dot_jpg_log.csv";
+import { Chart, generateTruncatedTick } from "../charts";
+import useCSV from "../useCSV";
 
 /* Stats generated with the following SQL query:
 
@@ -78,9 +68,9 @@ const PuzzleLogParseOptions: Options = {
     if (context.column === "timestamp") {
       return DateTime.fromSQL(value, { zone: "America/New_York" });
     } else if (context.column === "question_ids") {
-      return JSON.parse(value);
+      return JSON.parse(value) as number[];
     } else if (context.column === "scores") {
-      return JSON.parse(value);
+      return JSON.parse(value) as number[];
     }
     return value;
   },

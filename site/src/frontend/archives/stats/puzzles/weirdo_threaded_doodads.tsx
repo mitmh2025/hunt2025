@@ -1,5 +1,5 @@
 import { Legend, type ChartOptions } from "chart.js";
-import { DateTime } from "luxon";
+import { type DateTime } from "luxon";
 import React, { useMemo } from "react";
 import { Scatter } from "react-chartjs-2";
 import { ErrorText } from "../../../components/StyledUI";

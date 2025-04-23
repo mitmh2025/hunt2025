@@ -1,10 +1,11 @@
 import { Filler, Legend, type ChartOptions } from "chart.js";
 import { Duration, type DateTime } from "luxon";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { Bar, Line, Scatter } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import "sorttable";
 import { styled } from "styled-components";
 import {
+  NoWrapCell,
   PuzzleAnswerStatsTable,
   PuzzleTeamStatsTable,
   StyledPuzzleStatsTable,
@@ -311,17 +312,13 @@ const SubpuzzleAggregates = ({
   }, []);
 
   const data = useMemo(() => {
-    const teamData = new Map<
-      string,
-      Map<
-        string,
-        {
-          unlockTime?: DateTime;
-          solveTime?: DateTime;
-          solveDuration?: Duration;
-        }
-      >
-    >();
+    type TeamSubpuzzleData = {
+      unlockTime?: DateTime;
+      solveTime?: DateTime;
+      solveDuration?: Duration;
+    };
+
+    const teamData = new Map<string, Map<string, TeamSubpuzzleData>>();
     activityLog.forEach((row) => {
       if (!row.slug) return;
 
@@ -334,7 +331,8 @@ const SubpuzzleAggregates = ({
       )
         return;
 
-      const teamStats = teamData.get(row.team_name) ?? new Map();
+      const teamStats =
+        teamData.get(row.team_name) ?? new Map<string, TeamSubpuzzleData>();
       const stats = teamStats.get(subpuzzle) ?? {};
       if (row.type === "subpuzzle_unlocked") {
         stats.unlockTime = row.timestamp;
@@ -424,12 +422,14 @@ const SubpuzzleAggregates = ({
                 <td>{unlockCount}</td>
                 <td>{solveCount}</td>
                 <td>{firstSolveCount}</td>
-                <td sorttable_customkey={fastestSolve.as("milliseconds")}>
+                <NoWrapCell
+                  sorttable_customkey={fastestSolve.as("milliseconds")}
+                >
                   {fastestSolve
                     .set({ milliseconds: 0 })
                     .rescale()
                     .toHuman({ unitDisplay: "short" })}
-                </td>
+                </NoWrapCell>
               </tr>
             );
           },

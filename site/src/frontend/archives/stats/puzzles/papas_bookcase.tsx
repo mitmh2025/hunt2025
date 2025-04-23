@@ -158,7 +158,7 @@ const SolveSequenceGraph = ({ lockStats }: { lockStats: LockStatRow[] }) => {
       const puzzle = LockToPuzzle.get(lock);
       if (!puzzle) return;
 
-      const stats = byTeam.get(team_name) ?? new Map();
+      const stats = byTeam.get(team_name) ?? new Map<string, DateTime>();
       stats.set(puzzle, solveTime);
       stats.set(lock, unlockTime);
       byTeam.set(team_name, stats);
@@ -187,12 +187,11 @@ const SolveSequenceGraph = ({ lockStats }: { lockStats: LockStatRow[] }) => {
         ...[...PuzzleToLock.entries()]
           .toSorted(([, a], [, b]) => {
             return (
-              (LockNames.findIndex(([s]) => s === a) ?? 0) -
-              (LockNames.findIndex(([s]) => s === b) ?? 0)
+              LockNames.findIndex(([s]) => s === a) -
+              LockNames.findIndex(([s]) => s === b)
             );
           })
           .map(([slug, lock]) => {
-            const lockName = LockNames.find(([s]) => s === lock)?.[1] ?? lock;
             const color = LockColors.get(lock) ?? { r: 0, g: 0, b: 0 };
             return {
               data,
@@ -274,10 +273,8 @@ const PuzzleStats = () => {
   const { loading, error, data: activityLog } = useActivityLog();
 
   const lockStats = useMemo(() => {
-    const teamStats = new Map<
-      string,
-      Map<string, { solveTime?: DateTime; unlockTime?: DateTime }>
-    >();
+    type LockStat = { solveTime?: DateTime; unlockTime?: DateTime };
+    const teamStats = new Map<string, Map<string, LockStat>>();
     activityLog.forEach((log) => {
       if (!log.slug) return;
 
@@ -285,7 +282,8 @@ const PuzzleStats = () => {
         const lock = PuzzleToLock.get(log.slug);
         if (!lock) return;
 
-        const stats = teamStats.get(log.team_name) ?? new Map();
+        const stats =
+          teamStats.get(log.team_name) ?? new Map<string, LockStat>();
         const lockStats = stats.get(lock) ?? {};
         lockStats.solveTime = log.timestamp;
         stats.set(lock, lockStats);
@@ -294,7 +292,8 @@ const PuzzleStats = () => {
         log.type === "illegal_search_unlocked" &&
         LockToPuzzle.has(log.slug)
       ) {
-        const stats = teamStats.get(log.team_name) ?? new Map();
+        const stats =
+          teamStats.get(log.team_name) ?? new Map<string, LockStat>();
         const lockStats = stats.get(log.slug) ?? {};
         lockStats.unlockTime = log.timestamp;
         stats.set(log.slug, lockStats);

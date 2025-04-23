@@ -1,5 +1,5 @@
-import { DateTime, Duration } from "luxon";
-import React, { ForwardedRef, forwardRef } from "react";
+import { type DateTime, type Duration } from "luxon";
+import React, { type ForwardedRef, forwardRef } from "react";
 import { styled } from "styled-components";
 import { Mono, PuzzleAnswer } from "./StyledUI";
 
