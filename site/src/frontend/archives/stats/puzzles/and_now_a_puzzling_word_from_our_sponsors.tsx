@@ -2,7 +2,6 @@ import { Filler, Legend, type ChartOptions } from "chart.js";
 import { Duration, type DateTime } from "luxon";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { Bar, Line } from "react-chartjs-2";
-import "sorttable";
 import { styled } from "styled-components";
 import {
   NoWrapCell,

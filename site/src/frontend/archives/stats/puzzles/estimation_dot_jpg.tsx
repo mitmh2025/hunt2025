@@ -3,7 +3,6 @@ import { type Options } from "csv-parse";
 import { DateTime } from "luxon";
 import React, { useEffect, useMemo, useRef } from "react";
 import { Bar } from "react-chartjs-2";
-import "sorttable";
 import { styled } from "styled-components";
 import { geoguessrLookup } from "../../../../../ops/src/opsdata/desertedNinjaImages";
 import {
