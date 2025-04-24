@@ -9,6 +9,11 @@
       "compress": false,
       "mangle": false
     },
+    "transform": {
+      "react": {
+        "runtime": "automatic"
+      }
+    },
     "externalHelpers": true,
     "experimental": {
       "plugins": [

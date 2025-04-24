@@ -157,9 +157,9 @@ export default tseslint.config(
     ...tseslint.configs.disableTypeChecked,
   },
   {
-    // ops site / Vite overrides
-    files: ["ops/**/*"],
+    // JSX transform means React doesn't need to be in scope
     rules: {
+      "react/jsx-uses-react": ["off"],
       "react/react-in-jsx-scope": ["off"],
     },
   },

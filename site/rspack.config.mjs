@@ -741,6 +741,11 @@ export default function createConfigs(_env, argv) {
               parser: {
                 syntax: "typescript",
               },
+              transform: {
+                react: {
+                  runtime: "automatic",
+                },
+              },
             },
           },
           type: "javascript/auto",
