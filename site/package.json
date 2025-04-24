@@ -105,6 +105,7 @@
     "utf-8-validate": "^6.0.4",
     "websocket-express": "^3.1.0",
     "ws": "^8.17.0",
+    "yet-another-react-lightbox": "^3.23.0",
     "zod": "^3.23.6"
   },
   "devDependencies": {

@@ -14,6 +14,7 @@ const puzzle: PuzzleDefinition = {
   content: {
     component: Puzzle,
     copyable: true,
+    entrypoint: "puzzle_calculating_square",
   },
   solution: {
     component: Solution,

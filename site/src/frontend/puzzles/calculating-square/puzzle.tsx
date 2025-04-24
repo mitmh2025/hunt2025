@@ -1,5 +1,5 @@
-import React from "react";
 import { styled } from "styled-components";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 
 const ALL_HAIKU: [string, string, string][] = [
   [
@@ -116,6 +116,25 @@ const Puzzle = (): JSX.Element => {
       <FlavorText className="puzzle-flavor">
         underneath Ames Street / hidden artwork captivates / from top to bottom
       </FlavorText>
+
+      <AuthorsNoteBlock>
+        <details>
+          <summary>
+            Solving this puzzle requires visiting a location on campus. If
+            you’re unable to do so, we have provided a virtual alternative to
+            that location which you can explore by expanding this section.
+          </summary>
+
+          <br />
+
+          <noscript>
+            The virtual alternative requires Javascript to be enabled.
+          </noscript>
+
+          <div id="borderline-personality-root" />
+        </details>
+      </AuthorsNoteBlock>
+
       {ALL_HAIKU.map(([line1, line2, line3], index) => (
         <Haiku key={index} $indent={index % 2 === 1}>
           {line1}

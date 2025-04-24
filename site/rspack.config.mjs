@@ -563,6 +563,8 @@ export default function createConfigs(_env, argv) {
       events: "./src/frontend/rounds/events/client.tsx",
 
       // Included on specific puzzle pages
+      puzzle_calculating_square:
+        "./src/frontend/puzzles/calculating-square/client.tsx",
       puzzle_deserted_ninja: "./src/frontend/puzzles/deserted-ninja/client.tsx",
       puzzle_diligent_spy: "./src/frontend/puzzles/diligent-spy/client.tsx",
       puzzle_few_nail: "./src/frontend/puzzles/few-nail/client.tsx",
