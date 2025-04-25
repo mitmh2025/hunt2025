@@ -90,6 +90,13 @@ const InitializeActivityLogModal = ({ unmount }: { unmount: () => void }) => {
           </p>
 
           <p>
+            If you choose to explore from the end, we will also include a
+            handful of reserve puzzles that were written and tested but never
+            released. You can find them with the other{" "}
+            <a href={`${rootUrl}/rounds/stray_leads`}>Stray Leads</a>.
+          </p>
+
+          <p>
             If you change your mind or want to share your current state with
             someone else, you can do so on the{" "}
             <a href={`${rootUrl}/team`}>Manage Team page</a>.

@@ -1844,6 +1844,65 @@ const HUNT: Hunt = {
   ],
 };
 
+// In archiveMode, modify puzzles which were manually released to have an unlock
+// rule. Thresholds are chosen mostly based on vibes from looking at the
+// rough experience of the top 20 teams
+if (archiveMode) {
+  const allRegularSlots = HUNT.rounds.flatMap((round) =>
+    round.puzzles.filter((p) => !p.is_meta && !p.is_supermeta).map((p) => p.id),
+  );
+  const allSupermetaSlots = HUNT.rounds.flatMap((round) =>
+    round.puzzles.filter((p) => p.is_supermeta).map((p) => p.id),
+  );
+  HUNT.rounds.forEach((round) => {
+    round.puzzles.forEach((puzzle) => {
+      switch (puzzle.slug) {
+        case "estimation_dot_jpg":
+          puzzle.unlocked_if = {
+            puzzles_solved: 15,
+            slots: allRegularSlots,
+          };
+          break;
+        case "art_history":
+          puzzle.unlocked_if = {
+            puzzles_solved: 25,
+            slots: allRegularSlots,
+          };
+          break;
+        case "control_room":
+          puzzle.unlocked_if = {
+            puzzles_solved: 30,
+            slots: allRegularSlots,
+          };
+          break;
+        case "in_communicado_tonight":
+          puzzle.unlocked_if = {
+            puzzles_solved: 35,
+            slots: allRegularSlots,
+          };
+          break;
+
+        case "trainees_first_recital":
+          puzzle.unlocked_if = [
+            {
+              puzzles_solved: 1,
+              slots: allSupermetaSlots,
+            },
+            { slot_solved: "mdp03" },
+          ];
+        case "the_comeback_it_takes_two":
+          puzzle.unlocked_if = [
+            {
+              puzzles_solved: 2,
+              slots: allSupermetaSlots,
+            },
+            { slot_solved: "mdp03" },
+          ];
+      }
+    });
+  });
+}
+
 HUNT.rounds.forEach((round: Round) => {
   if (round.slug !== "background_check") {
     const metas = round.puzzles.filter(({ is_meta }) => {

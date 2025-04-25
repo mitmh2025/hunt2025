@@ -265,21 +265,10 @@ export const initializeLogs = async () => {
   await mutateActivityLog(log, async (mutator) => {
     // These puzzles were all manually unlocked during hunt:
     for (const slug of [
-      "art_history",
-      "control_room",
-      "in_communicado_tonight",
-      "estimation_dot_jpg",
       "making_contact_with_an_informant",
       "tailing_a_lead",
       "navigating_high_society",
       "seeing_the_big_picture",
-      "trainees_first_recital",
-      "the_comeback_it_takes_two",
-      "infiltrating_the_criminal_underworld",
-      "re_infiltrating_the_criminal_underworld",
-      "a_b_c_easy_as_1_2_3",
-      "wouthit_porbelm",
-      "hello_darkness_my_old_friend",
     ]) {
       await ensureUnlocked(mutator, "puzzle_unlocked", slug);
     }
@@ -299,6 +288,20 @@ const interactionResults: Record<string, string> = {
 export const generateCompleteLogs = async () => {
   const log = await initializeLogs();
   await mutateActivityLog(log, async (mutator) => {
+    // Make sure puzzles released as Stray Leads are unlocked
+    for (const slug of [
+      "art_history",
+      "control_room",
+      "in_communicado_tonight",
+      "estimation_dot_jpg",
+      "trainees_first_recital",
+      "the_comeback_it_takes_two",
+      "infiltrating_the_criminal_underworld",
+      "re_infiltrating_the_criminal_underworld",
+    ]) {
+      await ensureUnlocked(mutator, "puzzle_unlocked", slug);
+    }
+
     // Similar to seed generation, make sure all rounds are unlocked
     for (const round of HUNT.rounds) {
       if (round.slug !== "floaters" && round.slug !== "endgame") {
@@ -334,6 +337,9 @@ export const generateCompleteLogs = async () => {
         });
       }
     }
+
+    // So that we can detect if we should show a note about reserve puzzles
+    await ensureUnlocked(mutator, "gate_completed", "hunt_closed");
   });
 
   resetNotificationHigHWaterMark(log);
