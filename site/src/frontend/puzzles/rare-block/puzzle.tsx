@@ -155,7 +155,7 @@ const Puzzle = (): JSX.Element => {
 
           <p>
             Voice 9: Yes, thank you. Songwriter-28234, please. That’s right.
-            Songwrit4er-28234.
+            Songwriter-28234.
           </p>
 
           <p>
