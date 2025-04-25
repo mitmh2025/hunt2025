@@ -1,4 +1,4 @@
-import React, { type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { styled } from "styled-components";
 import {
   Math,
@@ -11,7 +11,9 @@ import {
   MText,
 } from "../../../components/MathML";
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
-import { MailtoLink } from "../../../components/StyledUI";
+import Spoiler from "../../../components/Spoiler";
+import { PuzzleAnswer } from "../../../components/StyledUI";
+import rootUrl from "../../../utils/rootUrl";
 
 const TEAM_SIZE: [string, number][] = [
   [">100", 39],
@@ -378,22 +380,42 @@ const Puzzle = (): JSX.Element => {
         <p>
           This is a scavenger hunt, which requires solvers to acquire materials
           and demonstrate skills for our judges. Successfully completing this
-          will not award an answer used in any metapuzzle, but will award 1
-          🔎Clue.
+          will not award an answer used in any metapuzzle, but will award 1 Clue
+          🔎.
         </p>
         <p>
-          Judging will occur in person in your team’s headquarters. To request
-          judgement, please email{" "}
-          <MailtoLink subject={"WRETCHED HIVE OF SCUM AND VILLAINY"} /> with
-          “WRETCHED HIVE OF SCUM AND VILLAINY” in the subject line, and let us
-          know your team name and any details for visiting your HQ.
+          We originally designed this scavenger hunt to be released at some
+          point during Mystery Hunt if we felt that things were progressing too
+          slowly and we wanted to give teams some accelerant. As it turns out,
+          we spent all weekend with more things needing staffing than people to
+          staff them, and sadly had to leave this scavenger hunt (along with its{" "}
+          <a href={`${rootUrl}/puzzles/infiltrating_the_criminal_underworld`}>
+            prequel sibling
+          </a>
+          ) on the shelf — we did not have the spare capacity to send out
+          judges. We do, however, think that it would have been quite fun, and
+          so we are releasing it now for folks’ enjoyment.
         </p>
+        <p>
+          If you are post-solving the Mystery Hunt and feel you deserve an extra
+          Clue 🔎, you can complete these tasks and judge for yourself if you’ve
+          met the required criteria. Our judges would generally have required
+          teams to demonstrate effort, but assuming they did, our standard
+          training would be to make teams sweat, and then give them the answer.
+        </p>
+        <p>
+          If you feel you’ve met that standard, you can reward yourself an extra
+          Clue 🔎 with the answer{" "}
+          <Spoiler>
+            <PuzzleAnswer>I KNEW YOU WERE TROUBLE</PuzzleAnswer>
+          </Spoiler>
+        </p>{" "}
       </AuthorsNoteBlock>
       <p>
         The mean streets of MITropolis may change, but the currency stays the
         same. In order to succeed, you will need to demonstrate feats of
         criminality to meet a minimum threshold of street cred. Larger P.I.
-        training firms will need more street cred to earn a 🔎 Clue.
+        training firms will need more street cred to earn a Clue 🔎.
       </p>
       <StyledTable>
         <tr>
