@@ -28,7 +28,21 @@ const ModalBackdrop = styled.div`
 
 const ModalContent = styled.div`
   width: 50%;
-  padding: 2rem;
+  position: relative;
+
+  ${AuthorsNoteBlock} {
+    margin: 0;
+    padding: 2rem;
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
 
 const InitializeActivityLogModal = ({ unmount }: { unmount: () => void }) => {
@@ -99,6 +113,7 @@ const LockedModal = ({ unmount }: { unmount: () => void }) => {
   return (
     <ModalBackdrop onClick={unmount}>
       <ModalContent>
+        <CloseButton onClick={unmount}>X</CloseButton>
         <AuthorsNoteBlock>
           <p>
             You’ve managed to find your way to a page that should be locked
@@ -123,19 +138,44 @@ const LockedModal = ({ unmount }: { unmount: () => void }) => {
   );
 };
 
+const UninitializedPuzzleModal = ({ unmount }: { unmount: () => void }) => {
+  return (
+    <ModalBackdrop onClick={unmount}>
+      <ModalContent>
+        <CloseButton onClick={unmount}>X</CloseButton>
+        <AuthorsNoteBlock>
+          <p>Welcome to the 2025 MIT Mystery Hunt archives!</p>
+
+          <p>
+            If you’d like like to view this puzzle, feel free to close this
+            dialog and do so. However, this archival site also supports as much
+            of the original Hunt unlock structure as we were able to manage. If
+            you’d like to experience the Hunt from the beginning, you can do so
+            by <a href={`${rootUrl}/`}>visiting the Hub</a>.
+          </p>
+        </AuthorsNoteBlock>
+      </ModalContent>
+    </ModalBackdrop>
+  );
+};
+
 const huntPage = location.pathname.startsWith(rootUrl);
+const nonUnlockablePuzzlePage =
+  (window as unknown as { cannedResponses?: string[] }).cannedResponses !==
+    undefined ||
+  (window as unknown as { statsSlug?: string }).statsSlug !== undefined;
 
 const huntStarted = fetchActivityLog().some(
   (e) => e.type === "gate_completed" && e.slug === "hunt_started",
 );
 
-const checkLocked = () => {
+const isLocked = () => {
   const puzzleSlug = (window as unknown as { puzzleSlug?: string }).puzzleSlug;
   const parentSlug = (window as unknown as { parentSlug?: string }).parentSlug;
   const interactionSlug = (window as unknown as { interactionSlug?: string })
     .interactionSlug;
 
-  if (!puzzleSlug && !interactionSlug) return;
+  if (!puzzleSlug && !interactionSlug) return false;
 
   const state = reduceTeamStateIntermediate(fetchActivityLog());
   const locked =
@@ -144,11 +184,45 @@ const checkLocked = () => {
       !state.puzzles_unlocked.has(puzzleSlug)) ||
     (interactionSlug !== undefined &&
       !state.interactions_unlocked.has(interactionSlug));
+  return locked;
+};
 
-  if (locked) {
-    const rootElem = document.createElement("div");
-    document.body.appendChild(rootElem);
-    const root = createRoot(rootElem);
+const main = async () => {
+  if (clientIsBot) return;
+  if (!huntPage) return;
+  if (nonUnlockablePuzzlePage) return;
+
+  if (huntStarted && !isLocked()) return;
+
+  const rootElem = document.createElement("div");
+  document.body.appendChild(rootElem);
+  const root = createRoot(rootElem);
+
+  if (!huntStarted && isLocked()) {
+    root.render(
+      <UninitializedPuzzleModal
+        unmount={() => {
+          root.unmount();
+        }}
+      />,
+    );
+    return;
+  }
+
+  if (!huntStarted) {
+    await new Promise<void>((resolve) => {
+      root.render(
+        <InitializeActivityLogModal
+          unmount={() => {
+            root.unmount();
+            resolve();
+          }}
+        />,
+      );
+    });
+  }
+
+  if (isLocked()) {
     root.render(
       <LockedModal
         unmount={() => {
@@ -159,20 +233,4 @@ const checkLocked = () => {
   }
 };
 
-if (!clientIsBot) {
-  if (huntPage && !huntStarted) {
-    const rootElem = document.createElement("div");
-    document.body.appendChild(rootElem);
-    const root = createRoot(rootElem);
-    root.render(
-      <InitializeActivityLogModal
-        unmount={() => {
-          root.unmount();
-          checkLocked();
-        }}
-      />,
-    );
-  } else {
-    checkLocked();
-  }
-}
+void main();
