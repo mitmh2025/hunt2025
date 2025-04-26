@@ -79,7 +79,11 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["KNOCK THREE TIMES"],
       reply:
-        "Good idea! You’ll get the best reaction if you do that with a little confidence on the top surface (you probably already know of what).",
+        "Good idea! You’ll get the best reaction if you do that with a little confidence on the top surface (you probably already know of what).\n\nDuring Mystery Hunt, teams who followed these instructions and knocked on the top of their radio would unlock the rest of this puzzle, which involved using the sensors on the radio as a strange musical instrument. If you’d like to see what that experience looked like (including the means by which the final puzzle answer was delivered), you can ",
+      link: {
+        display: "watch this video.",
+        href: "https://www.youtube.com/watch?v=CRRfQoh0Nik",
+      },
     },
   ],
 };

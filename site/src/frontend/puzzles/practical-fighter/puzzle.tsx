@@ -1,36 +1,37 @@
-import React from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
-import { ArchivalNotice, AuthorsNote } from "../../components/PuzzleLayout";
+import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote, AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 import rootUrl from "../../utils/rootUrl";
+import "./assets/activation.opus";
+import "./assets/completion-alt.opus";
+import "./assets/completion.opus";
 import footIcon from "./assets/foot.svg";
 import headphonesIcon from "./assets/headphones.svg";
 import lightIcon from "./assets/light.svg";
 import magnetIcon from "./assets/magnet.svg";
 import playIcon from "./assets/play.svg";
 import questionIcon from "./assets/question.svg";
-import "./assets/activation.opus";
-import "./assets/stage-0-intro.opus";
-import "./assets/stage-1-intro.opus";
-import "./assets/stage-2-intro.opus";
-import "./assets/stage-3-intro.opus";
-import "./assets/stage-4-intro.opus";
-import "./assets/stage-0-example.opus";
-import "./assets/stage-1-example.opus";
-import "./assets/stage-2-example.opus";
-import "./assets/stage-3-example.opus";
-import "./assets/stage-4-example.opus";
-import "./assets/stage-4-example-alt.opus";
+import radio from "./assets/radio.jpg";
 import "./assets/stage-0-completion.opus";
+import "./assets/stage-0-example.opus";
+import "./assets/stage-0-intro.opus";
 import "./assets/stage-1-completion.opus";
+import "./assets/stage-1-example.opus";
+import "./assets/stage-1-intro.opus";
 import "./assets/stage-2-completion.opus";
+import "./assets/stage-2-example.opus";
+import "./assets/stage-2-intro.opus";
 import "./assets/stage-3-completion.opus";
-import "./assets/stage-4-completion.opus";
+import "./assets/stage-3-example.opus";
+import "./assets/stage-3-intro.opus";
 import "./assets/stage-4-completion-alt.opus";
-import "./assets/completion.opus";
-import "./assets/completion-alt.opus";
+import "./assets/stage-4-completion.opus";
+import "./assets/stage-4-example-alt.opus";
+import "./assets/stage-4-example.opus";
+import "./assets/stage-4-intro.opus";
 
 const PuzzleTable = styled.table``;
 
@@ -55,7 +56,6 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
   return (
     <>
       <NotoColorEmojiFont />
-      <ArchivalNotice />
       {teamState.puzzles.songs_on_the_radio?.answer !== undefined && (
         <AuthorsNote>
           Congratulations on solving this puzzle! Your{" "}
@@ -67,6 +67,18 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
       <p className="puzzle-flavor">
         Where’s the grid for this criss-cross anyway?
       </p>
+
+      <AuthorsNoteBlock>
+        <p>
+          This puzzle requires the <a href={`${rootUrl}/radio`}>radio</a> given
+          to teams at kickoff in order to solve. If you’d like to solve the
+          first part of the puzzle, you may find this photo of the back of the
+          radio helpful:
+        </p>
+
+        <LinkedImage src={radio} alt="The back of the radio" />
+      </AuthorsNoteBlock>
+
       <HScrollTableWrapper>
         <PuzzleTable>
           <tr>

@@ -14,7 +14,7 @@ import lightIcon from "./assets/light.svg";
 import magnetIcon from "./assets/magnet.svg";
 import playIcon from "./assets/play.svg";
 import questionIcon from "./assets/question.svg";
-import radio from "./assets/radio.png";
+import radio from "./assets/radio.jpg";
 
 const PuzzleTable = styled.table`
   border-collapse: collapse;
