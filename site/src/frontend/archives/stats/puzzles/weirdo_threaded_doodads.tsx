@@ -84,7 +84,7 @@ const FastestKnittersGraph = ({
     return {
       datasets: [
         {
-          label: "Weirdo Threaded Doodads",
+          label: "Unlocked Weirdo Threaded Doodads",
           data,
           parsing: {
             xAxisKey: "weirdoThreadedDoodads",
@@ -92,7 +92,7 @@ const FastestKnittersGraph = ({
           },
         },
         {
-          label: "I Kid Ewe Knot",
+          label: "Unlocked I Kid Ewe Knot",
           data,
           parsing: {
             xAxisKey: "iKidEweKnot",
@@ -100,7 +100,7 @@ const FastestKnittersGraph = ({
           },
         },
         {
-          label: "Stitchy Situation",
+          label: "Unlocked Stitchy Situation",
           data,
           parsing: {
             xAxisKey: "stitchySituation",
@@ -108,7 +108,7 @@ const FastestKnittersGraph = ({
           },
         },
         {
-          label: "Solve",
+          label: "Solved",
           data,
           parsing: {
             xAxisKey: "solve",
