@@ -29,14 +29,14 @@ const SpoileredRow = styled.tr<{ $revealed: boolean }>`
       : css`
           color: var(--black);
           background-color: var(--black);
+
+          &:not(:hover) > * {
+            filter: opacity(0);
+          }
         `}
   &:hover {
     color: inherit;
     background-color: transparent;
-  }
-
-  &:not(:hover) > * {
-    filter: opacity(0);
   }
 
   td {
