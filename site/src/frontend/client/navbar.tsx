@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import globalDatasetManager from "@hunt_client/globalDatasetManager";
+import { useEffect, useRef, useState } from "react";
 import { type SocketState } from "../../../lib/SocketManager";
 import type { ActivityLogEntry, TeamInfo } from "../../../lib/api/client";
 import celebration from "../../assets/radio/celebration.mp3";
@@ -6,14 +7,14 @@ import renderRoot from "../../utils/renderRoot";
 import { HuntIcon, formatActivityLogEntry } from "../components/ActivityLog";
 import NavBar, { type NavBarState } from "../components/NavBar";
 import Notifications, {
-  type NotificationsHandle,
   type Notification,
+  type NotificationsHandle,
 } from "../components/Notifications";
 import type { EventsState } from "../rounds/events/types";
 import archiveMode from "../utils/archiveMode";
+import huntLocalStorage from "../utils/huntLocalStorage";
 import rootUrl from "../utils/rootUrl";
 import useDataset from "./useDataset";
-import globalDatasetManager from "@hunt_client/globalDatasetManager";
 
 export const NOTIFICATION_HIGH_WATER_MARK = "notificationHighWaterMark";
 
@@ -24,7 +25,7 @@ function getNotificationHighWaterMark(pageRenderEpoch: number): number {
   // AND the latest epoch that we've already shown a notification for because
   // the page-render epoch can be stale / from the cache, so you'd get
   // duplicates when navigating forward/back in history.
-  const epochStr = localStorage.getItem(NOTIFICATION_HIGH_WATER_MARK);
+  const epochStr = huntLocalStorage.getItem(NOTIFICATION_HIGH_WATER_MARK);
   if (!epochStr) {
     return pageRenderEpoch;
   }
@@ -63,7 +64,7 @@ const NavBarManager = ({
       (value: object) => {
         const entry = value as ActivityLogEntry;
         if (entry.id > highWaterMark) {
-          localStorage.setItem(
+          huntLocalStorage.setItem(
             NOTIFICATION_HIGH_WATER_MARK,
             entry.id.toString(),
           );

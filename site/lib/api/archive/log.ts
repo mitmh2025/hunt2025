@@ -7,6 +7,7 @@ import {
 } from "../../../src/api/logic";
 import { NOTIFICATION_HIGH_WATER_MARK } from "../../../src/frontend/client/navbar";
 import { INTERACTIONS } from "../../../src/frontend/interactions";
+import huntLocalStorage from "../../../src/frontend/utils/huntLocalStorage";
 import HUNT from "../../../src/huntdata";
 import { getSlugsBySlot } from "../../../src/huntdata/logic";
 import { type Hunt } from "../../../src/huntdata/types";
@@ -242,7 +243,7 @@ export const resetNotificationHigHWaterMark = (
   log: InternalActivityLogEntry[],
 ) => {
   const maxId = Math.max(0, ...log.map((e) => e.id));
-  localStorage.setItem(NOTIFICATION_HIGH_WATER_MARK, maxId.toString());
+  huntLocalStorage.setItem(NOTIFICATION_HIGH_WATER_MARK, maxId.toString());
 };
 
 export const initializeLogs = async () => {

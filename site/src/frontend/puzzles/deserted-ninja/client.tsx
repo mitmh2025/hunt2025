@@ -20,6 +20,7 @@ import LinkedImage from "../../components/LinkedImage";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import StyledDialog, { DialogActions } from "../../components/StyledDialog";
 import { Button, ButtonSecondary, TextInput } from "../../components/StyledUI";
+import huntLocalStorage from "../../utils/huntLocalStorage";
 import campusmap from "./assets/campusmap.svg";
 import fermitChallenge from "./assets/fermit-challenge.jpg";
 import fermitSticker from "./assets/fermit-sticker.png";
@@ -690,11 +691,11 @@ const ResetModal = forwardRef(function ResetModalInner(
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, undefined, () => {
-    const state = localStorage.getItem("estimation_dot_jpg_state");
+    const state = huntLocalStorage.getItem("estimation_dot_jpg_state");
     return state ? (JSON.parse(state) as State) : initialize();
   });
   useEffect(() => {
-    localStorage.setItem("estimation_dot_jpg_state", JSON.stringify(state));
+    huntLocalStorage.setItem("estimation_dot_jpg_state", JSON.stringify(state));
   }, [state]);
 
   const onSubmit = useCallback(

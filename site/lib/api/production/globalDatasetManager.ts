@@ -1,21 +1,22 @@
+import type datasetManager from "@hunt_client/globalDatasetManager";
 import workersManifest from "../../../dist/worker-manifest.json";
+import huntLocalStorage from "../../../src/frontend/utils/huntLocalStorage";
 import {
-  actionForDataset,
   SocketManager,
+  actionForDataset,
   type SocketState,
   type SocketStateChangeCallback,
 } from "../../SocketManager";
 import { genId } from "../../id";
 import {
-  type MessageFromWorker,
-  type MessageToWorker,
   type Dataset,
   type DatasetParams,
   type DatasetValue,
-  type ObjectWithId,
+  type MessageFromWorker,
+  type MessageToWorker,
   type ObjectWithEpoch,
+  type ObjectWithId,
 } from "../websocket";
-import type datasetManager from "@hunt_client/globalDatasetManager";
 
 type DatasetManager = typeof datasetManager;
 
@@ -225,7 +226,7 @@ class SharedWorkerDatasetManager {
   }
 }
 
-const initialUsername = localStorage.getItem("username");
+const initialUsername = huntLocalStorage.getItem("username");
 const newUsername = new URLSearchParams(document.location.search).get(
   "loginUsername",
 );
@@ -233,13 +234,13 @@ const newUsername = new URLSearchParams(document.location.search).get(
 if (newUsername) {
   if (initialUsername !== newUsername) {
     // Team username changed; clear localStorage and reload
-    localStorage.clear();
-    localStorage.setItem("username", newUsername);
+    huntLocalStorage.clear();
+    huntLocalStorage.setItem("username", newUsername);
 
     location.reload();
   }
 
-  localStorage.setItem("username", newUsername);
+  huntLocalStorage.setItem("username", newUsername);
 
   // Remove the loginUsername query parameter
   const newSearch = new URLSearchParams(document.location.search);
@@ -271,7 +272,7 @@ const globalDatasetManager = USE_WORKER
     });
 export default globalDatasetManager satisfies DatasetManager;
 
-window.addEventListener("storage", (evt) => {
+huntLocalStorage.addEventListener("storage", (evt) => {
   if (evt.key === "username") {
     // Check for team ID change
     if (evt.newValue !== initialUsername) {

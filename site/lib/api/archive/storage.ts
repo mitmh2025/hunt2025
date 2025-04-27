@@ -1,10 +1,11 @@
 import { type z } from "zod";
 import { hydrateLogEntry } from "../../../src/api/logic";
+import huntLocalStorage from "../../../src/frontend/utils/huntLocalStorage";
 import { genId } from "../../id";
 import {
   InternalActivityLogEntrySchema,
-  TeamRegistrationLogEntrySchema,
   PuzzleStateLogEntrySchema,
+  TeamRegistrationLogEntrySchema,
 } from "../frontend_contract";
 
 export const ARCHIVE_TEAM_ID = 1;
@@ -19,7 +20,7 @@ class LocalStorageLog<Schema extends z.ZodTypeAny> {
     public schema: Schema,
     public hydrator: (e: z.input<Schema>) => z.output<Schema>,
   ) {
-    window.addEventListener("storage", (e) => {
+    huntLocalStorage.addEventListener("storage", (e) => {
       if (e.key === name) {
         const log = this.fetch();
         this.subscribers.forEach((cb) => {
@@ -31,20 +32,20 @@ class LocalStorageLog<Schema extends z.ZodTypeAny> {
 
   fetch(): z.output<Schema>[] {
     const dehydrated = JSON.parse(
-      localStorage.getItem(this.name) ?? "[]",
+      huntLocalStorage.getItem(this.name) ?? "[]",
     ) as z.input<Schema>[];
     return dehydrated.map(this.hydrator);
   }
 
   set(log: z.output<Schema>[]) {
-    localStorage.setItem(this.name, JSON.stringify(log));
+    huntLocalStorage.setItem(this.name, JSON.stringify(log));
     this.subscribers.forEach((cb) => {
       cb(log);
     });
   }
 
   clear() {
-    localStorage.removeItem(this.name);
+    huntLocalStorage.removeItem(this.name);
   }
 
   subscribe(sub: LogCallback<z.output<Schema>>): () => void {

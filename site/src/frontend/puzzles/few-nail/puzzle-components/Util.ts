@@ -1,25 +1,14 @@
-import { LOCAL_STORAGE_PREFIX } from "./Constants";
+import { SPELLING_BEE_STORAGE } from "./Constants";
 
 export function getGuessedUuids(): Set<string> {
-  const guessedUuids = new Set<string>();
-  for (let i = 0; i < localStorage.length; i++) {
-    const item = localStorage.key(i);
-    if (item?.startsWith(LOCAL_STORAGE_PREFIX)) {
-      guessedUuids.add(item.replace(LOCAL_STORAGE_PREFIX, ""));
-    }
-  }
-  return guessedUuids;
+  return new Set(SPELLING_BEE_STORAGE.keys);
 }
 
 export function getGuessesByUuid(): Record<string, string> {
-  const guessesByUuid: Record<string, string> = {};
-  for (let i = 0; i < localStorage.length; i++) {
-    const item = localStorage.key(i);
-    if (item?.startsWith(LOCAL_STORAGE_PREFIX)) {
-      const cleanItem = item.replace(LOCAL_STORAGE_PREFIX, "");
-      const value = localStorage.getItem(item) ?? "";
-      guessesByUuid[cleanItem] = value;
-    }
-  }
-  return guessesByUuid;
+  return Object.fromEntries(
+    [...SPELLING_BEE_STORAGE.keys].map((key) => [
+      key,
+      SPELLING_BEE_STORAGE.getItem(key) ?? "",
+    ]),
+  );
 }

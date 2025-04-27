@@ -1,15 +1,16 @@
+import huntLocalStorage from "../../../src/frontend/utils/huntLocalStorage";
 import HUNT from "../../../src/huntdata";
 import type { PuzzleSlot } from "../../../src/huntdata/types";
 import type { TeamHuntState } from "../client";
 
 // eslint-disable-next-line @typescript-eslint/require-await -- This needs to be an aync function to satisfy the API
 export async function markGateSatisfied(gateId: string): Promise<void> {
-  const gatesStr = localStorage.getItem("illegalSearchGates") ?? "";
+  const gatesStr = huntLocalStorage.getItem("illegalSearchGates") ?? "";
   const gates = gatesStr.split(",");
 
   if (!gates.includes(gateId)) {
     gates.push(gateId);
-    localStorage.setItem("illegalSearchGates", gates.join(","));
+    huntLocalStorage.setItem("illegalSearchGates", gates.join(","));
   }
 }
 
@@ -20,7 +21,7 @@ export function getTeamState(): TeamHuntState {
       ?.puzzles.filter((p): p is PuzzleSlot & { slug: string } => !!p.slug) ??
     [];
 
-  const gatesStr = localStorage.getItem("illegalSearchGates") ?? "";
+  const gatesStr = huntLocalStorage.getItem("illegalSearchGates") ?? "";
   const gates = gatesStr.split(",");
   return {
     gates_satisfied: gates,

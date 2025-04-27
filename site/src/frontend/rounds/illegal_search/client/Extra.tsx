@@ -36,6 +36,7 @@ import {
 } from "./SearchEngine";
 import { fetchModal } from "./clientState";
 import { zoom_cursor, default_cursor } from "./cursors";
+import huntLocalStorage from "../../../utils/huntLocalStorage";
 
 // This is a copy of ModalTrigger, but using the "extra" fields that return
 // the blacklight assets
@@ -300,11 +301,11 @@ export default function Extra({
   >(undefined);
 
   const [active, setActive] = useState(
-    localStorage.getItem("flashlightOn") === "true",
+    huntLocalStorage.getItem("flashlightOn") === "true",
   );
   const toggleActive = useCallback(() => {
     setActive((active) => {
-      localStorage.setItem("flashlightOn", (!active).toString());
+      huntLocalStorage.setItem("flashlightOn", (!active).toString());
       return !active;
     });
   }, []);

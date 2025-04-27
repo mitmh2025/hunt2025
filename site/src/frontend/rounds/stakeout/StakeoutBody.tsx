@@ -7,6 +7,7 @@ import React, {
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
+import huntLocalStorage from "../../utils/huntLocalStorage";
 import { StakeoutFonts } from "./StakeoutFonts";
 import StakeoutPhoto from "./StakeoutPhoto";
 import roundBackground from "./assets/background.png";
@@ -197,7 +198,7 @@ const StakeoutBody = ({
   // Stacking order; first is on bottom; last is on top (like DOM elements would be)
   const [stackOrder, setStackOrder] = useState<StakeoutSlot[]>(() => {
     if (HAS_STORAGE) {
-      const localState = localStorage.getItem(LOCALSTORAGE_KEY);
+      const localState = huntLocalStorage.getItem(LOCALSTORAGE_KEY);
       if (localState) {
         const savedState = JSON.parse(localState) as LocalStoragePosition[];
         return savedState.map((item) => item.slot);
@@ -209,7 +210,7 @@ const StakeoutBody = ({
   const [positions, setPositions] = useState<Record<StakeoutSlot, Position>>(
     () => {
       if (HAS_STORAGE) {
-        const localState = localStorage.getItem(LOCALSTORAGE_KEY);
+        const localState = huntLocalStorage.getItem(LOCALSTORAGE_KEY);
         if (localState) {
           const savedState = JSON.parse(localState) as LocalStoragePosition[];
           return Object.fromEntries(
@@ -254,7 +255,7 @@ const StakeoutBody = ({
           pos: positions[slot],
         };
       });
-      localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(localState));
+      huntLocalStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(localState));
     }
   }, [stackOrder, positions]);
 
