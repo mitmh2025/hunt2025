@@ -83,6 +83,7 @@ export type RenderedPage =
       node: React.ReactNode; // The element to be placed under the root div
       title: string; // The desired page <title>
       entrypoints?: Entrypoint[]; // Additional script/stylesheets to include
+      extraHeadElements?: React.JSX.Element[]; // Extra elements to include in the <head>
       layout?: typeof Layout; // If true, don't include any scripts
     }
   | undefined;
@@ -136,6 +137,7 @@ export default async function renderApp<Params extends ParamsDictionary>(
         title={result.title}
         teamState={req.teamState?.state}
         styleElements={styleElements}
+        extraHeadElements={result.extraHeadElements}
         innerHTML={innerHTML}
       />,
     ) +

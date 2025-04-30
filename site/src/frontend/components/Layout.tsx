@@ -67,6 +67,7 @@ const Layout = ({
   scripts,
   stylesheets,
   styleElements,
+  extraHeadElements,
   title,
   teamState,
 }: {
@@ -74,6 +75,7 @@ const Layout = ({
   scripts?: string[];
   stylesheets?: string[];
   styleElements?: React.JSX.Element[];
+  extraHeadElements?: React.JSX.Element[];
   title?: string;
   teamState?: TeamHuntState;
 }) => {
@@ -89,6 +91,7 @@ const Layout = ({
   const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
 
   const headElements: ReactNode[] = [
+    ...(extraHeadElements ?? []),
     <link key="favicon-ico" rel="icon" href={FaviconIco} sizes="48x48" />,
     <link
       key="favicon-svg"
