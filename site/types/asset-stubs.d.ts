@@ -50,6 +50,10 @@ declare module "*.stl" {
   const value: string;
   export default value;
 }
+declare module "*.step" {
+  const value: string;
+  export default value;
+}
 declare module "*.svg" {
   const value: string;
   export default value;
@@ -72,6 +76,11 @@ declare module "*.csv" {
 }
 
 declare module "*.csv?raw" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.zip" {
   const value: string;
   export default value;
 }

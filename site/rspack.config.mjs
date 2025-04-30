@@ -70,6 +70,14 @@ fs.readdirSync(statsAssetDir).forEach((f) => {
     PRESERVE_FILENAME_ASSET_PATHS.push(path.join(statsAssetDir, f));
   }
 });
+const radioAssetDir = "src/frontend/archives/radio/assets";
+fs.readdirSync(radioAssetDir).forEach((f) => {
+  if (
+    [".step", ".stl", ".zip", ".csv", ".pdf", ".svg"].includes(path.extname(f))
+  ) {
+    PRESERVE_FILENAME_ASSET_PATHS.push(path.join(radioAssetDir, f));
+  }
+});
 
 class RadioManifestPlugin {
   constructor(opts) {
@@ -217,7 +225,7 @@ class RadioManifestPlugin {
       const output = JSON.stringify(manifest, undefined, 2);
       const hash = createHash("sha256");
       hash.update(output);
-      const contentHash = hash.digest("hex");
+      const contentHash = hash.digest("hex").slice(0, 20);
       const manifestFilename = `static/${contentHash}.json`;
       const contentAddressedOutputPath = path.join(
         outputPath,
@@ -353,6 +361,11 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const stepRule = {
+    test: /\.step$/,
+    type: "asset/resource",
+  };
+
   const threemfRule = {
     test: /\.3mf$/,
     type: "asset/resource",
@@ -379,6 +392,11 @@ export default function createConfigs(_env, argv) {
     type: "asset/source",
   };
 
+  const zipRule = {
+    test: /\.zip$/,
+    type: "asset/resource",
+  };
+
   const assetRules = [
     cssRule,
     // TODO: support importing other kinds of assets, and aliases for
@@ -397,11 +415,13 @@ export default function createConfigs(_env, argv) {
     psdRule,
     xcfRule,
     stlRule,
+    stepRule,
     threemfRule,
     xlsxRule,
     vttRule,
     csvRule,
     csvRawRule,
+    zipRule,
   ];
 
   // Disable displayName classes on styled-components when not in dev mode.
@@ -531,6 +551,7 @@ export default function createConfigs(_env, argv) {
 
       archive_stats: "./src/frontend/archives/stats/client.tsx",
       archive_puzzle_stats: "./src/frontend/archives/stats/puzzle_client.tsx",
+      archive_radio: "./src/frontend/archives/radio/client.tsx",
 
       // Included on the round pages
       missing_diamond: "./src/frontend/rounds/missing_diamond/client.tsx",

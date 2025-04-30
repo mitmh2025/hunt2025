@@ -26,6 +26,10 @@ types/mfng/*.ts
 # Ignore fonts
 *.ttf
 *.woff2
+# Ignore 3D models
+*.stl
+*.step
+*.3mf
 # Also lol ignore this file
 .prettierignore
 # Ignore CSV files

@@ -177,6 +177,10 @@ body {
   line-height: 1.51;
   font-family: var(--body-font);
   font-weight: 400;
+
+  @media print {
+    color: black;
+  }
 }
 
 *,

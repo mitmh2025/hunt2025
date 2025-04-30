@@ -125,6 +125,10 @@ export function indexHandler() {
 
           <ul>
             <li>
+              <a href="extras/radio">Radio</a>: Design, schematics, and firmware
+              for the radio that each on-campus team received.
+            </li>
+            <li>
               <a href="extras/stats">Statistics</a>: Stastics from the Hunt,
               including the full activity log.
             </li>
