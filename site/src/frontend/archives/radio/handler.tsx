@@ -1405,8 +1405,10 @@ const handler: PageRenderer<ParamsDictionary> = () => {
           <p>
             The ring was printed in black, basic PLA with supports (rounded side
             facing up). The ring was attached to the shell with super glue. It
-            secured the frequency dial in place and added depth to the front of
-            the radio.
+            secured the frequency dial in place, added depth to the front of the
+            radio, and added physical stops for the frequency knob (important
+            because that potentiometer was also a switch-potentiometer, and we
+            didn’t want it to be possible to turn it “off” accidentally).
           </p>
 
           <div
@@ -1434,7 +1436,11 @@ const handler: PageRenderer<ParamsDictionary> = () => {
 
           <p>
             Both knobs were printed in black, basic PLA, and were designed to
-            fit onto the shafts of the potentiometers.
+            fit onto the shafts of the potentiometers. Both were designed to
+            press-fit (the volume knob somewhat more tightly than the frequency
+            knob) with no inherent alignment with the potentiometer shafts (a
+            calibration process ensured that the frequency range did not exceed
+            the measurable range of the potentiometers).
           </p>
 
           <div style={{ display: "flex" }}>
@@ -1673,12 +1679,15 @@ const handler: PageRenderer<ParamsDictionary> = () => {
             </li>
           </ul>
 
-          <h3>Warning Sticker</h3>
+          <h3 id="enclosure-warning-sticker">Warning Sticker</h3>
 
           <p>
             The right side of the back faceplate included a custom 3”
             glossy-finished vinyl sticker imploring teams to be careful with
-            their radios.
+            their radios. A sticker featuring a unique serial number and a
+            barcode was affixed on top of the white space in the warning
+            sticker, and was used to track assignments of individual radios to
+            teams.
           </p>
 
           <WhiteBackgroundImage
@@ -2001,7 +2010,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
             <li>
               Approximately 40cm of 22AWG silicone-insulated stranded wire
             </li>
-            <li>A small (roughly 2 1/2”×1”) piece of clear acetate sheet</li>
+            <li>A small (roughly 2 1/2”×1”) piece of clear PET</li>
             <li>Superglue</li>
             <li>Masking tape</li>
             <li>Solder</li>
