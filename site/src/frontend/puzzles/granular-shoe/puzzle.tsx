@@ -29,6 +29,20 @@ const Puzzle = (): JSX.Element => {
         </p>
 
         <p>
+          If you would alternatively like to solve this puzzle virtually, you
+          can find a{" "}
+          <a
+            href="https://docs.google.com/presentation/d/1-PPLHPcn1oHFvXEbkixCOFomH_Gv9Fpiwe_11969ZXE/copy"
+            target="_blank"
+            rel="noreferrer"
+          >
+            digital version of the puzzle
+          </a>{" "}
+          with the same 156 pieces, adapted slightly for the “single-sided”
+          nature of Google Slides.
+        </p>
+
+        <p>
           If you’re making a single copy of this puzzle, even if you want to
           strive for authenticity by using magnetic sheets, we would strongly
           recommend cutting out the magnets by hand. However, if you really love
