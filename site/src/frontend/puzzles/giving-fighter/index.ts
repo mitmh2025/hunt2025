@@ -136,7 +136,7 @@ const puzzle: PuzzleDefinition = {
         "La réponse comporte deux mots; le premier a cinq lettres et le second, sept.",
     },
   ],
-  // #!if TARGET !== "client" || !ARCHIVE_MODE
+  // #!if TARGET !== "client" && !ARCHIVE_MODE
   router,
   // #!endif
 };

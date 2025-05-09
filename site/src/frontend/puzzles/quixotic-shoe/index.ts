@@ -276,7 +276,7 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   subpuzzles,
-  // #!if TARGET !== "client" || !ARCHIVE_MODE
+  // #!if TARGET !== "client" && !ARCHIVE_MODE
   router,
   // #!endif
 };
