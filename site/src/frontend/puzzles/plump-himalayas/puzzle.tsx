@@ -1,9 +1,8 @@
-import React from "react";
 import { styled } from "styled-components";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
-import morty from "./assets/morty.svg";
 import Spoiler from "../../components/Spoiler";
 import { PuzzleAnswer } from "../../components/StyledUI";
+import morty from "./assets/morty.svg";
 
 const StyledImg = styled.img`
   height: 7rem;
