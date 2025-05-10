@@ -3,6 +3,7 @@ import { type Options } from "csv-parse";
 import { DateTime } from "luxon";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { Bar, Line } from "react-chartjs-2";
+import tablesort from "tablesort";
 import canonicalizeInput from "../../../../../lib/canonicalizeInput";
 import { StyledPuzzleStatsTable } from "../../../components/StatsLayout";
 import { ErrorText, Mono } from "../../../components/StyledUI";
@@ -400,7 +401,7 @@ const MostCommonWrongAnswers = ({
   const ref = useRef<HTMLTableElement>(null);
   useEffect(() => {
     if (ref.current) {
-      sorttable.makeSortable(ref.current);
+      tablesort(ref.current);
     }
   }, []);
 

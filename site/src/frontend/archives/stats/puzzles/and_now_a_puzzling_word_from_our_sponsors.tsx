@@ -3,6 +3,7 @@ import { Duration, type DateTime } from "luxon";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { styled } from "styled-components";
+import tablesort from "tablesort";
 import {
   NoWrapCell,
   PuzzleAnswerStatsTable,
@@ -82,7 +83,7 @@ const SubpuzzleTeamStats = ({
   const ref = useRef<HTMLTableElement>(null);
   useEffect(() => {
     if (ref.current) {
-      sorttable.makeSortable(ref.current);
+      tablesort(ref.current);
     }
   }, []);
 
@@ -145,7 +146,7 @@ const SubpuzzleAnswerStats = ({
   const ref = useRef<HTMLTableElement>(null);
   useEffect(() => {
     if (ref.current) {
-      sorttable.makeSortable(ref.current);
+      tablesort(ref.current);
     }
   }, []);
 
@@ -306,7 +307,7 @@ const SubpuzzleAggregates = ({
   const ref = useRef<HTMLTableElement>(null);
   useEffect(() => {
     if (ref.current) {
-      sorttable.makeSortable(ref.current);
+      tablesort(ref.current);
     }
   }, []);
 
@@ -421,9 +422,7 @@ const SubpuzzleAggregates = ({
                 <td>{unlockCount}</td>
                 <td>{solveCount}</td>
                 <td>{firstSolveCount}</td>
-                <NoWrapCell
-                  sorttable_customkey={fastestSolve.as("milliseconds")}
-                >
+                <NoWrapCell data-sort={fastestSolve.as("milliseconds")}>
                   {fastestSolve
                     .set({ milliseconds: 0 })
                     .rescale()

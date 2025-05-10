@@ -1,7 +1,11 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import "sorttable";
+import tablesort from "tablesort";
+import "tablesort/tablesort.css";
 import { PUZZLE_STATS } from "./puzzles";
+
+(window as unknown as { Tablesort: typeof tablesort }).Tablesort = tablesort;
+require("tablesort/src/sorts/tablesort.number.js");
 
 const BonusStats = ({ PuzzleStats }: { PuzzleStats: React.ComponentType }) => {
   return (
@@ -14,6 +18,12 @@ const BonusStats = ({ PuzzleStats }: { PuzzleStats: React.ComponentType }) => {
 };
 
 const main = async () => {
+  document
+    .querySelectorAll<HTMLTableElement>("table:has(thead)")
+    .forEach((table) => {
+      tablesort(table);
+    });
+
   const slug = (window as unknown as { statsSlug?: string }).statsSlug;
   if (!slug) return;
 

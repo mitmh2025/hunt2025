@@ -512,10 +512,6 @@ export default function createConfigs(_env, argv) {
         filename: "static/[contenthash].css",
         runtime: false,
       }),
-      new RadioManifestPlugin({
-        fileName: path.join(outputManifestDirname, "radio-manifest.json"),
-        staticOutputPath: path.join(outputDirname, "static"),
-      }),
     ],
     experiments: {
       outputModule: true,
@@ -690,6 +686,10 @@ export default function createConfigs(_env, argv) {
         publicPath: ASSET_PATH,
         filter: (file) =>
           !file.path.endsWith(".js") && !file.path.endsWith(".css"),
+      }),
+      new RadioManifestPlugin({
+        fileName: path.join(outputManifestDirname, "radio-manifest.json"),
+        staticOutputPath: path.join(outputDirname, "static"),
       }),
     ],
     experiments: {

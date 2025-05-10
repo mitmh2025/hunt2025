@@ -72,16 +72,16 @@ export const PuzzleTeamStatsTable = forwardRef(function PuzzleTeamStatsTable(
             <tr key={team.teamName}>
               <td>{team.teamName}</td>
               <td>{team.guessCount}</td>
-              <NoWrapCell sorttable_customkey={team.unlockTime.toMillis()}>
+              <NoWrapCell data-sort={team.unlockTime.toMillis()}>
                 {team.unlockTime.toFormat("EEE, MMM d, TTT")}
               </NoWrapCell>
-              <NoWrapCell sorttable_customkey={team.timeToSolve.toMillis()}>
+              <NoWrapCell data-sort={team.timeToSolve.toMillis()}>
                 {team.timeToSolve
                   .set({ milliseconds: 0 })
                   .rescale()
                   .toHuman({ unitDisplay: "short" })}
               </NoWrapCell>
-              <NoWrapCell sorttable_customkey={team.solveTime.toMillis()}>
+              <NoWrapCell data-sort={team.solveTime.toMillis()}>
                 {team.solveTime.toFormat("EEE, MMM d, TTT")}
               </NoWrapCell>
               {purchasable && <td>{team.purchased ? "✅" : "❌"}</td>}
@@ -109,7 +109,7 @@ export const PuzzleAnswerStatsTable = forwardRef(
         <thead>
           <tr>
             <th>Answer</th>
-            <th>Submission Count</th>
+            <th data-sort-method="number">Submission Count</th>
           </tr>
         </thead>
         <tbody>

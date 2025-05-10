@@ -244,3 +244,8 @@ p + p {
 .puzzle-content.copying .no-copy {
   display: none;
 }
+
+/* Override tablesort style */
+th[role="columnheader"]:not(.no-sort):after {
+  border-color: var(--white) transparent !important;
+}

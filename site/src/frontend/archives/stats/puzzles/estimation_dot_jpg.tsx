@@ -1,9 +1,10 @@
 import { type ChartOptions } from "chart.js";
 import { type Options } from "csv-parse";
 import { DateTime } from "luxon";
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Bar } from "react-chartjs-2";
 import { styled } from "styled-components";
+import tablesort from "tablesort";
 import { geoguessrLookup } from "../../../../../ops/src/opsdata/desertedNinjaImages";
 import {
   ALL_QUESTIONS,
@@ -206,7 +207,7 @@ const QuestionDifficulty = ({ data }: { data: PuzzleLogRow[] }) => {
   const ref = useRef<HTMLTableElement>(null);
   useEffect(() => {
     if (ref.current) {
-      sorttable.makeSortable(ref.current);
+      tablesort(ref.current);
     }
   }, []);
 
