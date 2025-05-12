@@ -31,6 +31,12 @@ const Puzzle = () => {
         ></iframe>
 
         <p>
+          (Our thanks to Steve Ewing of Stand Inside Media who joined us for the
+          weekend as our official videographer and whose footage is featured
+          almost exclusively in the above video)
+        </p>
+
+        <p>
           Unfortunately, due to the nature of this puzzle, there is no way to
           solve it after the fact. Teams were given the answer to the puzzle
           after successfully finishing the escape room experience, but if you
