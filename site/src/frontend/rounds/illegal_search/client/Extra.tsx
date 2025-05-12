@@ -11,6 +11,7 @@ import { createPortal } from "react-dom";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
 import PuzzleLink from "../../../components/PuzzleLink";
+import huntLocalStorage from "../../../utils/huntLocalStorage";
 import blacklight_off from "../assets/blacklight/blacklight_off.svg";
 import blacklight_on from "../assets/blacklight/blacklight_on.svg";
 import {
@@ -36,7 +37,6 @@ import {
 } from "./SearchEngine";
 import { fetchModal } from "./clientState";
 import { zoom_cursor, default_cursor } from "./cursors";
-import huntLocalStorage from "../../../utils/huntLocalStorage";
 
 // This is a copy of ModalTrigger, but using the "extra" fields that return
 // the blacklight assets

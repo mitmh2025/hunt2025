@@ -1890,6 +1890,7 @@ if (archiveMode) {
             },
             { slot_solved: "mdp03" },
           ];
+          break;
         case "the_comeback_it_takes_two":
           puzzle.unlocked_if = [
             {
@@ -1898,6 +1899,7 @@ if (archiveMode) {
             },
             { slot_solved: "mdp03" },
           ];
+          break;
       }
     });
   });

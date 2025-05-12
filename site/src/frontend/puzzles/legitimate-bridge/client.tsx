@@ -1,4 +1,3 @@
-import { getState, makeGuess } from "@hunt_client/puzzles/jargon";
 import { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
@@ -16,6 +15,7 @@ import { puzzleStorage } from "./puzzle-components/Util";
 import usePuzzleState, {
   PuzzleActionType,
 } from "./puzzle-components/usePuzzleState";
+import { getState, makeGuess } from "@hunt_client/puzzles/jargon";
 
 const Wrapper = styled.div`
   font-family: "Jargon";

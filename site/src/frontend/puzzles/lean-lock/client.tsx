@@ -5,9 +5,9 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import { AuthorsNote } from "../../components/PuzzleLayout";
-import { DATA, LOCAL_STORAGE_PREFIX } from "./Constants";
 import PrefixedLocalStorage from "../../utils/PrefixedLocalStorage";
 import huntLocalStorage from "../../utils/huntLocalStorage";
+import { DATA, LOCAL_STORAGE_PREFIX } from "./Constants";
 
 const puzzleStorage = new PrefixedLocalStorage(
   LOCAL_STORAGE_PREFIX,

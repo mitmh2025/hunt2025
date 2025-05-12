@@ -1,4 +1,3 @@
-import { getState } from "@hunt_client/puzzles/the_annual_massachusetts_spelling_bee";
 import { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -12,6 +11,7 @@ import { getGuessesByUuid } from "./puzzle-components/Util";
 import usePuzzleState, {
   PuzzleActionType,
 } from "./puzzle-components/usePuzzleState";
+import { getState } from "@hunt_client/puzzles/the_annual_massachusetts_spelling_bee";
 
 const App = (): JSX.Element => {
   const [

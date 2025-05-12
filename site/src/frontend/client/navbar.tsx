@@ -1,4 +1,3 @@
-import globalDatasetManager from "@hunt_client/globalDatasetManager";
 import { useEffect, useRef, useState } from "react";
 import { type SocketState } from "../../../lib/SocketManager";
 import type { ActivityLogEntry, TeamInfo } from "../../../lib/api/client";
@@ -15,6 +14,7 @@ import archiveMode from "../utils/archiveMode";
 import huntLocalStorage from "../utils/huntLocalStorage";
 import rootUrl from "../utils/rootUrl";
 import useDataset from "./useDataset";
+import globalDatasetManager from "@hunt_client/globalDatasetManager";
 
 export const NOTIFICATION_HIGH_WATER_MARK = "notificationHighWaterMark";
 

@@ -774,7 +774,9 @@ export function solutionHandler(req: Request<PuzzleParams>) {
       node,
       entrypoints,
       title: `Solution for ${title}`,
-      extraHeadElements: [<meta name="robots" content="noindex" />],
+      extraHeadElements: [
+        <meta key="noindex" name="robots" content="noindex" />,
+      ],
     },
     req.teamState,
   );

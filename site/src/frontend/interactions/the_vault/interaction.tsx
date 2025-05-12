@@ -1,13 +1,13 @@
 import React from "react";
-import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import baby from "./assets/baby.jpg";
 import billie from "./assets/billie.jpg";
 import cake from "./assets/cake.jpg";
 import car from "./assets/car.jpg";
 import katrina from "./assets/katrina.jpg";
 import veil from "./assets/veil.jpg";
-import LinkedImage from "../../components/LinkedImage";
 
 const Blockquote = styled.blockquote`
   margin-top: 0;

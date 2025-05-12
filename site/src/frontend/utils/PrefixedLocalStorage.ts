@@ -50,7 +50,7 @@ export default class PrefixedLocalStorage implements Storage {
     const keys: string[] = [];
     for (let i = 0; i < this.wrap.length; i++) {
       const key = this.wrap.key(i);
-      if (key && key.startsWith(this.prefix)) {
+      if (key?.startsWith(this.prefix)) {
         keys.push(key.slice(this.prefix.length));
       }
     }
@@ -75,6 +75,7 @@ export default class PrefixedLocalStorage implements Storage {
     type: "storage",
     listener: PrefixedStorageListener,
   ): void => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime validation of type
     if (type !== "storage") {
       throw new Error(`Unsupported event type: ${type}`);
     }
@@ -89,6 +90,7 @@ export default class PrefixedLocalStorage implements Storage {
     type: "storage",
     listener: PrefixedStorageListener,
   ): void => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime validation of type
     if (type !== "storage") {
       throw new Error(`Unsupported event type: ${type}`);
     }

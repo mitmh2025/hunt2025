@@ -1,4 +1,3 @@
-import { useTeamState } from "@hunt_client/illegal_search_state";
 import React, {
   useCallback,
   useEffect,
@@ -41,6 +40,7 @@ import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import Telephone from "./Telephone";
 import { fetchModal, fetchNode } from "./clientState";
 import { default_cursor, zoom_cursor } from "./cursors";
+import { useTeamState } from "@hunt_client/illegal_search_state";
 
 const plugins: Record<string, InteractionComponent> = {
   bookcase: Bookcase,

@@ -1,10 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
-import {
-  AuthorsNote,
-  AuthorsNoteBlock,
-} from "../../components/PuzzleLayout";
+import { AuthorsNote, AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import "./assets/waypoint0.opus";
 import "./assets/waypoint1.opus";
 import "./assets/waypoint10.opus";

@@ -1,4 +1,3 @@
-import type datasetManager from "@hunt_client/globalDatasetManager";
 import workersManifest from "../../../dist/worker-manifest.json";
 import huntLocalStorage from "../../../src/frontend/utils/huntLocalStorage";
 import {
@@ -17,6 +16,7 @@ import {
   type ObjectWithEpoch,
   type ObjectWithId,
 } from "../websocket";
+import type datasetManager from "@hunt_client/globalDatasetManager";
 
 type DatasetManager = typeof datasetManager;
 

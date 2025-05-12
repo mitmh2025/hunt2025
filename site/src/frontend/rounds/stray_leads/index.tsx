@@ -1,9 +1,9 @@
 import React from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
+import archiveMode from "../../utils/archiveMode";
 import StrayLeadsBody from "./StrayLeadsBody";
 import { type StrayLeadsState } from "./types";
-import archiveMode from "../../utils/archiveMode";
 
 export function strayLeadsState(teamState: TeamHuntState): StrayLeadsState {
   const leads = Object.entries(teamState.puzzles).flatMap(

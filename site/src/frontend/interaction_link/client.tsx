@@ -1,8 +1,8 @@
 import React from "react";
 import renderRoot from "../../utils/renderRoot";
 import useDataset from "../client/useDataset";
-import { type InteractionLinkState } from "./types";
 import InteractionLink from "./InteractionLink";
+import { type InteractionLinkState } from "./types";
 
 const InteractionLinkManager = ({
   slug,
