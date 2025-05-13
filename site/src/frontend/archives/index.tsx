@@ -1,10 +1,13 @@
 import React from "react";
+import LinkedImage from "../components/LinkedImage";
 import {
   PageWrapper,
   PageHeader,
   PageTitle,
   PageMain,
 } from "../components/PageLayout";
+import invitePDF from "../puzzles/timely-head/assets/engagements-and-other-crimes.pdf";
+import inviteFront from "../puzzles/timely-head/assets/invitation-front.svg";
 import rootUrl from "../utils/rootUrl";
 
 export function indexHandler() {
@@ -18,12 +21,13 @@ export function indexHandler() {
         </PageHeader>
         <PageMain>
           <p>
-            At the start of the 2025 MIT Mystery Hunt, the gala celebrating the
-            engagement of Gladys Finster (heir apparent to the legitimate
-            businesses of crime boss Robert “Papa” Finster) and Ferdinand Carter
-            (scion of the Carter Brothers jewelry conglomerate) is interrupted
-            when Carter’s latest acquisition, the storied{" "}
-            <strong>Shadow Diamond</strong>, is discovered to be missing.
+            At the start of the 2025 MIT Mystery Hunt, MITropolis’s hottest
+            event, the gala celebrating the engagement of Gladys Finster (heir
+            apparent to the legitimate businesses of crime boss Robert “Papa”
+            Finster) and Ferdinand Carter (scion of the Carter Brothers jewelry
+            conglomerate) is interrupted when Carter’s latest acquisition, the
+            storied <strong>Shadow Diamond</strong>, is discovered to be
+            missing.
           </p>
 
           <p>
@@ -45,6 +49,21 @@ export function indexHandler() {
             </strong>{" "}
             is a prequel to the story of The Case of the Shadow Diamond, where
             Papa organizes a bank robbery to steal a valuable rare coin.
+          </p>
+
+          <h2>Invite</h2>
+
+          <p>
+            At the beginning of January, teams (with a US mailing address)
+            received an invitation in the mail from Papa to the Gala:
+          </p>
+
+          <p style={{ display: "flex", maxWidth: "500px", margin: "0 auto" }}>
+            <LinkedImage
+              src={inviteFront}
+              alt="Invitation saying that Robert Finster cordially invites you to a Gala celebrating the engagement of his daughter Gladys Finster to Ferdinand Carter. Friday, January 17th, 2025, Twelve Noon, The Massachusetts Institute of Technology, Cambridge, Massachusetts. Suggested dress: cocktail attire"
+              fullSizeURL={invitePDF}
+            />
           </p>
 
           <h2>Kickoff</h2>
