@@ -1,4 +1,5 @@
 import { type PuzzleDefinition } from "../types";
+import logician from "./assets/kakuro7.png";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
 
@@ -258,7 +259,22 @@ const puzzle: PuzzleDefinition = {
       nudge: "The orientation of the blacklight numbers is important.",
     },
   ],
-  canned_responses: [],
+  canned_responses: [
+    {
+      guess: ["35-213"],
+      reply:
+        "During Mystery Hunt, if you visited this location, you would find ",
+      link: {
+        href: logician,
+        display: "this image posted.",
+      },
+    },
+    {
+      guess: ["LOBBY 7"],
+      reply:
+        "Teams visiting Lobby 7 would note the inscription around the top of Lobby 7, made by another stonemason: ESTABLISHED FOR ADVANCEMENT AND DEVELOPMENT OF SCIENCE ITS APPLICATION TO INDUSTRY THE ARTS AGRICULTURE AND COMMERCE CHARTER MDCCCLXI",
+    },
+  ],
 };
 
 export default puzzle;

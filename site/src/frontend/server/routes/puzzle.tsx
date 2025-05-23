@@ -490,6 +490,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
             teamUsername={req.teamState.info.teamUsername}
             teamJwt={req.cookies.mitmh2025_auth as string | undefined}
             teamState={req.teamState.state}
+            puzzleSlug={slug}
             puzzleState={result.body}
             puzzleStateLog={puzzleStateLog}
             query={req.query}
