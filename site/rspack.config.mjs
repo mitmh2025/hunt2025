@@ -79,6 +79,18 @@ fs.readdirSync(radioAssetDir).forEach((f) => {
   }
 });
 
+const assetResourceGenerator = {
+  filename: (pathData, _assetInfo) => {
+    // console.log("pathData", pathData);
+    // console.log("assetInfo", _assetInfo);
+    if (PRESERVE_FILENAME_ASSET_PATHS.indexOf(pathData.filename) !== -1) {
+      const basename = path.basename(pathData.filename);
+      return `static/[hash]/${basename}`;
+    }
+    return `static/[hash][ext]`;
+  },
+};
+
 class RadioManifestPlugin {
   constructor(opts) {
     if (!opts.fileName || !opts.staticOutputPath) {
@@ -461,19 +473,7 @@ export default function createConfigs(_env, argv) {
     },
     module: {
       generator: {
-        "asset/resource": {
-          filename: (pathData, _assetInfo) => {
-            // console.log("pathData", pathData);
-            // console.log("assetInfo", _assetInfo);
-            if (
-              PRESERVE_FILENAME_ASSET_PATHS.indexOf(pathData.filename) !== -1
-            ) {
-              const basename = path.basename(pathData.filename);
-              return `static/[hash]/${basename}`;
-            }
-            return `static/[hash][ext]`;
-          },
-        },
+        "asset/resource": assetResourceGenerator,
       },
       rules: [
         {
@@ -628,6 +628,9 @@ export default function createConfigs(_env, argv) {
     },
     devtool: dev ? "source-map" : false,
     module: {
+      generator: {
+        "asset/resource": assetResourceGenerator,
+      },
       rules: [
         {
           test: /\.m?tsx?$/,
