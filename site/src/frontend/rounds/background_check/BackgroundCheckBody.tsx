@@ -134,7 +134,6 @@ const BackgroundCheckDisplayObject = ({
   };
 
   const itemProps = {
-    key: puzzleState.slug,
     ...getReferenceProps(),
     ref: refs.setReference,
     style: aStyle,
@@ -150,7 +149,7 @@ const BackgroundCheckDisplayObject = ({
 
   return (
     <>
-      <FridgeItemComponent {...itemProps}>
+      <FridgeItemComponent key={puzzleState.slug} {...itemProps}>
         <img src={item.asset} alt={item.alt} style={imgStyle} />
         <FridgeMagnet src={item.magnet} style={magnetImgStyle} />
       </FridgeItemComponent>
