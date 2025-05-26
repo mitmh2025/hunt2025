@@ -91,7 +91,7 @@ const Puzzle = (): JSX.Element => {
               latest camera features all-new x-ray technology that sees through
               walls, ensuring every key area of your home is captured from
               multiple angles by two different cameras. And for a limited time,
-              get 250 bonus MITropolisCard Points when you go to
+              get 250 bonus MITropolisCard Points when you go to{" "}
               <a href={`${rootUrl}/hardlysafe`}>
                 two-pi-noir.agency/hardlysafe
               </a>{" "}
@@ -117,7 +117,7 @@ const Puzzle = (): JSX.Element => {
               DraughtQueens has got you covered. We have six new house-brewed
               beers on tap, so you’re sure to find one you love, even if you end
               up spilling a drop of it. For a limited time only, you can get 250
-              bonus MITropolisCard points when you go to
+              bonus MITropolisCard points when you go to{" "}
               <a href={`${rootUrl}/draughtqueens`}>
                 two-pi-noir.agency/draughtqueens
               </a>{" "}
@@ -141,7 +141,7 @@ const Puzzle = (): JSX.Element => {
               You can sell things. Hidden talents. Your time. And much more. Our
               downtown TownSquareSpace is the bulletin board for everything you
               need to sell anything. And for a limited time, when you sign up
-              you’ll get 250 MITropolis card points. Just go to
+              you’ll get 250 MITropolis card points. Just go to{" "}
               <a href={`${rootUrl}/townsquarespace`}>
                 two-pi-noir.agency/townsquarespace
               </a>{" "}
