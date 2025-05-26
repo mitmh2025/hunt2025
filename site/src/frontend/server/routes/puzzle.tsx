@@ -456,7 +456,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     }
     const backlinkChildren = `← Back to ${backlinkRoundTitle}`;
     backlinkFrag = (
-      <PuzzleBacklinkComponent href={backlinkHref}>
+      <PuzzleBacklinkComponent data-round-backlink="true" href={backlinkHref}>
         {backlinkChildren}
       </PuzzleBacklinkComponent>
     );

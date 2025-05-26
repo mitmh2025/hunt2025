@@ -385,7 +385,10 @@ export const BackgroundCheckMetaHead = ({
     <BackgroundCheckMetaHeader>
       <>
         <Magnet src={magnet} alt="magnet" />
-        <BackgroundCheckBacklink href={backlinkHref}>
+        <BackgroundCheckBacklink
+          href={backlinkHref}
+          {...(setting === "puzzle" ? { "data-round-backlink": "true" } : {})}
+        >
           {setting === "puzzle" ? BACK_TO_ROUND_TEXT : BACK_TO_PUZZLE_TEXT}
         </BackgroundCheckBacklink>
         <div

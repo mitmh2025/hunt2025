@@ -7,10 +7,12 @@ import {
   initializeLogs,
 } from "../../../lib/api/archive/log";
 import { reduceTeamStateIntermediate } from "../../../lib/api/archive/reducers";
+import type { TeamHuntState } from "../../../lib/api/client";
 import { AuthorsNoteBlock } from "../components/PuzzleLayout";
 import { Button } from "../components/StyledUI";
 import clientIsBot from "../utils/clientIsBot";
 import rootUrl from "../utils/rootUrl";
+import globalDatasetManager from "@hunt_client/globalDatasetManager";
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -176,12 +178,12 @@ const huntStarted = fetchActivityLog().some(
   (e) => e.type === "gate_completed" && e.slug === "hunt_started",
 );
 
-const isLocked = () => {
-  const puzzleSlug = (window as unknown as { puzzleSlug?: string }).puzzleSlug;
-  const parentSlug = (window as unknown as { parentSlug?: string }).parentSlug;
-  const interactionSlug = (window as unknown as { interactionSlug?: string })
-    .interactionSlug;
+const puzzleSlug = (window as unknown as { puzzleSlug?: string }).puzzleSlug;
+const parentSlug = (window as unknown as { parentSlug?: string }).parentSlug;
+const interactionSlug = (window as unknown as { interactionSlug?: string })
+  .interactionSlug;
 
+const isLocked = () => {
   if (!puzzleSlug && !interactionSlug) return false;
 
   const state = reduceTeamStateIntermediate(fetchActivityLog());
@@ -194,7 +196,7 @@ const isLocked = () => {
   return locked;
 };
 
-const main = async () => {
+const archiveModals = async () => {
   if (clientIsBot) return;
   if (!huntPage) return;
   if (nonUnlockablePuzzlePage) return;
@@ -240,4 +242,46 @@ const main = async () => {
   }
 };
 
-void main();
+const watchBacklinks = () => {
+  const backlinks = document.querySelectorAll<HTMLAnchorElement>(
+    "a[data-round-backlink=true]",
+  );
+  if (backlinks.length === 0) return;
+
+  globalDatasetManager.watch(
+    "team_state",
+    undefined,
+    { epoch: -1 },
+    (update) => {
+      const teamState = update as TeamHuntState;
+
+      const roundSlug = teamState.puzzles[puzzleSlug ?? ""]?.round;
+      const round = teamState.rounds[roundSlug ?? ""];
+
+      let href, title;
+      if (roundSlug === "stray_leads" || !round) {
+        href = `${rootUrl}/rounds/stray_leads`;
+        title = "Stray Leads";
+      } else {
+        href = `${rootUrl}/rounds/${roundSlug}`;
+        title = round.title;
+      }
+
+      backlinks.forEach((link) => {
+        link.href = href;
+        link.textContent = `← Back to ${title}`;
+      });
+    },
+  );
+};
+
+archiveModals()
+  .then(() => {
+    watchBacklinks();
+  })
+  .catch((err: unknown) => {
+    console.error("Error initializing archive modals:", err);
+    alert(
+      "An error occurred while initializing the archive modals. Please try again later.",
+    );
+  });
