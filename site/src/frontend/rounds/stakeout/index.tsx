@@ -1,6 +1,6 @@
 import React from "react";
 import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
-import teamIsImmutable from "../../../utils/teamIsImmutable";
+import { teamIsImmutableForSSR } from "../../../utils/teamIsImmutable";
 import { PUZZLES } from "../../puzzles";
 import StakeoutBody from "./StakeoutBody";
 import metaEnvelope from "./assets/meta_envelope.png";
@@ -128,7 +128,7 @@ export function stakeoutState(
   teamState: TeamHuntState,
   { username }: { username: string },
 ): StakeoutState {
-  const immutable = teamIsImmutable(username);
+  const immutable = teamIsImmutableForSSR(username);
 
   return {
     epoch: teamState.epoch,
@@ -163,7 +163,7 @@ export function stakeoutState(
           slug,
           title,
           asset:
-            !!puzzleState.answer || (immutable && typeof window === "undefined")
+            !!puzzleState.answer || immutable
               ? solvedAsset
               : polaroidDeveloping,
         };

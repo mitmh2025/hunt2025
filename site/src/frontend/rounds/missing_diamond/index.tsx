@@ -1,6 +1,6 @@
 import React from "react";
 import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
-import teamIsImmutable from "../../../utils/teamIsImmutable";
+import { teamIsImmutableForSSR } from "../../../utils/teamIsImmutable";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 import MissingDiamondBody from "./MissingDiamondBody";
@@ -1046,8 +1046,7 @@ function genWitnesses(
     const puzzleDefinition = PUZZLES[slug];
     const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slotId}`;
 
-    const showAsSolved =
-      !!puzzleState.answer || (immutable && typeof window === "undefined");
+    const showAsSolved = !!puzzleState.answer || immutable;
 
     return [
       {
@@ -1076,8 +1075,7 @@ function genInteractions(
 
   return Object.entries(interactions).flatMap(([interactionId, spec]) => {
     const interactionState = round.interactions?.[interactionId]?.state;
-    const forceShow = immutable && typeof window === "undefined";
-    if (!forceShow && !interactionState) return [];
+    if (!immutable && !interactionState) return [];
 
     const interaction =
       INTERACTIONS[interactionId as MissingDiamondInteraction];
@@ -1097,7 +1095,7 @@ export function missingDiamondState(
   teamState: TeamHuntState,
   { username }: { username: string },
 ): MissingDiamondState {
-  const immutable = teamIsImmutable(username);
+  const immutable = teamIsImmutableForSSR(username);
 
   const speechBubbles = genSpeechBubbles(teamState);
   const locations = genLocations(teamState);

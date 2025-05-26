@@ -1,7 +1,7 @@
 import { type Placement } from "@floating-ui/react";
 import React from "react";
 import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
-import teamIsImmutable from "../../../utils/teamIsImmutable";
+import { teamIsImmutableForSSR } from "../../../utils/teamIsImmutable";
 import { PUZZLES } from "../../puzzles";
 import MurderBody from "./MurderBody";
 // pages for meta
@@ -698,8 +698,7 @@ function genPDFWindows(
 
   const solvedCount = puzzles.filter((puzzle) => !!puzzle?.answer).length;
   const imagery = PDFWindows.map((window, i) => {
-    const isReleased =
-      !!(i < solvedCount * 3) || (immutable && typeof window === "undefined");
+    const isReleased = !!(i < solvedCount * 3) || immutable;
 
     return {
       ...window,
@@ -732,8 +731,7 @@ function genImagery(
     const unlockState = puzzleState.locked;
     if (unlockState === "locked") return [];
     const state =
-      puzzleState.answer !== undefined ||
-      (immutable && typeof window === "undefined")
+      puzzleState.answer !== undefined || immutable
         ? ("solved" as const)
         : unlockState === "unlockable"
           ? ("locked" as const)
@@ -772,7 +770,7 @@ export function murderState(
   teamState: TeamHuntState,
   { username }: { username: string },
 ): MurderState {
-  const immutable = teamIsImmutable(username);
+  const immutable = teamIsImmutableForSSR(username);
   const epoch = teamState.epoch;
   const round = teamState.rounds.murder_in_mitropolis;
   if (!round) return { epoch, items: [], imagery: [], pdfImagery: [] };
