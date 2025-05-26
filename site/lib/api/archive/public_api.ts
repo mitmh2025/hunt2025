@@ -313,7 +313,13 @@ const clientApiMethods: {
           });
         }
 
-        // TODO: Do we need to synthesize all_subpuzzles_solved or gate_completed entries for quixotic-shoe?
+        // Note: We are not synthesizing the all_subpuzzles_solved or
+        // gate_completed puzzle state log entries that we generated in
+        // production for quixotic-shoe. Those were only necessary if we were
+        // driving the state of the martini pickup on the puzzle page. However,
+        // after #917, the puzzle page just has a client-side "give me my
+        // martini" button, and that seems fine/less confusing for people
+        // post-solving.
       });
     }
 
