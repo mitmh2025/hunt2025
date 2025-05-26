@@ -72,7 +72,7 @@ const SudokuButMoreLines = ({
   return (
     <StyledTable>
       {rows.map((row: string[], j: number) => {
-        console.error("Row index", j);
+        // console.error("Row index", j);
         return (
           <tr key={`sudoku-row-${j}`}>
             {row.map((cell, k) => {
