@@ -27,7 +27,7 @@ export default class PrefixedLocalStorage implements Storage {
       oldValue: ev.oldValue,
       newValue: ev.newValue,
       url: ev.url,
-      storageArea: this,
+      storageArea: this.wrap,
     });
     for (const listener of this.listeners) {
       listener.call(this, wrappedEvent);
