@@ -37,7 +37,7 @@ const Solution = (): JSX.Element => {
         visits his opponents. The movement is dictated by the sequence of
         joystick controls for the friendship move of each character he visits,
         starting from the corner of the map as designated by the illustrated
-        figure. Take the letter of the house at each stop to extract the answer:
+        figure. Take the letter of the house at each stop to extract the answer:{" "}
         <PuzzleAnswer>FOOTSTEPS</PuzzleAnswer>.
       </p>
       <p>
