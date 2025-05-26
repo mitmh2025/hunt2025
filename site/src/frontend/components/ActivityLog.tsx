@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import { type ActivityLogEntry } from "../../../lib/api/client";
 import logoIcon from "../../assets/logo-simple.svg";
+import huntLocalStorage from "../utils/huntLocalStorage";
 import rootUrl from "../utils/rootUrl";
 import { PuzzleIcon } from "./PuzzleLink";
 import { darkBgLinkStyles } from "./StyledUI";
@@ -383,7 +384,7 @@ const ActivityLog = ({ log }: { log: ActivityLogEntry[] }) => {
   const [sortDesc, setSortDesc] = React.useState(true);
 
   useEffect(() => {
-    if (window.localStorage.getItem("activityLogSortDesc") === "false") {
+    if (huntLocalStorage.getItem("activityLogSortDesc") === "false") {
       setSortDesc(false);
     }
   }, []);
@@ -408,7 +409,7 @@ const ActivityLog = ({ log }: { log: ActivityLogEntry[] }) => {
 
   function toggleSort() {
     setSortDesc(!sortDesc);
-    window.localStorage.setItem("activityLogSortDesc", String(!sortDesc));
+    huntLocalStorage.setItem("activityLogSortDesc", String(!sortDesc));
   }
 
   if (log.length === 0) {

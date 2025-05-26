@@ -1,22 +1,17 @@
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import rootUrl from "../../utils/rootUrl";
 import {
   CLEANSTRING_REGEX,
-  HAS_STORAGE,
-  LOCAL_STORAGE_PREFIX,
+  SPELLING_BEE_STORAGE,
 } from "./puzzle-components/Constants";
 import RoundView from "./puzzle-components/RoundView";
 import { StyledDiv } from "./puzzle-components/Shared";
 import SpellingBeeStatusViewProps from "./puzzle-components/SpellingBeeStatusView";
-import type {
-  GuessResponsesByUuid,
-  MinimalRounds,
-} from "./puzzle-components/Typedefs";
 import { getGuessesByUuid } from "./puzzle-components/Util";
 import usePuzzleState, {
   PuzzleActionType,
 } from "./puzzle-components/usePuzzleState";
+import { getState } from "@hunt_client/puzzles/the_annual_massachusetts_spelling_bee";
 
 const App = (): JSX.Element => {
   const [
@@ -31,19 +26,10 @@ const App = (): JSX.Element => {
   ] = usePuzzleState();
 
   const refreshState = useCallback(() => {
-    fetch(`${rootUrl}/puzzles/the_annual_massachusetts_spelling_bee/state`, {
-      method: "POST",
-      body: JSON.stringify({ guessesByUuid: getGuessesByUuid() }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
+    getState({
+      guessesByUuid: getGuessesByUuid(),
     }).then(
-      async (response) => {
-        const { rounds, guessResponses } = (await response.json()) as {
-          rounds: MinimalRounds;
-          guessResponses: GuessResponsesByUuid;
-        };
+      ({ rounds, guessResponses }) => {
         dispatch({
           type: PuzzleActionType.REFRESH_STATE,
           availableRounds: rounds,
@@ -62,8 +48,8 @@ const App = (): JSX.Element => {
 
   const guess = useCallback(
     (uuid: string, guess: string) => {
-      localStorage.setItem(
-        `${LOCAL_STORAGE_PREFIX}${uuid}`,
+      SPELLING_BEE_STORAGE.setItem(
+        uuid,
         guess.toUpperCase().replace(CLEANSTRING_REGEX, ""),
       );
       dispatch({
@@ -97,20 +83,16 @@ const App = (): JSX.Element => {
             guess={guess}
             guessResponsesByUuid={guessResponsesByUuid}
             onRestart={() => {
-              if (HAS_STORAGE) {
-                const uuidsToRemove = new Set<string>();
-                for (const puzzle of round.puzzles) {
-                  uuidsToRemove.add(puzzle.uuid);
-                  localStorage.removeItem(
-                    `${LOCAL_STORAGE_PREFIX}${puzzle.uuid}`,
-                  );
-                }
-                dispatch({
-                  type: PuzzleActionType.RESTART_ROUND,
-                  round,
-                });
-                refreshState();
+              const uuidsToRemove = new Set<string>();
+              for (const puzzle of round.puzzles) {
+                uuidsToRemove.add(puzzle.uuid);
+                SPELLING_BEE_STORAGE.removeItem(puzzle.uuid);
               }
+              dispatch({
+                type: PuzzleActionType.RESTART_ROUND,
+                round,
+              });
+              refreshState();
             }}
             queryByUuid={queryByUuid}
             round={round}
@@ -134,18 +116,7 @@ const App = (): JSX.Element => {
                   "Are you sure you want to reset the state of this puzzle?",
                 )
               ) {
-                if (HAS_STORAGE) {
-                  const itemsToRemove: string[] = [];
-                  for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key?.startsWith(LOCAL_STORAGE_PREFIX)) {
-                      itemsToRemove.push(key);
-                    }
-                  }
-                  for (const item of itemsToRemove) {
-                    localStorage.removeItem(item);
-                  }
-                }
+                SPELLING_BEE_STORAGE.clear();
                 dispatch({
                   type: PuzzleActionType.RESTART_PUZZLE,
                 });

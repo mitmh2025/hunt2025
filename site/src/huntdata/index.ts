@@ -1,5 +1,6 @@
 // This is the canonical description of the structure of our hunt, with a full
 // enumeration of rounds, puzzles, interactions, and the dependency structure.
+import archiveMode from "../frontend/utils/archiveMode";
 import { type Gate, type Hunt, type PuzzleSlot, type Round } from "./types";
 
 const BGCHECK_FEEDER_SLOTS = {
@@ -733,6 +734,10 @@ const HUNT: Hunt = {
               { gate_satisfied: "ptg11" },
               { gate_satisfied: "ptg12" },
               { gate_satisfied: "ptg13" },
+              // As a special case for the archives, if the solve is for Songs on the
+              // Radio, unlock And Now a Puzzling Word (since we don't have the radio
+              // stream)
+              ...(archiveMode ? [{ slot_solved: "mdp03" }] : []),
             ],
           },
           prize: 0,
@@ -1838,6 +1843,67 @@ const HUNT: Hunt = {
     },
   ],
 };
+
+// In archiveMode, modify puzzles which were manually released to have an unlock
+// rule. Thresholds are chosen mostly based on vibes from looking at the
+// rough experience of the top 20 teams
+if (archiveMode) {
+  const allRegularSlots = HUNT.rounds.flatMap((round) =>
+    round.puzzles.filter((p) => !p.is_meta && !p.is_supermeta).map((p) => p.id),
+  );
+  const allSupermetaSlots = HUNT.rounds.flatMap((round) =>
+    round.puzzles.filter((p) => p.is_supermeta).map((p) => p.id),
+  );
+  HUNT.rounds.forEach((round) => {
+    round.puzzles.forEach((puzzle) => {
+      switch (puzzle.slug) {
+        case "estimation_dot_jpg":
+          puzzle.unlocked_if = {
+            puzzles_solved: 15,
+            slots: allRegularSlots,
+          };
+          break;
+        case "art_history":
+          puzzle.unlocked_if = {
+            puzzles_solved: 25,
+            slots: allRegularSlots,
+          };
+          break;
+        case "control_room":
+          puzzle.unlocked_if = {
+            puzzles_solved: 30,
+            slots: allRegularSlots,
+          };
+          break;
+        case "in_communicado_tonight":
+          puzzle.unlocked_if = {
+            puzzles_solved: 35,
+            slots: allRegularSlots,
+          };
+          break;
+
+        case "trainees_first_recital":
+          puzzle.unlocked_if = [
+            {
+              puzzles_solved: 1,
+              slots: allSupermetaSlots,
+            },
+            { slot_solved: "mdp03" },
+          ];
+          break;
+        case "the_comeback_it_takes_two":
+          puzzle.unlocked_if = [
+            {
+              puzzles_solved: 2,
+              slots: allSupermetaSlots,
+            },
+            { slot_solved: "mdp03" },
+          ];
+          break;
+      }
+    });
+  });
+}
 
 HUNT.rounds.forEach((round: Round) => {
   if (round.slug !== "background_check") {

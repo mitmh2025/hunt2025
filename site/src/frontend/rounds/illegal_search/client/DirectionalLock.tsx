@@ -89,18 +89,23 @@ export default function DirectionalLock({
       const code = newCodeBuffer.join("");
       console.log(code);
 
-      const result = submitLock("deskdrawer", code);
-      if (result) {
-        playSound(unlock);
-        setSolved(true);
-        setDragging(false);
-        setKnobPosition(0);
+      submitLock("deskdrawer", code)
+        .then((result) => {
+          if (result) {
+            playSound(unlock);
+            setSolved(true);
+            setDragging(false);
+            setKnobPosition(0);
 
-        // Allow time for the knob to return to the center before updating the code
-        setTimeout(() => {
-          setNode(result);
-        }, 100);
-      }
+            // Allow time for the knob to return to the center before updating the code
+            setTimeout(() => {
+              setNode(result);
+            }, 100);
+          }
+        })
+        .catch(() => {
+          console.log("unexpected error");
+        });
     },
     [setNode],
   );

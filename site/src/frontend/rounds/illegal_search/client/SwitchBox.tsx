@@ -231,14 +231,19 @@ const SwitchBox = ({
 
   useEffect(() => {
     if (!opened) {
-      const result = submitLock("painting2", printable(switchState));
-      if (result) {
-        console.log("Correct:", printable(switchState));
-        console.log("Response:", result);
-        setNode(result);
-      } else {
-        console.log("Incorrect:", printable(switchState));
-      }
+      submitLock("painting2", printable(switchState))
+        .then((result) => {
+          if (result) {
+            console.log("Correct:", printable(switchState));
+            console.log("Response:", result);
+            setNode(result);
+          } else {
+            console.log("Incorrect:", printable(switchState));
+          }
+        })
+        .catch(() => {
+          console.log("unexpected error");
+        });
     }
   }, [opened, setNode, switchState]);
 

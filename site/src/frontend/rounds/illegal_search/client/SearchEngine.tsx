@@ -1,28 +1,31 @@
 import React, {
-  type MouseEventHandler,
   useCallback,
-  useState,
   useEffect,
-  useMemo,
   useLayoutEffect,
+  useMemo,
+  useState,
+  type MouseEventHandler,
 } from "react";
 import { styled } from "styled-components";
+import { type TeamHuntState } from "../../../../../lib/api/client";
 import HUNT from "../../../../huntdata";
 import billie from "../../../assets/billie.png";
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
 import PuzzleLink from "../../../components/PuzzleLink";
 import { Button } from "../../../components/StyledUI";
+import archiveMode from "../../../utils/archiveMode";
+import huntLocalStorage from "../../../utils/huntLocalStorage";
 import rootUrl from "../../../utils/rootUrl";
 import {
-  type ScreenArea,
-  type Node,
   hasPostCode,
   hasPuzzleFields,
+  type Escape,
+  type InteractionComponent,
   type Modal,
   type ModalWithPuzzleFields,
+  type Node,
   type PlacedAsset,
-  type InteractionComponent,
-  type Escape,
+  type ScreenArea,
 } from "../types";
 import Bookcase from "./Bookcase";
 import Cryptex from "./Cryptex";
@@ -35,8 +38,9 @@ import Rug from "./Rug";
 import Safe from "./Safe";
 import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import Telephone from "./Telephone";
-import { fetchModal, fetchNode, illegalSearchTeamState } from "./clientState";
+import { fetchModal, fetchNode } from "./clientState";
 import { default_cursor, zoom_cursor } from "./cursors";
+import { useTeamState } from "@hunt_client/illegal_search_state";
 
 const plugins: Record<string, InteractionComponent> = {
   bookcase: Bookcase,
@@ -176,22 +180,24 @@ export const ModalTrigger = ({
       // 2) in the response to that POST, get (and save) the title and slug that we need to display
       if (postCode !== undefined && title === undefined && slug === undefined) {
         console.log("POSTing code", postCode);
-        const json = fetchModal(postCode);
+        void (async () => {
+          const json = await fetchModal(postCode);
 
-        setTitle(json.title);
-        setSlug(json.slug);
-        setDesc(json.desc);
+          setTitle(json.title);
+          setSlug(json.slug);
+          setDesc(json.desc);
 
-        const { area, asset, altText } = modal;
-        const modalWithPuzzleFields = {
-          area,
-          asset,
-          altText,
-          title: json.title,
-          slug: json.slug,
-          desc: json.desc,
-        };
-        showModal({ modal: modalWithPuzzleFields });
+          const { area, asset, altText } = modal;
+          const modalWithPuzzleFields = {
+            area,
+            asset,
+            altText,
+            title: json.title,
+            slug: json.slug,
+            desc: json.desc,
+          };
+          showModal({ modal: modalWithPuzzleFields });
+        })();
       } else {
         const modalWithPuzzleFields = {
           area: modal.area,
@@ -298,35 +304,35 @@ const Billie = styled.img`
 
 const BillieSpeech = () => {
   function handleReset() {
-    const hasLocalState = !!window.localStorage.getItem("illegalSearchGates");
+    const hasLocalState = !!huntLocalStorage.getItem("illegalSearchGates");
     const confirmed =
       !hasLocalState ||
       confirm(
         "Are you sure you want to reset The Illegal Search and lose your progress?",
       );
     if (confirmed) {
-      localStorage.setItem("haveShownSearchIntro", "true");
+      huntLocalStorage.setItem("haveShownSearchIntro", "true");
 
-      window.localStorage.removeItem("illegalSearchGates");
+      huntLocalStorage.removeItem("illegalSearchGates");
 
       document.location.reload();
     }
   }
 
   function handleGoToUnlocked() {
-    const hasLocalState = !!window.localStorage.getItem("illegalSearchGates");
+    const hasLocalState = !!huntLocalStorage.getItem("illegalSearchGates");
     const confirmed =
       !hasLocalState ||
       confirm(
         "Are you sure you want to skip to the fully-unlocked state and lose your progress?",
       );
     if (confirmed) {
-      localStorage.setItem("haveShownSearchIntro", "true");
+      huntLocalStorage.setItem("haveShownSearchIntro", "true");
 
       const illegalSearchGates =
         HUNT.rounds.find((r) => r.slug === "illegal_search")?.gates ?? [];
 
-      window.localStorage.setItem(
+      huntLocalStorage.setItem(
         "illegalSearchGates",
         illegalSearchGates.map((g) => g.id).join(","),
       );
@@ -351,21 +357,23 @@ const BillieSpeech = () => {
           feel the need to investigate other locations.{"\n\n"}Now don’t just
           stand there, team. Go find out what Papa’s hiding!
         </div>
-        <AuthorsNoteBlock style={{ marginTop: "1rem", fontSize: "24px" }}>
-          <p>
-            During the hunt, teams advanced through this round with state
-            persisted to the server. For this archival version, we save your
-            progress in-browser. You can start from the beginning, or jump to
-            the fully-unlocked state revealed after solving the second
-            metapuzzle.
-          </p>
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <Button onClick={handleReset}>Start from Beginning</Button>
-            <Button onClick={handleGoToUnlocked}>
-              Explore From After Second Metapuzzle
-            </Button>
-          </div>
-        </AuthorsNoteBlock>
+        {!archiveMode && (
+          <AuthorsNoteBlock style={{ marginTop: "1rem", fontSize: "24px" }}>
+            <p>
+              During the hunt, teams advanced through this round with state
+              persisted to the server. For this archival version, we save your
+              progress in-browser. You can start from the beginning, or jump to
+              the fully-unlocked state revealed after solving the second
+              metapuzzle.
+            </p>
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <Button onClick={handleReset}>Start from Beginning</Button>
+              <Button onClick={handleGoToUnlocked}>
+                Explore From After Second Metapuzzle
+              </Button>
+            </div>
+          </AuthorsNoteBlock>
+        )}
       </SpeechBubble>
       <Billie src={billie} alt="Billie" />
     </BillieSpeechContainer>
@@ -434,12 +442,14 @@ const Interaction = ({
   showModal,
   setNode,
   navigate,
+  teamState,
 }: {
   pluginName: string;
   node: Node;
   showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
   setNode: (node: Node) => void;
   navigate: (destId: string) => void;
+  teamState: TeamHuntState;
 }) => {
   const Component = plugins[pluginName];
 
@@ -453,15 +463,21 @@ const Interaction = ({
       showModal={showModal}
       setNode={setNode}
       navigate={navigate}
-      teamState={illegalSearchTeamState()}
+      teamState={teamState}
     />
   );
 };
 
-const SearchEngine = () => {
+const SearchEngine = ({
+  initialTeamState,
+}: {
+  initialTeamState: TeamHuntState;
+}) => {
+  const teamState = useTeamState(initialTeamState);
+
   const haveShownIntro =
-    localStorage.getItem("haveShownSearchIntro") === "true";
-  console.log(window.localStorage);
+    huntLocalStorage.getItem("haveShownSearchIntro") === "true";
+  console.log(huntLocalStorage);
   const [introModalShown, setShownIntroModal] =
     useState<boolean>(!haveShownIntro);
   const setShowIntroModal = useCallback(() => {
@@ -469,8 +485,8 @@ const SearchEngine = () => {
   }, []);
   const dismissIntroModal = useCallback(() => {
     setShownIntroModal(false);
-    localStorage.setItem("haveShownSearchIntro", "true");
-    console.log(window.localStorage);
+    huntLocalStorage.setItem("haveShownSearchIntro", "true");
+    console.log(huntLocalStorage);
   }, []);
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -673,6 +689,7 @@ const SearchEngine = () => {
         navigate={(dest) => {
           handleNavClick({ destId: dest });
         }}
+        teamState={teamState}
       />
     );
 
@@ -704,6 +721,7 @@ const SearchEngine = () => {
       </ModalBackdrop>
     );
   } else if (modalShown) {
+    const puzzleState = teamState.puzzles[modalShown.slug];
     modalOverlay = (
       <ModalBackdrop onClick={dismissModal}>
         <img
@@ -715,10 +733,10 @@ const SearchEngine = () => {
         />
         <PuzzleLinkBackdrop>
           <PuzzleLink
-            epoch={1}
-            lockState={"unlocked"}
-            answer={undefined}
-            currency={1}
+            epoch={teamState.epoch}
+            lockState={puzzleState?.locked ?? "locked"}
+            answer={puzzleState?.answer}
+            currency={teamState.currency}
             title={modalShown.title}
             slug={modalShown.slug}
             desc={modalShown.desc}

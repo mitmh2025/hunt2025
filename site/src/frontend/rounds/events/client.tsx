@@ -1,5 +1,5 @@
 import React from "react";
-import { hydrateRoot } from "react-dom/client";
+import renderRoot from "../../../utils/renderRoot";
 import useDataset from "../../client/useDataset";
 import EventsBody from "./EventsBody";
 import { type EventsState } from "./types";
@@ -15,7 +15,7 @@ if (elem) {
   const state = (window as unknown as { initialEventsState: EventsState })
     .initialEventsState;
 
-  hydrateRoot(elem, <EventsManager initialState={state} />);
+  renderRoot(elem, <EventsManager initialState={state} />);
 } else {
   console.error(
     "Could not mount EventsManager because #events-root was nowhere to be found",

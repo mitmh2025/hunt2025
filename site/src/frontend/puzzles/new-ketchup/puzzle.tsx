@@ -5,6 +5,7 @@ import RobotoMonoLight from "../../../assets/RobotoMono-Light.ttf";
 import RobotoMonoLightItalic from "../../../assets/RobotoMono-LightItalic.ttf";
 import teamIsImmutable from "../../../utils/teamIsImmutable";
 import { AuthorsNote } from "../../components/PuzzleLayout";
+import archiveMode from "../../utils/archiveMode";
 
 const Fonts = createGlobalStyle`
   @font-face {
@@ -30,7 +31,7 @@ const Fonts = createGlobalStyle`
 const Puzzle = ({ teamUsername }: { teamUsername: string }) => {
   return (
     <>
-      {teamIsImmutable(teamUsername) ? (
+      {teamIsImmutable(teamUsername) && !archiveMode ? (
         <AuthorsNote style={{ margin: "5em auto", maxWidth: "400px" }}>
           This puzzle is not currently available for the public access team. We
           are working on archival version of as much of the hunt as possible.

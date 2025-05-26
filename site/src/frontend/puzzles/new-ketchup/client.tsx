@@ -8,10 +8,12 @@ import React, {
 } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
+import { fetchPuzzleStateLog } from "../../../../lib/api/archive/log";
 import useAppendDataset from "../../client/useAppendDataset";
 import { Button } from "../../components/StyledUI";
-import rootUrl from "../../utils/rootUrl";
+import { generateCaseFile } from "./logic";
 import { type LogEntryData } from "./types";
+import { speak } from "@hunt_client/puzzles/what_do_they_call_you";
 
 const Speaker = styled.span`
   color: var(--gold-500);
@@ -142,32 +144,53 @@ const App = () => {
     [] as LogEntry[],
   );
 
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+
   const [state, setState] = useState<State>("idle");
   const [time, setTime] = useState<number>(Date.now());
   const timerHandle = useRef<number | NodeJS.Timeout | undefined>(undefined);
 
   const chatEndRef = useRef<HTMLSpanElement | null>(null);
 
+  // #!if TARGET === "client" && ARCHIVE_MODE
+
+  // When we're running in archive mode, we need to intercept the link to the
+  // case file and replace it with a data URL because it needs to be generated
+  // client-side
+  useEffect(() => {
+    if (!dialogRef.current) {
+      return;
+    }
+
+    dialogRef.current
+      .querySelectorAll<HTMLAnchorElement>("a.what-do-they-call-you-link")
+      .forEach((link) => {
+        if (!link.href.endsWith(".txt")) {
+          return;
+        }
+
+        const dossier = generateCaseFile(fetchPuzzleStateLog());
+        if (!dossier) {
+          return;
+        }
+
+        const blob = new Blob([dossier], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = "case_file.txt";
+      });
+  }, [log]);
+
+  // #!endif
+
   const isDone = log.some((entry) => !!entry.data.isDone);
   const handleTalk: MouseEventHandler<HTMLButtonElement> = useCallback(() => {
     setState("speaking");
-    fetch(`${rootUrl}/puzzles/what_do_they_call_you/speak`, {
-      method: "POST",
-      body: "{}",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          setState("idle");
-          setTime(Date.now());
-          console.log("got reply");
-        } else {
-          setState("error");
-          console.log("got error, code", res.status, res.body);
-        }
+    speak()
+      .then(() => {
+        setState("idle");
+        setTime(Date.now());
+        console.log("got reply");
       })
       .catch((err: unknown) => {
         setState("error");
@@ -214,7 +237,7 @@ const App = () => {
   return (
     <>
       <DialogBoxWrapper>
-        <DialogBox>
+        <DialogBox ref={dialogRef}>
           {INTRO.map((entry) => renderLogEntry(entry))}
           {log.map((entry) => renderLogEntry(entry))}
           <span ref={chatEndRef} />

@@ -1,21 +1,14 @@
 import { type RequestHandler, type Request, type Response } from "express";
 import { Router } from "websocket-express";
 import { z } from "zod";
-import {
-  checkGuessByUuid,
-  getOpenPuzzlesForTutorial,
-  getMinimalGroups,
-} from "./puzzle-components/SpoilerUtils";
-import {
-  TUTORIAL_COLORS,
-  TUTORIAL_SOLUTION_UUIDS,
-} from "./puzzle-components/Spoilers";
+import { computeState } from "./logic";
+import { checkGuessByUuid } from "./puzzle-components/SpoilerUtils";
 import {
   type Group,
   type MinimalGroup,
   type MinimalPuzzle,
   type Puzzle,
-  PuzzleColor,
+  type PuzzleColor,
 } from "./puzzle-components/Typedefs";
 
 type ErrorResponse = {
@@ -50,36 +43,8 @@ const stateHandler: RequestHandler<
     const { solvedUuids } = stateRequestBodySchema.parse(req.body);
     const uniqueSolvedUuids = new Set(solvedUuids);
 
-    const tutorialPuzzles = TUTORIAL_COLORS.reduce(
-      (acc: Record<PuzzleColor, MinimalPuzzle[]>, color: PuzzleColor) => {
-        acc[color] = getOpenPuzzlesForTutorial(uniqueSolvedUuids, color);
-        return acc;
-      },
-      {
-        [PuzzleColor.WHITE]: [],
-        [PuzzleColor.BLACK]: [],
-        [PuzzleColor.RED]: [],
-        [PuzzleColor.BLUE]: [],
-        [PuzzleColor.YELLOW]: [],
-        [PuzzleColor.PURPLE]: [],
-        [PuzzleColor.ORANGE]: [],
-        [PuzzleColor.CREAM]: [],
-      },
-    );
+    const responseBody = computeState(uniqueSolvedUuids);
 
-    const numValidTutorialSolutionUuids = solvedUuids.filter((uuid) =>
-      TUTORIAL_SOLUTION_UUIDS.has(uuid),
-    ).length;
-    const showGroups =
-      numValidTutorialSolutionUuids >=
-      Math.floor(TUTORIAL_SOLUTION_UUIDS.size / 2);
-
-    const responseBody: StateResponseBody = {
-      tutorialPuzzles,
-    };
-    if (showGroups) {
-      responseBody.puzzleGroups = getMinimalGroups(uniqueSolvedUuids);
-    }
     res.status(200).json(responseBody);
   } catch (error) {
     res.status(400).json({ error: "Invalid Inputs" });

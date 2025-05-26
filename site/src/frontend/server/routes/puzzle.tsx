@@ -14,6 +14,8 @@ import {
   SolutionHintTable,
   SolutionCannedResponseTable,
 } from "../../components/SolutionLayout";
+import { interactionLinkState } from "../../interaction_link";
+import InteractionLink from "../../interaction_link/InteractionLink";
 import { PUZZLES, SUBPUZZLES } from "../../puzzles";
 import { NODE_IDS_BY_PUZZLE_SLUG } from "../../rounds/illegal_search/graph";
 import { missingDiamondState } from "../../rounds/missing_diamond";
@@ -373,6 +375,31 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     );
   }
 
+  const isMeta = Object.entries(
+    req.teamState.state.rounds[req.teamState.state.puzzles[slug]?.round ?? ""]
+      ?.slots ?? {},
+  ).some(([, slot]) => {
+    return slot.slug === slug && slot.is_meta;
+  });
+  let interactionLinkFrag = <></>;
+  if (isMeta) {
+    const initialInteractionLinkState = interactionLinkState(
+      req.teamState.state,
+    );
+    const inlineScript = `window.initialInteractionLinkState = ${JSON.stringify(initialInteractionLinkState)};`;
+    interactionLinkFrag = (
+      <>
+        <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
+        <div id="interaction-link-root">
+          <InteractionLink
+            slug={slug}
+            interactionLinkState={initialInteractionLinkState}
+          />
+        </div>
+      </>
+    );
+  }
+
   // TODO: Use round-specific puzzle page layout for result.body.round.  For
   // outlands puzzles, the layout may depend on round and puzzle visibility.
 
@@ -393,6 +420,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     "puzzle" as const,
     ...(manifest.entrypoint ? [manifest.entrypoint] : []),
     ...(content.entrypoint ? [content.entrypoint] : []),
+    ...(isMeta ? ["interaction_link" as const] : []),
   ];
 
   const PuzzleWrapperComponent = manifest.wrapper;
@@ -428,7 +456,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     }
     const backlinkChildren = `← Back to ${backlinkRoundTitle}`;
     backlinkFrag = (
-      <PuzzleBacklinkComponent href={backlinkHref}>
+      <PuzzleBacklinkComponent data-round-backlink="true" href={backlinkHref}>
         {backlinkChildren}
       </PuzzleBacklinkComponent>
     );
@@ -454,6 +482,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           data-copyable={content.copyable ? "true" : undefined}
         >
           {puzzleStateFrag}
+          {interactionLinkFrag}
           <ContentComponent
             type="puzzle"
             teamName={req.teamState.info.teamName}
@@ -745,7 +774,9 @@ export function solutionHandler(req: Request<PuzzleParams>) {
       node,
       entrypoints,
       title: `Solution for ${title}`,
-      extraHeadElements: [<meta name="robots" content="noindex" />],
+      extraHeadElements: [
+        <meta key="noindex" name="robots" content="noindex" />,
+      ],
     },
     req.teamState,
   );

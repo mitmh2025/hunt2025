@@ -5,7 +5,14 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import { AuthorsNote } from "../../components/PuzzleLayout";
-import { DATA, HAS_STORAGE, LOCAL_STORAGE_PREFIX } from "./Constants";
+import PrefixedLocalStorage from "../../utils/PrefixedLocalStorage";
+import huntLocalStorage from "../../utils/huntLocalStorage";
+import { DATA, LOCAL_STORAGE_PREFIX } from "./Constants";
+
+const puzzleStorage = new PrefixedLocalStorage(
+  LOCAL_STORAGE_PREFIX,
+  () => huntLocalStorage,
+);
 
 const StyledContainer = styled.div`
   border: 3px solid var(--black);
@@ -169,8 +176,8 @@ function handle_correct_submission(
       }
     }
   }
-  localStorage.setItem(`${LOCAL_STORAGE_PREFIX}-state`, JSON.stringify(state));
-  localStorage.setItem(`${LOCAL_STORAGE_PREFIX}-version`, puzzle.version);
+  puzzleStorage.setItem("state", JSON.stringify(state));
+  puzzleStorage.setItem("version", puzzle.version);
 }
 
 function check_submission(
@@ -200,24 +207,11 @@ function check_submission(
 
 function setup(puzzle: Puzzle, presentation: Presentation): State {
   let stored_state: State;
-  const serialized_state = localStorage.getItem(
-    `${LOCAL_STORAGE_PREFIX}-state`,
-  );
+  const serialized_state = puzzleStorage.getItem("state");
   if (serialized_state !== null) {
     stored_state = JSON.parse(serialized_state) as State;
-    if (
-      puzzle.version !== localStorage.getItem(`${LOCAL_STORAGE_PREFIX}-version`)
-    ) {
-      const itemsToRemove: string[] = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key?.startsWith(LOCAL_STORAGE_PREFIX)) {
-          itemsToRemove.push(key);
-        }
-      }
-      for (const item of itemsToRemove) {
-        localStorage.removeItem(item);
-      }
+    if (puzzle.version !== puzzleStorage.getItem("version")) {
+      puzzleStorage.clear();
       stored_state = default_state();
     }
   } else {
@@ -307,18 +301,7 @@ const App = () => {
                 "Are you sure you want to reset the state of this puzzle?",
               )
             ) {
-              if (HAS_STORAGE) {
-                const itemsToRemove: string[] = [];
-                for (let i = 0; i < localStorage.length; i++) {
-                  const key = localStorage.key(i);
-                  if (key?.startsWith(LOCAL_STORAGE_PREFIX)) {
-                    itemsToRemove.push(key);
-                  }
-                }
-                for (const item of itemsToRemove) {
-                  localStorage.removeItem(item);
-                }
-              }
+              puzzleStorage.clear();
               reset();
             }
           }}

@@ -8,4 +8,5 @@ export type StrayLead = {
 export type StrayLeadsState = {
   epoch: number;
   leads: StrayLead[];
+  reserveNote?: boolean;
 };

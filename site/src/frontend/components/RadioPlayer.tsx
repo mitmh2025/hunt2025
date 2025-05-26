@@ -1,13 +1,14 @@
 import React, {
-  type Reducer,
   useCallback,
   useEffect,
   useReducer,
   useRef,
+  type Reducer,
 } from "react";
 import { styled } from "styled-components";
 import { WebRTCClient } from "../utils/WebRTCClient";
 import { deviceMax } from "../utils/breakpoints";
+import huntLocalStorage from "../utils/huntLocalStorage";
 import { PageHeader, PageMain, PageTitle, PageWrapper } from "./PageLayout";
 import { Button } from "./StyledUI";
 import radioPlayImg from "./radioPlayerAssets/radio-render-play.png";
@@ -385,7 +386,7 @@ const RadioPlayer = ({ whepUrl }: { whepUrl: string }) => {
   );
 
   useEffect(() => {
-    const storedVolume = localStorage.getItem("volume");
+    const storedVolume = huntLocalStorage.getItem("volume");
     if (!storedVolume) {
       return;
     }
@@ -437,7 +438,7 @@ const RadioPlayer = ({ whepUrl }: { whepUrl: string }) => {
   function handleVolumeChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newVolume = parseFloat(event.target.value);
     dispatch({ type: AudioControlActionType.CHANGE_VOLUME, volume: newVolume });
-    localStorage.setItem("volume", newVolume.toString());
+    huntLocalStorage.setItem("volume", newVolume.toString());
   }
 
   useEffect(() => {

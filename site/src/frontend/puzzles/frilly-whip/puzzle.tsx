@@ -1,25 +1,10 @@
 import React from "react";
-import { type TeamHuntState } from "../../../../lib/api/client";
 import LinkedImage from "../../components/LinkedImage";
-import { InteractionLinkBlock } from "../../components/PuzzleLayout";
-import rootUrl from "../../utils/rootUrl";
 import ferdinand from "./assets/Ferdinand.png";
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
-  const interactionState =
-    teamState.rounds.background_check?.interactions?.confront_carter?.state;
-
+const Puzzle = () => {
   return (
     <>
-      {interactionState !== undefined ? (
-        <InteractionLinkBlock>
-          Unlocked interaction:{" "}
-          <a href={`${rootUrl}/interactions/confront_carter`}>
-            Confront Carter
-          </a>
-        </InteractionLinkBlock>
-      ) : null}
-
       <p className="puzzle-flavor">
         Forget everything we’ve read and focus on using what we’ve actually
         learned — the story of his past will not console the victims of his

@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import note_svg from "../../rounds/illegal_search/assets/bookcase/note_modal.svg";
-import { BookcaseInteraction } from "../../rounds/illegal_search/client/Bookcase";
+import BookcaseInteraction from "../../rounds/illegal_search/client/BookcaseInteraction";
 
 const SideBySide = styled.div`
   display: flex;

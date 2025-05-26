@@ -142,6 +142,23 @@ export function indexHandler() {
 
           <h2>Extras</h2>
 
+          <p>
+            The <a href="hunt/">Hunt website</a> allows you to re-play the 2025
+            MIT Mystery Hunt with an in-browser re-implementation of the Hunt’s
+            unlock structure. Experience the Hunt as teams did, or skip to the
+            end to see all of the puzzles and content. We’ve also made at least
+            minor — and occasionally significant — modifications to nearly 25%
+            of the puzzles and interactions. We believe this should allow you to
+            solve (or, in a few cases, at least experience) those puzzles which
+            previously required physical components, in-person elements, or live
+            staffing.
+          </p>
+
+          <p>
+            Outside of the Hunt website, we also have a few pages of bonus
+            content, analysis, and behind-the-scenes coverage:
+          </p>
+
           <ul>
             <li>
               <a href="extras/radio">Radio</a>: Design, schematics, and firmware

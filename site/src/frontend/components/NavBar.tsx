@@ -4,6 +4,7 @@ import { type SocketState } from "../../../lib/SocketManager";
 import connectedIcon from "../../assets/connected-icon.svg";
 import disconnectedIcon from "../../assets/disconnected-icon.svg";
 import diamondIcon from "../../assets/logo.svg";
+import upLeftArrow from "../../assets/up-left-arrow.svg";
 import { type TeamVirtualInteractionsState } from "../interactions/types";
 import type { EventsState } from "../rounds/events/types";
 import archiveMode from "../utils/archiveMode";
@@ -41,7 +42,8 @@ const NavItems = styled.ul`
     justify-content: center;
   }
 
-  > li:first-child {
+  > .nav-brand {
+    display: flex;
     margin-left: -1rem;
 
     a {
@@ -69,12 +71,9 @@ const NavItems = styled.ul`
       padding: 0 1rem;
     }
 
-    > li:first-child {
+    > .nav-brand {
       margin-left: -2rem;
-
-      a {
-        padding: 0 2rem;
-      }
+      padding: 0 1rem;
     }
 
     > li:last-child {
@@ -320,21 +319,40 @@ const NavBar = ({
   return (
     <Nav>
       <NavItems>
-        <li>
-          <NavLink href={`${rootUrl}/`} id="home-md">
-            <img
-              className="photo"
-              src={diamondIcon}
-              alt="The Case of the Shadow Diamond: Home"
-              title="Home"
-            />
-          </NavLink>
-        </li>
+        <div className="nav-brand">
+          {archiveMode && (
+            <li>
+              <NavLink href="/2025/" id="home-md">
+                <img
+                  className="photo"
+                  src={upLeftArrow}
+                  alt="2025 MIT Mystery Hunt Landing Page"
+                  title="Back to the Archives"
+                />
+              </NavLink>
+            </li>
+          )}
+          <li>
+            <NavLink href={`${rootUrl}/`} id="home-md">
+              <img
+                className="photo"
+                src={diamondIcon}
+                alt="The Case of the Shadow Diamond: Home"
+                title="Home"
+              />
+            </NavLink>
+          </li>
+        </div>
         <TopLevelDropdown>
           <NavLink id="menu-md" tabIndex={0}>
             Menu
           </NavLink>
           <ul>
+            {archiveMode && (
+              <li id="home-sm">
+                <NavLink href="/2025/">Back to the Archives</NavLink>
+              </li>
+            )}
             <li id="home-sm">
               <NavLink href={`${rootUrl}/`}>Home</NavLink>
             </li>
@@ -447,20 +465,26 @@ const NavBar = ({
             )}
           </ul>
         </Dropdown>
-        <ConnectionState>
-          <img
-            style={{ display: socketState === "connected" ? "inline" : "none" }}
-            src={connectedIcon}
-            alt={connectionStateLabels.connected}
-            title={connectionStateLabels.connected}
-          />
-          <img
-            style={{ display: socketState !== "connected" ? "inline" : "none" }}
-            src={disconnectedIcon}
-            alt={connectionStateLabels[socketState]}
-            title={connectionStateLabels[socketState]}
-          />
-        </ConnectionState>
+        {!archiveMode && (
+          <ConnectionState>
+            <img
+              style={{
+                display: socketState === "connected" ? "inline" : "none",
+              }}
+              src={connectedIcon}
+              alt={connectionStateLabels.connected}
+              title={connectionStateLabels.connected}
+            />
+            <img
+              style={{
+                display: socketState !== "connected" ? "inline" : "none",
+              }}
+              src={disconnectedIcon}
+              alt={connectionStateLabels[socketState]}
+              title={connectionStateLabels[socketState]}
+            />
+          </ConnectionState>
+        )}
       </NavItems>
       <ExchangeClueModal
         ref={exchangeModalRef}

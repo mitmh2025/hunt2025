@@ -1,3 +1,5 @@
+import rootUrl from "../../utils/rootUrl";
+
 export const PUZZLE_ANSWER = "LITTLETOM";
 
 export type Line = {
@@ -29,7 +31,7 @@ export const Ending: Person = {
       line: "The agent stands up and smiles as the guards push you in and close the door.",
     },
     {
-      line: "Well well well! You’ve made it here -- congratulations! We’ve been tracking your snooping this whole time. Look -- we have a case file of all the aliases and disguises you’ve used in this little adventure: <a class='what-do-they-call-you-link' href='/puzzles/what_do_they_call_you/case_file.txt'>case_file.txt</a>",
+      line: `Well well well! You’ve made it here -- congratulations! We’ve been tracking your snooping this whole time. Look -- we have a case file of all the aliases and disguises you’ve used in this little adventure: <a class='what-do-they-call-you-link' href='${rootUrl}/puzzles/what_do_they_call_you/case_file.txt'>case_file.txt</a>`,
       speaker: AGENT_NAME,
     },
     {

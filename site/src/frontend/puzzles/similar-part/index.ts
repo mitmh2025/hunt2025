@@ -88,7 +88,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["TAKE OUT FINGERPAINTS MAKE UP ALTERNATE STOLEN DIAMOND HISTORY"],
       reply:
-        "Yes, please do that! We will only accept in-person submissions physically painted with a team member’s fingers, turned in at the bar. Please do NOT include any bodily fluids, you filthy monsters.",
+        "Yes, please do that! We will only accept in-person submissions physically painted with a team member’s fingers, turned in at the bar. Please do NOT include any bodily fluids, you filthy monsters.\n\nDuring Mystery Hunt, teams who followed these instructions and provided us with a work of art (or at least “art”) were rewarded with the final answer to this puzzle: FUR COAT.",
     },
   ],
 };

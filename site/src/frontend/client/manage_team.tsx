@@ -1,6 +1,6 @@
 import React from "react";
-import { hydrateRoot } from "react-dom/client";
 import { type TeamRegistrationState } from "../../../lib/api/contract";
+import renderRoot from "../../utils/renderRoot";
 import TeamManager from "../components/TeamManager";
 import useDataset from "./useDataset";
 
@@ -22,7 +22,7 @@ if (manageTeamElem) {
   const initialRegistration = (
     window as unknown as { initialRegistration: TeamRegistrationState }
   ).initialRegistration;
-  hydrateRoot(
+  renderRoot(
     manageTeamElem,
     <ManageTeam initialRegistration={initialRegistration} />,
   );

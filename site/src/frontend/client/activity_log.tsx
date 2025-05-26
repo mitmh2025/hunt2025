@@ -1,6 +1,6 @@
 import React from "react";
-import { hydrateRoot } from "react-dom/client";
 import { type ActivityLogEntry } from "../../../lib/api/client";
+import renderRoot from "../../utils/renderRoot";
 import ActivityLog from "../components/ActivityLog";
 import useAppendDataset from "./useAppendDataset";
 
@@ -18,7 +18,7 @@ if (activityLogElem) {
   const initialActivityLogState = (
     window as unknown as { initialActivityLog: ActivityLogEntry[] }
   ).initialActivityLog;
-  hydrateRoot(
+  renderRoot(
     activityLogElem,
     <ActivityLogManager initialState={initialActivityLogState} />,
   );

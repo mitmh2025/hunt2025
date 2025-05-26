@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import DevPane from "../components/DevPane";
 import { type DevtoolsState } from "../server/devtools";
+import huntLocalStorage from "../utils/huntLocalStorage";
 import useDataset from "./useDataset";
 
 const DevPaneContainer = styled.div`
@@ -34,7 +35,7 @@ const initialState: DevtoolsState = { epoch: -1 };
 const DevtoolsManager = () => {
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     if (HAS_STORAGE) {
-      const value = localStorage.getItem(COLLAPSED_KEY);
+      const value = huntLocalStorage.getItem(COLLAPSED_KEY);
       if (value !== null) {
         return value === "true" ? true : false;
       }
@@ -46,7 +47,7 @@ const DevtoolsManager = () => {
   }, []);
   useEffect(() => {
     if (HAS_STORAGE) {
-      localStorage.setItem(COLLAPSED_KEY, collapsed ? "true" : "false");
+      huntLocalStorage.setItem(COLLAPSED_KEY, collapsed ? "true" : "false");
     }
   }, [collapsed]);
 

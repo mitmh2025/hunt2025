@@ -1,5 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
+import { AuthorsNote, AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import "./assets/waypoint0.opus";
 import "./assets/waypoint1.opus";
 import "./assets/waypoint10.opus";
@@ -29,14 +31,6 @@ import "./assets/waypoint6.opus";
 import "./assets/waypoint7.opus";
 import "./assets/waypoint8.opus";
 import "./assets/waypoint9.opus";
-import type { TeamHuntState } from "../../../../lib/api/client";
-import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
-import {
-  AuthorsNote,
-  AuthorsNoteBlock,
-  InteractionLinkBlock,
-} from "../../components/PuzzleLayout";
-import rootUrl from "../../utils/rootUrl";
 
 const Note = styled.p`
   margin: 0 2em;
@@ -44,21 +38,9 @@ const Note = styled.p`
   font-family: "Reenie Beanie";
 `;
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
-  const interactionState =
-    teamState.rounds.missing_diamond?.interactions?.the_crime_scene?.state;
-
+const Puzzle = () => {
   return (
     <>
-      {interactionState !== undefined ? (
-        <InteractionLinkBlock>
-          Unlocked interaction:{" "}
-          <a href={`${rootUrl}/interactions/the_crime_scene`}>
-            The Crime Scene
-          </a>
-        </InteractionLinkBlock>
-      ) : null}
-
       <p className="puzzle-flavor">We need to speak with Billie right away.</p>
 
       <AuthorsNoteBlock>

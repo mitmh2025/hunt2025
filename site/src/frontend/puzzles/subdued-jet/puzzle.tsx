@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { type TeamHuntState } from "../../../../lib/api/client";
-import { InteractionLinkBlock } from "../../components/PuzzleLayout";
 import { Errata } from "../../components/StyledUI";
-import rootUrl from "../../utils/rootUrl";
 
 const CenteredList = styled.ul`
   width: 100%;
@@ -11,21 +8,9 @@ const CenteredList = styled.ul`
   list-style-type: none;
 `;
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
-  const interactionState =
-    teamState.rounds.paper_trail?.interactions?.confront_gladys?.state;
-
+const Puzzle = () => {
   return (
     <>
-      {interactionState !== undefined ? (
-        <InteractionLinkBlock>
-          Unlocked interaction:{" "}
-          <a href={`${rootUrl}/interactions/confront_gladys`}>
-            Confront Gladys
-          </a>
-        </InteractionLinkBlock>
-      ) : null}
-
       <Errata
         errata={[
           {

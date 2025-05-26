@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
-import rootUrl from "../../utils/rootUrl";
 import { type Outputs, type Color, Display } from "./shared";
+import { getLights } from "@hunt_client/puzzles/follow_the_rules";
 
 type NineNumberArray = [
   number,
@@ -191,39 +191,20 @@ const App = () => {
     // Only pay attention to the latest request.
     const requestId = crypto.getRandomValues(new Uint8Array(16));
     activeRequest.current = requestId;
-    fetch(`${rootUrl}/puzzles/follow_the_rules/lights`, {
-      method: "POST",
-      body: JSON.stringify({ inputs }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    }).then(
-      async (result) => {
-        if (activeRequest.current === requestId) {
-          if (result.ok) {
-            // show result
-            const json = (await result.json()) as {
-              outputs: Outputs;
-              additionalText?: string;
-            };
-            setOutputs(json.outputs);
-            setAdditionalText(json.additionalText);
-            setLoading("idle");
-          } else {
-            console.log("fetch failed :(");
-            setLoading("error");
-          }
-        } else {
-          console.log("ignoring response to stale request");
-        }
-      },
-      (rejectReason: unknown) => {
-        console.error(rejectReason);
-        setLoading("error");
-      },
-    );
     setLoading("loading");
+    void (async () => {
+      try {
+        const { outputs, additionalText } = await getLights(inputs);
+        if (activeRequest.current === requestId) {
+          setOutputs(outputs);
+          setAdditionalText(additionalText);
+          setLoading("idle");
+        }
+      } catch (error: unknown) {
+        console.log("fetch failed :(");
+        setLoading("error");
+      }
+    })();
   }, [inputs]);
 
   const displayOutputs = outputs.slice(0, 9) as NineNumberArray;

@@ -9,6 +9,7 @@ import {
 import { type TeamInfoIntermediate } from "../../api/logic";
 import { navBarState } from "../components/ContentWithNavBar";
 import { hubState } from "../hub";
+import { interactionLinkState } from "../interaction_link";
 import virtualInteractionState from "../interactions/virtualInteractionState";
 import { backgroundCheckState } from "../rounds/background_check";
 import { eventsState } from "../rounds/events";
@@ -192,5 +193,9 @@ export const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   virtual_interaction_state: {
     type: "team_state",
     callback: virtualInteractionState,
+  },
+  interaction_link_state: {
+    type: "team_state",
+    callback: interactionLinkState,
   },
 };

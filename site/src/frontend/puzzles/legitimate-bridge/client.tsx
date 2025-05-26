@@ -1,26 +1,21 @@
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
-import rootUrl from "../../utils/rootUrl";
 import GroupViewer from "./puzzle-components/GroupViewer";
 import PanelViewer from "./puzzle-components/PanelViewer";
-import {
-  HAS_STORAGE,
-  LOCAL_STORAGE_PREFIX,
-  TUTORIAL_COLORS,
-} from "./puzzle-components/PuzzleConstants";
+import { TUTORIAL_COLORS } from "./puzzle-components/PuzzleConstants";
 import Square from "./puzzle-components/Square";
 import {
+  NonPuzzleColor,
   type Group,
   type MinimalGroup,
-  type MinimalPuzzle,
-  NonPuzzleColor,
-  type Puzzle,
   type PuzzleColor,
 } from "./puzzle-components/Typedefs";
+import { puzzleStorage } from "./puzzle-components/Util";
 import usePuzzleState, {
   PuzzleActionType,
 } from "./puzzle-components/usePuzzleState";
+import { getState, makeGuess } from "@hunt_client/puzzles/jargon";
 
 const Wrapper = styled.div`
   font-family: "Jargon";
@@ -54,26 +49,13 @@ const App = (): JSX.Element => {
   ] = usePuzzleState();
 
   useEffect(() => {
-    fetch(`${rootUrl}/puzzles/jargon/state`, {
-      method: "POST",
-      body: JSON.stringify({ solvedUuids: [...solvedUuids] }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    }).then(
-      async (response) => {
-        if (response.ok) {
-          const { tutorialPuzzles, puzzleGroups } = (await response.json()) as {
-            tutorialPuzzles: Record<PuzzleColor, (MinimalPuzzle | Puzzle)[]>;
-            puzzleGroups?: (Group | MinimalGroup)[];
-          };
-          dispatch({
-            type: PuzzleActionType.REFRESH_STATE,
-            tutorialPuzzles: tutorialPuzzles,
-            puzzleGroups: puzzleGroups,
-          });
-        }
+    getState(solvedUuids).then(
+      ({ tutorialPuzzles, puzzleGroups }) => {
+        dispatch({
+          type: PuzzleActionType.REFRESH_STATE,
+          tutorialPuzzles: tutorialPuzzles,
+          puzzleGroups: puzzleGroups,
+        });
       },
       (rejectionReason) => {
         console.log("request failed", rejectionReason);
@@ -93,26 +75,11 @@ const App = (): JSX.Element => {
       correctCallback: () => void;
       incorrectCallback: (value: string) => void;
     }) => {
-      fetch(`${rootUrl}/puzzles/jargon/puzzle/${uuid}`, {
-        method: "POST",
-        body: JSON.stringify({ guess }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }).then(
-        async (response) => {
-          const { solutionUuid } = (await response.json()) as {
-            solutionUuid?: string;
-          };
+      makeGuess({ uuid, guess }).then(
+        ({ solutionUuid }) => {
           if (solutionUuid) {
             correctCallback();
-            if (HAS_STORAGE) {
-              localStorage.setItem(
-                `${LOCAL_STORAGE_PREFIX}${solutionUuid}`,
-                "true",
-              );
-            }
+            puzzleStorage.setItem(solutionUuid, "true");
             dispatch({
               type: PuzzleActionType.SET_SOLVED,
               solutionUuid,
@@ -150,18 +117,7 @@ const App = (): JSX.Element => {
   );
 
   function reset(): void {
-    if (HAS_STORAGE) {
-      const itemsToRemove: string[] = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key?.startsWith(LOCAL_STORAGE_PREFIX)) {
-          itemsToRemove.push(key);
-        }
-      }
-      for (const item of itemsToRemove) {
-        localStorage.removeItem(item);
-      }
-    }
+    puzzleStorage.clear();
     dispatch({
       type: PuzzleActionType.RESET_STATE,
     });

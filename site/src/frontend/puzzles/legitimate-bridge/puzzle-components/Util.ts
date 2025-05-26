@@ -1,3 +1,5 @@
+import PrefixedLocalStorage from "../../../utils/PrefixedLocalStorage";
+import huntLocalStorage from "../../../utils/huntLocalStorage";
 import { LOCAL_STORAGE_PREFIX } from "./PuzzleConstants";
 import type {
   Group,
@@ -6,6 +8,11 @@ import type {
   MinimalSubgroup,
   Subgroup,
 } from "./Typedefs";
+
+export const puzzleStorage = new PrefixedLocalStorage(
+  LOCAL_STORAGE_PREFIX,
+  () => huntLocalStorage,
+);
 
 export function reduceSubgroupsById<TValue>(
   groups: (Group | MinimalGroup)[],
@@ -45,12 +52,5 @@ export function reduceGroupPuzzlesById<TValue>(
 }
 
 export function getSolvedUuids(): Set<string> {
-  const solvedUuids = new Set<string>();
-  for (let i = 0; i < localStorage.length; i++) {
-    const item = localStorage.key(i);
-    if (item?.startsWith(LOCAL_STORAGE_PREFIX)) {
-      solvedUuids.add(item.replace(LOCAL_STORAGE_PREFIX, ""));
-    }
-  }
-  return solvedUuids;
+  return new Set(puzzleStorage.keys);
 }

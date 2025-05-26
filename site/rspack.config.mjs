@@ -79,6 +79,18 @@ fs.readdirSync(radioAssetDir).forEach((f) => {
   }
 });
 
+const assetResourceGenerator = {
+  filename: (pathData, _assetInfo) => {
+    // console.log("pathData", pathData);
+    // console.log("assetInfo", _assetInfo);
+    if (PRESERVE_FILENAME_ASSET_PATHS.indexOf(pathData.filename) !== -1) {
+      const basename = path.basename(pathData.filename);
+      return `static/[hash]/${basename}`;
+    }
+    return `static/[hash][ext]`;
+  },
+};
+
 class RadioManifestPlugin {
   constructor(opts) {
     if (!opts.fileName || !opts.staticOutputPath) {
@@ -461,19 +473,7 @@ export default function createConfigs(_env, argv) {
     },
     module: {
       generator: {
-        "asset/resource": {
-          filename: (pathData, _assetInfo) => {
-            // console.log("pathData", pathData);
-            // console.log("assetInfo", _assetInfo);
-            if (
-              PRESERVE_FILENAME_ASSET_PATHS.indexOf(pathData.filename) !== -1
-            ) {
-              const basename = path.basename(pathData.filename);
-              return `static/[hash]/${basename}`;
-            }
-            return `static/[hash][ext]`;
-          },
-        },
+        "asset/resource": assetResourceGenerator,
       },
       rules: [
         {
@@ -483,7 +483,18 @@ export default function createConfigs(_env, argv) {
         },
         {
           test: /\.m?[jt]sx?$/,
-          use: swcLoader,
+          use: [
+            swcLoader,
+            {
+              loader: "webpack-preprocessor-loader",
+              options: {
+                params: {
+                  TARGET: "server",
+                  ARCHIVE_MODE: process.env.ARCHIVE_MODE !== undefined,
+                },
+              },
+            },
+          ],
         },
         ...assetRules,
       ],
@@ -494,6 +505,9 @@ export default function createConfigs(_env, argv) {
       extensionAlias: {
         ".js": [".ts", ".js"],
         ".mjs": [".mts", ".mjs"],
+      },
+      alias: {
+        "@hunt_client": path.join(currentDirname, "lib/api/production"),
       },
     },
     externalsPresets: { node: true },
@@ -544,7 +558,9 @@ export default function createConfigs(_env, argv) {
       solution: "./src/frontend/client/solution.tsx",
       hints: "./src/frontend/client/hints.tsx",
       virtual_radio: "./src/frontend/client/virtual_radio.tsx",
+      interaction_link: "./src/frontend/interaction_link/client.tsx",
 
+      archive_flash_prevention: "./src/frontend/archives/flash_prevention.ts",
       archive_stats: "./src/frontend/archives/stats/client.tsx",
       archive_puzzle_stats: "./src/frontend/archives/stats/puzzle_client.tsx",
       archive_radio: "./src/frontend/archives/radio/client.tsx",
@@ -612,6 +628,9 @@ export default function createConfigs(_env, argv) {
     },
     devtool: dev ? "source-map" : false,
     module: {
+      generator: {
+        "asset/resource": assetResourceGenerator,
+      },
       rules: [
         {
           test: /\.m?tsx?$/,
@@ -639,6 +658,13 @@ export default function createConfigs(_env, argv) {
         ".mjs": [".mts", ".mjs"],
       },
       modules: [path.join(currentDirname, "node_modules")],
+      alias: {
+        "@hunt_client": path.join(
+          currentDirname,
+          "lib/api",
+          process.env.ARCHIVE_MODE !== undefined ? "archive" : "production",
+        ),
+      },
     },
     optimization: {
       runtimeChunk: "single",
@@ -720,7 +746,18 @@ export default function createConfigs(_env, argv) {
         {
           test: /\.m?tsx?$/,
           exclude: /(node_modules)/,
-          use: [swcLoader],
+          use: [
+            swcLoader,
+            {
+              loader: "webpack-preprocessor-loader",
+              options: {
+                params: {
+                  TARGET: "worker",
+                  ARCHIVE_MODE: process.env.ARCHIVE_MODE !== undefined,
+                },
+              },
+            },
+          ],
         },
       ],
     },

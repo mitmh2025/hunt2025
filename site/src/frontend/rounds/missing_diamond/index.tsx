@@ -1,6 +1,6 @@
 import React from "react";
 import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
-import teamIsImmutable from "../../../utils/teamIsImmutable";
+import { teamIsImmutableForSSR } from "../../../utils/teamIsImmutable";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 import MissingDiamondBody from "./MissingDiamondBody";
@@ -1046,12 +1046,13 @@ function genWitnesses(
     const puzzleDefinition = PUZZLES[slug];
     const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slotId}`;
 
+    const showAsSolved = !!puzzleState.answer || immutable;
+
     return [
       {
         alt: witness.alt,
         pos: witness.pos,
-        asset:
-          witness.asset[!!puzzleState.answer || immutable ? "solved" : state],
+        asset: witness.asset[showAsSolved ? "solved" : state],
         puzzle: {
           title,
           slug,
@@ -1059,8 +1060,7 @@ function genWitnesses(
           state,
           answer: puzzleState.answer,
         },
-        statement:
-          !!puzzleState.answer || immutable ? witness.statement : undefined,
+        statement: showAsSolved ? witness.statement : undefined,
       },
     ];
   });
@@ -1095,7 +1095,7 @@ export function missingDiamondState(
   teamState: TeamHuntState,
   { username }: { username: string },
 ): MissingDiamondState {
-  const immutable = teamIsImmutable(username);
+  const immutable = teamIsImmutableForSSR(username);
 
   const speechBubbles = genSpeechBubbles(teamState);
   const locations = genLocations(teamState);

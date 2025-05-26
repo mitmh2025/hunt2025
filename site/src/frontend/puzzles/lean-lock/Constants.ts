@@ -1,5 +1,4 @@
 export const LOCAL_STORAGE_PREFIX = "CHARGED_";
-export const HAS_STORAGE = typeof Storage !== "undefined";
 
 //prettier-ignore
 export const DATA: {

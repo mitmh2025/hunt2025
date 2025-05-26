@@ -11,6 +11,7 @@ import { createPortal } from "react-dom";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
 import PuzzleLink from "../../../components/PuzzleLink";
+import huntLocalStorage from "../../../utils/huntLocalStorage";
 import blacklight_off from "../assets/blacklight/blacklight_off.svg";
 import blacklight_on from "../assets/blacklight/blacklight_on.svg";
 import {
@@ -71,26 +72,31 @@ function ExtraModalTrigger({
       if (postCode !== undefined && title === undefined && slug === undefined) {
         console.log("POSTing extra code", postCode);
 
-        const json = fetchModal(postCode);
-        setTitle(json.title);
-        setSlug(json.slug);
-        setDesc(json.desc);
+        fetchModal(postCode)
+          .then((json) => {
+            setTitle(json.title);
+            setSlug(json.slug);
+            setDesc(json.desc);
 
-        const modalWithExtraPuzzleFields = {
-          area: modal.area,
-          asset: modal.asset,
-          altText: modal.altText,
-          extra: modal.extra
-            ? {
-                asset: modal.extra.asset,
-                altText: modal.extra.altText,
-                title: json.title,
-                slug: json.slug,
-                desc: json.desc,
-              }
-            : undefined,
-        };
-        showModal({ modal: modalWithExtraPuzzleFields });
+            const modalWithExtraPuzzleFields = {
+              area: modal.area,
+              asset: modal.asset,
+              altText: modal.altText,
+              extra: modal.extra
+                ? {
+                    asset: modal.extra.asset,
+                    altText: modal.extra.altText,
+                    title: json.title,
+                    slug: json.slug,
+                    desc: json.desc,
+                  }
+                : undefined,
+            };
+            showModal({ modal: modalWithExtraPuzzleFields });
+          })
+          .catch(() => {
+            console.log("unexpected error");
+          });
       } else if (title && slug) {
         const modalWithExtraPuzzleFields = {
           area: modal.area,
@@ -295,11 +301,11 @@ export default function Extra({
   >(undefined);
 
   const [active, setActive] = useState(
-    localStorage.getItem("flashlightOn") === "true",
+    huntLocalStorage.getItem("flashlightOn") === "true",
   );
   const toggleActive = useCallback(() => {
     setActive((active) => {
-      localStorage.setItem("flashlightOn", (!active).toString());
+      huntLocalStorage.setItem("flashlightOn", (!active).toString());
       return !active;
     });
   }, []);
@@ -394,6 +400,7 @@ export default function Extra({
   // Render blacklight modal if it's been triggered
   let modalOverlay = undefined;
   if (modalShown && modalShown.extra) {
+    const puzzleState = teamState.puzzles[modalShown.extra.slug];
     modalOverlay = (
       <ModalBackdrop onClick={dismissModal}>
         <div style={{ position: "relative" }}>
@@ -419,9 +426,9 @@ export default function Extra({
 
         <PuzzleLinkBackdrop>
           <PuzzleLink
-            epoch={1}
-            lockState={"unlocked"}
-            answer={undefined}
+            epoch={teamState.epoch}
+            lockState={puzzleState?.locked ?? "locked"}
+            answer={puzzleState?.answer}
             currency={teamState.currency}
             title={modalShown.extra.title}
             slug={modalShown.extra.slug}

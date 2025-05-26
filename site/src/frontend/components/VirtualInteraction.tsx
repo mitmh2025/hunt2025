@@ -33,6 +33,7 @@ import { Button } from "./StyledUI";
 import BalloonPop from "./minigames/BalloonPop";
 import LuckyDuck from "./minigames/LuckyDuck";
 import Skeeball from "./minigames/Skeeball";
+import { completeInteraction } from "@hunt_client/interactions";
 
 type Rewards = Record<string, { asset: string; description: string }>;
 
@@ -761,6 +762,13 @@ function VirtualInteractionStateManager<
           );
           if (nextExternalNode) {
             setNodes((prev) => [...prev, nextExternalNode]);
+          }
+
+          if (nextExternalNode?.result) {
+            const { result } = nextExternalNode;
+            completeInteraction(slug, result).catch((e: unknown) => {
+              console.error(e);
+            });
           }
         })
         .catch((e: unknown) => {

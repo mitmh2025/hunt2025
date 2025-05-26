@@ -100,6 +100,10 @@ const Paper = styled.main`
     text-align: center;
     margin-top: 1.5rem;
     padding: 0 2rem;
+
+    a {
+      ${mdBgLinkStyles}
+    }
   }
 `;
 
@@ -207,6 +211,18 @@ const StrayLeadsBody = ({
               These leads will be sorted once you open the investigation they
               belong to.
             </p>
+            {/* #!if TARGET === "client" && ARCHIVE_MODE */}
+            {state.reserveNote && (
+              <p>
+                There are a handful of puzzles that were written and tested but
+                held in reserve. Because you are playing the Hunt as it was
+                experienced, those puzzles will never be released. If you’d like
+                to see them, you can go to the{" "}
+                <a href={`${rootUrl}/team`}>Manage Team page</a> and choose the
+                option to “Reset to end of Hunt.”
+              </p>
+            )}
+            {/* #!endif */}
           </Paper>
           {state.leads.length > 0 && (
             <Postit>

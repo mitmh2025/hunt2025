@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
-import rootUrl from "../../utils/rootUrl";
+import { chat } from "@hunt_client/puzzles/chatgpt";
 
 const Enumeration = "____ _______ ____ _____ _______ (____ ____)";
 
@@ -101,7 +101,7 @@ const History = ({
 
 const App = () => {
   const [history, setHistory] = useState<Messagetype[]>([]);
-  const [state, setState] = useState<string | undefined>();
+  const [state, setState] = useState<unknown>();
   const appendHistory = useCallback((m: Messagetype) => {
     setHistory((h) => [...h, m]);
   }, []);
@@ -134,36 +134,16 @@ const App = () => {
           });
           setInputMessage("");
 
-          const resp = await fetch(`${rootUrl}/puzzles/chatgpt/chat`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            body: JSON.stringify({
-              message: inputMessage,
-              state,
-            }),
-          });
-          if (!resp.ok) {
-            setErrorMessage("An unexpected error occurred");
-            return;
-          }
-
           const {
-            message,
+            response,
             success,
             state: newState,
-          } = (await resp.json()) as {
-            message: string;
-            success: boolean;
-            state: string;
-          };
+          } = await chat({ message: inputMessage, state });
 
           appendHistory({
             direction: "recv",
             icon: success ? "🐱" : "😾",
-            message: <span dangerouslySetInnerHTML={{ __html: message }} />,
+            message: <span dangerouslySetInnerHTML={{ __html: response }} />,
           });
           setState(newState);
         } catch (err) {

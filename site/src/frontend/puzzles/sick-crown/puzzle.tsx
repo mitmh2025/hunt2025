@@ -1,12 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
-import { type TeamHuntState } from "../../../../lib/api/client";
 import LinkedImage from "../../components/LinkedImage";
-import { InteractionLinkBlock } from "../../components/PuzzleLayout";
 import bookcase_blacklight_single from "../../rounds/illegal_search/assets/bookcase/bookcase_blacklight_single.svg";
 import note_blacklight from "../../rounds/illegal_search/assets/bookcase/note_blacklight_modal.svg";
-import { BookcaseInteraction } from "../../rounds/illegal_search/client/Bookcase";
-import rootUrl from "../../utils/rootUrl";
+import BookcaseInteraction from "../../rounds/illegal_search/client/BookcaseInteraction";
 
 const SideBySideWithBookHighlights = styled.div`
   display: flex;
@@ -42,19 +39,9 @@ const Spacer = styled.div`
   min-width: 120px;
 `;
 
-export default function Puzzle({ teamState }: { teamState: TeamHuntState }) {
-  const interactionState =
-    teamState.rounds.illegal_search?.interactions?.confront_papa?.state;
-
+export default function Puzzle() {
   return (
     <>
-      {interactionState !== undefined ? (
-        <InteractionLinkBlock>
-          Unlocked interaction:{" "}
-          <a href={`${rootUrl}/interactions/confront_papa`}>Confront Papa</a>
-        </InteractionLinkBlock>
-      ) : null}
-
       <p className="puzzle-flavor">
         The stars light up. We should listen to these new leads and audible
         clues.

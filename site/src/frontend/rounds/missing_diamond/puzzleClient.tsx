@@ -1,5 +1,5 @@
 import React from "react";
-import { hydrateRoot } from "react-dom/client";
+import renderRoot from "../../../utils/renderRoot";
 import useDataset from "../../client/useDataset";
 import { MissingDiamondPuzzleWitness } from "./MissingDiamondBody";
 import { type MissingDiamondState } from "./types";
@@ -22,7 +22,7 @@ if (elem) {
   ).initialMissingDiamondState;
   const slug = (window as unknown as { missingDiamondSlug: string })
     .missingDiamondSlug;
-  hydrateRoot(
+  renderRoot(
     elem,
     <MissingDiamondPuzzleHeaderManager initialState={state} slug={slug} />,
   );

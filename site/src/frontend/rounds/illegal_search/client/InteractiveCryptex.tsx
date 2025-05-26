@@ -327,13 +327,18 @@ export default function InteractiveCryptex({
         const newLetters = [...letters];
         newLetters[index] = letter;
 
-        const result = submitLock("cryptex", newLetters.join(""));
-        if (result) {
-          playSound(unlock);
-          setSolved(true);
-          setGateOpen(true);
-          setNode(result);
-        }
+        submitLock("cryptex", newLetters.join(""))
+          .then((result) => {
+            if (result) {
+              playSound(unlock);
+              setSolved(true);
+              setGateOpen(true);
+              setNode(result);
+            }
+          })
+          .catch(() => {
+            console.log("unexpected error");
+          });
 
         return newLetters;
       });

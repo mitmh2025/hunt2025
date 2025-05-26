@@ -1,5 +1,5 @@
 import React from "react";
-import { hydrateRoot } from "react-dom/client";
+import renderRoot from "../../utils/renderRoot";
 import {
   SolutionCannedResponseTable,
   SolutionHintTable,
@@ -10,7 +10,7 @@ const hintsElem = document.getElementById("solution-hints");
 if (hintsElem) {
   const hints = (window as unknown as { hints: Hint[] }).hints;
   console.log("mounting hints");
-  hydrateRoot(hintsElem, <SolutionHintTable hints={hints} />);
+  renderRoot(hintsElem, <SolutionHintTable hints={hints} />);
 }
 
 const cannedResponseElem = document.getElementById("solution-canned-responses");
@@ -19,7 +19,7 @@ if (cannedResponseElem) {
     window as unknown as { cannedResponses: CannedResponse[] }
   ).cannedResponses;
   console.log("mounting canned responses");
-  hydrateRoot(
+  renderRoot(
     cannedResponseElem,
     <SolutionCannedResponseTable cannedResponses={cannedRepsonses} />,
   );

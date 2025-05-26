@@ -1,26 +1,9 @@
 import React from "react";
-import { type TeamHuntState } from "../../../../lib/api/client";
-import {
-  ArchivalNotice,
-  InteractionLinkBlock,
-} from "../../components/PuzzleLayout";
-import rootUrl from "../../utils/rootUrl";
+import { ArchivalNotice } from "../../components/PuzzleLayout";
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
-  const interactionState =
-    teamState.rounds.stakeout?.interactions?.confront_katrina?.state;
-
+const Puzzle = () => {
   return (
     <>
-      {interactionState !== undefined ? (
-        <InteractionLinkBlock>
-          Unlocked interaction:{" "}
-          <a href={`${rootUrl}/interactions/confront_katrina`}>
-            Confront Katrina
-          </a>
-        </InteractionLinkBlock>
-      ) : null}
-
       <ArchivalNotice />
 
       <p className="puzzle-flavor">

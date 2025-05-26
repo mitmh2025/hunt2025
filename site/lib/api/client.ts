@@ -1,5 +1,6 @@
 import { initClient, type ClientInferResponseBody } from "@ts-rest/core";
 import { publicContract } from "./contract";
+import publicApi from "@hunt_client/public_api";
 
 export function newClient(baseUrl: string, token?: string) {
   const baseHeaders: Record<string, string> = {};
@@ -9,7 +10,7 @@ export function newClient(baseUrl: string, token?: string) {
   return initClient(publicContract, {
     baseUrl: baseUrl,
     baseHeaders,
-    // Uses `tsRestFetchApi` by default
+    api: publicApi,
   });
 }
 

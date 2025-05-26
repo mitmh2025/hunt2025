@@ -4,6 +4,7 @@ import AppleTouchIcon from "../../assets/apple-touch-icon.png";
 import FaviconIco from "../../assets/favicon.ico";
 import Favicon from "../../assets/favicon.svg";
 import { lookupScripts, lookupStylesheets } from "../server/assets";
+import archiveMode from "../utils/archiveMode.js";
 
 function dedupedOrderedItems(scripts: string[]): string[] {
   // Dedupe included scripts.  We only need to load each chunk once.
@@ -21,6 +22,7 @@ function dedupedOrderedItems(scripts: string[]): string[] {
 export const BaseLayout = ({
   innerHTML,
   scripts,
+  earlyScripts,
   stylesheets,
   styleElements,
   title,
@@ -28,6 +30,7 @@ export const BaseLayout = ({
 }: {
   innerHTML: string;
   scripts?: string[];
+  earlyScripts?: string[];
   stylesheets?: string[];
   styleElements?: React.JSX.Element[];
   headElements?: ReactNode[];
@@ -35,10 +38,14 @@ export const BaseLayout = ({
 }) => {
   const orderedStylesheets = dedupedOrderedItems(stylesheets ?? []);
   const orderedScripts = dedupedOrderedItems(scripts ?? []);
+  const orderedEarlyScripts = dedupedOrderedItems(earlyScripts ?? []);
   return (
     <html lang="en">
       <head>
         {title && <title>{title}</title>}
+        {orderedEarlyScripts.map((s) => (
+          <script key={s} type="text/javascript" src={s} />
+        ))}
         {orderedScripts.map((s) => (
           <link key={`preload-${s}`} rel="preload" href={s} as="script" />
         ))}
@@ -47,7 +54,7 @@ export const BaseLayout = ({
           <link key={s} rel="stylesheet" href={s} />
         ))}
         {styleElements}
-        {process.env.NODE_ENV === "development" && (
+        {process.env.NODE_ENV === "development" && !archiveMode && (
           <script src="http://localhost:35729/livereload.js?snipver=1" />
         )}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -79,7 +86,8 @@ const Layout = ({
   title?: string;
   teamState?: TeamHuntState;
 }) => {
-  const injectDevScript = process.env.NODE_ENV === "development" && !!teamState;
+  const injectDevScript =
+    process.env.NODE_ENV === "development" && !archiveMode && !!teamState;
   const devScripts = injectDevScript ? lookupScripts("dev") : [];
   // Scripts are deduped by BaseLayout
   const allScripts = [
@@ -87,6 +95,9 @@ const Layout = ({
     ...(scripts ?? []),
     ...devScripts,
   ];
+  const earlyScripts = archiveMode
+    ? lookupScripts("archive_flash_prevention")
+    : [];
 
   const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
 
@@ -107,6 +118,7 @@ const Layout = ({
     <BaseLayout
       innerHTML={innerHTML}
       scripts={allScripts}
+      earlyScripts={earlyScripts}
       stylesheets={allStyles}
       styleElements={styleElements}
       headElements={headElements}

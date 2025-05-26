@@ -406,18 +406,23 @@ export default function FloorSafe({
             setCode("");
           }}
           onClickEnter={() => {
-            const result = submitLock("rug", code);
-            if (result) {
-              console.log("okay", result);
-              setNode(result);
-              playSound(correct);
-              setTimeout(() => {
-                setOpened(true);
-              }, 500);
-            } else {
-              playSound(fail);
-              setCode("");
-            }
+            submitLock("rug", code)
+              .then((result) => {
+                if (result) {
+                  console.log("okay", result);
+                  setNode(result);
+                  playSound(correct);
+                  setTimeout(() => {
+                    setOpened(true);
+                  }, 500);
+                } else {
+                  playSound(fail);
+                  setCode("");
+                }
+              })
+              .catch(() => {
+                console.log("unexpected error");
+              });
           }}
         />
       </NumberLockPadWrapper>

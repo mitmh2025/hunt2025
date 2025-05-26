@@ -1,6 +1,7 @@
 import React from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
+import archiveMode from "../../utils/archiveMode";
 import StrayLeadsBody from "./StrayLeadsBody";
 import { type StrayLeadsState } from "./types";
 
@@ -25,9 +26,16 @@ export function strayLeadsState(teamState: TeamHuntState): StrayLeadsState {
     },
   );
 
+  const reserveNote =
+    archiveMode &&
+    typeof window !== "undefined" &&
+    teamState.gates_satisfied.includes("hunt_started") &&
+    !teamState.gates_satisfied.includes("hunt_closed");
+
   return {
     epoch: teamState.epoch,
     leads,
+    ...(reserveNote ? { reserveNote: true } : {}),
   };
 }
 

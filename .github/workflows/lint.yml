@@ -12,7 +12,7 @@ jobs:
       run:
         working-directory: ./site
     env:
-      NODE_OPTIONS: "--max-old-space-size=4096"
+      NODE_OPTIONS: "--max-old-space-size=8192"
     steps:
     - name: Checkout
       uses: actions/checkout@v4

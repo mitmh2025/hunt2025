@@ -8,7 +8,9 @@ import React, {
 import { styled } from "styled-components";
 import { newAuthClient } from "../../../lib/api/auth_client";
 import { type TeamRegistrationState } from "../../../lib/api/contract";
+import ArchiveTeamManager from "../archives/ArchiveTeamManager";
 import apiUrl from "../utils/apiUrl";
+import clientIsBot from "../utils/clientIsBot";
 import {
   responseIsZodError,
   responseToZodErrors,
@@ -282,147 +284,154 @@ const TeamManager = ({
   );
 
   return (
-    <form onSubmit={onSubmit}>
-      <Section>
-        <SectionHeader>Identity</SectionHeader>
-        <div>
-          <LabeledControlledInputWithError
-            name="username"
-            label="Username (cannot be changed)"
-            value={registration.username}
-            error={errors.username}
-            autoComplete={"off"}
-            readOnly
-            disabled
-          />
-        </div>
-        <div>
-          <LabeledControlledInputWithError
-            name="password"
-            label="Password (cannot be changed)"
-            value={registration.password}
-            error={errors.password}
-            autoComplete={"off"}
-            readOnly
-            disabled
-          />
-        </div>
-        <div>
-          <LabeledControlledInputWithError
-            name="name"
-            label="Team Name"
-            value={editedTeamName ?? registration.name}
-            onChange={onTeamNameChanged}
-            error={errors.name}
-            autoComplete={"off"}
-          />
-        </div>
-      </Section>
-      <Section>
-        <SectionHeader>Contact Information</SectionHeader>
-        <div>
-          <LabeledControlledInputWithError
-            name="contactName"
-            label="Contact Name"
-            value={editedContactName ?? registration.contactName}
-            onChange={onContactNameChanged}
-            error={errors.contactName}
-            autoComplete="name"
-          />
-        </div>
-        <div>
-          <LabeledControlledInputWithError
-            name="contactEmail"
-            label="Contact Email"
-            value={editedContactEmail ?? registration.contactEmail}
-            onChange={onContactEmailChanged}
-            error={errors.contactEmail}
-            autoComplete="email"
-          />
-        </div>
-        <div>
-          <LabeledControlledInputWithError
-            name="contactPhone"
-            label="Contact Phone"
-            value={editedContactPhone ?? registration.contactPhone}
-            onChange={onContactPhoneChanged}
-            error={errors.contactPhone}
-            type="tel"
-            autoComplete="tel"
-          />
-        </div>
-        <div>
-          <LabeledControlledTextAreaWithError
-            name="contactMailingAddress"
-            label="Contact Mailing Address"
-            value={editedMailingAddress ?? registration.contactMailingAddress}
-            onChange={onMailingAddressChanged}
-            error={errors.contactMailingAddress}
-            autoComplete="street-address"
-            rows={3}
-            cols={40}
-          />
-        </div>
-        <div>
-          <LabeledControlledInputWithError
-            name="secondaryContactName"
-            label="Secondary Contact Name"
-            value={
-              editedSecondaryContactName ?? registration.secondaryContactName
-            }
-            onChange={onSecondaryContactNameChanged}
-            error={errors.secondaryContactName}
-            autoComplete="off"
-          />
-        </div>
-        <div>
-          <LabeledControlledInputWithError
-            name="secondaryContactEmail"
-            label="Secondary Contact Email"
-            value={
-              editedSecondaryContactEmail ?? registration.secondaryContactEmail
-            }
-            onChange={onSecondaryContactEmailChanged}
-            error={errors.secondaryContactEmail}
-            autoComplete="off"
-          />
-        </div>
-        <div>
-          <LabeledControlledInputWithError
-            name="secondaryContactPhone"
-            label="Secondary Contact Phone"
-            value={
-              editedSecondaryContactPhone ?? registration.secondaryContactPhone
-            }
-            onChange={onSecondaryContactPhoneChanged}
-            error={errors.secondaryContactPhone}
-            autoComplete="off"
-            type="tel"
-          />
-        </div>
-      </Section>
-      <Section>
-        <SectionHeader>Team Information</SectionHeader>
-        <div>
-          <LabeledControlledInputWithError
-            name="teamEmail"
-            label="Team-wide Email Address"
-            value={editedTeamEamil ?? registration.teamEmail}
-            onChange={onTeamEmailChanged}
-            error={errors.teamEmail}
-            autoComplete="off"
-          />
-        </div>
-      </Section>
-      <Section>
-        {topLevelAlert && (
-          <Alert $variant={topLevelAlert.variant}>
-            {topLevelAlert.message}
-          </Alert>
-        )}
-        <WideButton>Save</WideButton>
-      </Section>
-    </form>
+    <>
+      {/* #!if TARGET === "client" && ARCHIVE_MODE */}
+      {!clientIsBot && <ArchiveTeamManager />}
+      {/* #!endif */}
+      <form onSubmit={onSubmit}>
+        <Section>
+          <SectionHeader>Identity</SectionHeader>
+          <div>
+            <LabeledControlledInputWithError
+              name="username"
+              label="Username (cannot be changed)"
+              value={registration.username}
+              error={errors.username}
+              autoComplete={"off"}
+              readOnly
+              disabled
+            />
+          </div>
+          <div>
+            <LabeledControlledInputWithError
+              name="password"
+              label="Password (cannot be changed)"
+              value={registration.password}
+              error={errors.password}
+              autoComplete={"off"}
+              readOnly
+              disabled
+            />
+          </div>
+          <div>
+            <LabeledControlledInputWithError
+              name="name"
+              label="Team Name"
+              value={editedTeamName ?? registration.name}
+              onChange={onTeamNameChanged}
+              error={errors.name}
+              autoComplete={"off"}
+            />
+          </div>
+        </Section>
+        <Section>
+          <SectionHeader>Contact Information</SectionHeader>
+          <div>
+            <LabeledControlledInputWithError
+              name="contactName"
+              label="Contact Name"
+              value={editedContactName ?? registration.contactName}
+              onChange={onContactNameChanged}
+              error={errors.contactName}
+              autoComplete="name"
+            />
+          </div>
+          <div>
+            <LabeledControlledInputWithError
+              name="contactEmail"
+              label="Contact Email"
+              value={editedContactEmail ?? registration.contactEmail}
+              onChange={onContactEmailChanged}
+              error={errors.contactEmail}
+              autoComplete="email"
+            />
+          </div>
+          <div>
+            <LabeledControlledInputWithError
+              name="contactPhone"
+              label="Contact Phone"
+              value={editedContactPhone ?? registration.contactPhone}
+              onChange={onContactPhoneChanged}
+              error={errors.contactPhone}
+              type="tel"
+              autoComplete="tel"
+            />
+          </div>
+          <div>
+            <LabeledControlledTextAreaWithError
+              name="contactMailingAddress"
+              label="Contact Mailing Address"
+              value={editedMailingAddress ?? registration.contactMailingAddress}
+              onChange={onMailingAddressChanged}
+              error={errors.contactMailingAddress}
+              autoComplete="street-address"
+              rows={3}
+              cols={40}
+            />
+          </div>
+          <div>
+            <LabeledControlledInputWithError
+              name="secondaryContactName"
+              label="Secondary Contact Name"
+              value={
+                editedSecondaryContactName ?? registration.secondaryContactName
+              }
+              onChange={onSecondaryContactNameChanged}
+              error={errors.secondaryContactName}
+              autoComplete="off"
+            />
+          </div>
+          <div>
+            <LabeledControlledInputWithError
+              name="secondaryContactEmail"
+              label="Secondary Contact Email"
+              value={
+                editedSecondaryContactEmail ??
+                registration.secondaryContactEmail
+              }
+              onChange={onSecondaryContactEmailChanged}
+              error={errors.secondaryContactEmail}
+              autoComplete="off"
+            />
+          </div>
+          <div>
+            <LabeledControlledInputWithError
+              name="secondaryContactPhone"
+              label="Secondary Contact Phone"
+              value={
+                editedSecondaryContactPhone ??
+                registration.secondaryContactPhone
+              }
+              onChange={onSecondaryContactPhoneChanged}
+              error={errors.secondaryContactPhone}
+              autoComplete="off"
+              type="tel"
+            />
+          </div>
+        </Section>
+        <Section>
+          <SectionHeader>Team Information</SectionHeader>
+          <div>
+            <LabeledControlledInputWithError
+              name="teamEmail"
+              label="Team-wide Email Address"
+              value={editedTeamEamil ?? registration.teamEmail}
+              onChange={onTeamEmailChanged}
+              error={errors.teamEmail}
+              autoComplete="off"
+            />
+          </div>
+        </Section>
+        <Section>
+          {topLevelAlert && (
+            <Alert $variant={topLevelAlert.variant}>
+              {topLevelAlert.message}
+            </Alert>
+          )}
+          <WideButton>Save</WideButton>
+        </Section>
+      </form>
+    </>
   );
 };
 

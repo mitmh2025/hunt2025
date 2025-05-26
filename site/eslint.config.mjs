@@ -52,6 +52,10 @@ export default tseslint.config(
       ...importPlugin.configs.typescript.settings,
       "import/resolver": {
         typescript: true,
+        alias: {
+          map: [["@hunt_client", "./lib/api/production"]],
+          extensions: [".js", ".jsx", ".ts", ".tsx"],
+        },
       },
     },
   },
