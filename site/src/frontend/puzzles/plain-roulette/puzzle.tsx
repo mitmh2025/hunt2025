@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import archiveMode from "../../utils/archiveMode";
 import rootUrl from "../../utils/rootUrl";
 
@@ -18,8 +19,6 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
     <>
       <p className="puzzle-flavor">
         A gaugeless scarf, up to 6 times as long as it is wide.
-        {archiveMode &&
-          " Note that URLs within this puzzle will need to be adjusted in order to access additional content within the archives."}
       </p>
       {unlockedIKidEweKnot && (
         <p>
@@ -32,6 +31,185 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <a href={`${rootUrl}/stitchy_situation`}>Stitchy Situation</a>
           <Arrow>→</Arrow>
         </p>
+      )}
+      {archiveMode && (
+        <AuthorsNoteBlock>
+          <p>
+            This puzzle involves URLs which may no longer be available. We have
+            included the original puzzle below, but have also produced an
+            alternate version which will continue working with the Hunt as
+            hosted in the archives:
+          </p>
+
+          <p>
+            Cast on 128 sts in white. In black, k128 p128 k128 p128. Switch to
+            white. k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128 k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128 k128 p128 k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128
+            k128 p128. Switch to white. k128 p128 k128 p128 k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128. Switch to
+            black. k128 p128. Switch to white. k128 p128 k128 p128. Switch to
+            black. k128 p128 k128 p128 k128 p128 k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128. Switch to white. k128 p128
+            k128 p128. Switch to black. k128 p128. Switch to white. k128 p128
+            k128 p128. Switch to black. k128 p128 k128 p128 k128 p128 k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128 k128 p128. Switch to black. k128 p128 k128 p128 k128 p128 k128
+            p128. Switch to white. k128 p128 k128 p128. Switch to black. k128
+            p128 k128 p128 k128 p128. Switch to white. k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128 k128 p128.
+            Switch to black. k128 p128 k128 p128. Switch to white. k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128. Switch to
+            black. k128 p128 k128 p128 k128 p128. Switch to white. k128 p128
+            k128 p128. Switch to black. k128 p128 k128 p128. Switch to white.
+            k128 p128 k128 p128. Switch to black. k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128 k128 p128 k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128 k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128 k128 p128
+            k128 p128 k128 p128. Switch to white. k128 p128 k128 p128. Switch to
+            black. k128 p128. Switch to white. k128 p128 k128 p128. Switch to
+            black. k128 p128 k128 p128 k128 p128 k128 p128. Switch to white.
+            k128 p128 k128 p128. Switch to black. k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128 k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128 k128 p128 k128 p128 k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128 k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128 k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128 k128 p128
+            k128 p128 k128 p128. Switch to white. k128 p128. Switch to black.
+            k128 p128 k128 p128. Switch to white. k128 p128. Switch to black.
+            k128 p128 k128 p128. Switch to white. k128 p128 k128 p128. Switch to
+            black. k128 p128. Switch to white. k128 p128. Switch to black. k128
+            p128. Switch to white. k128 p128 k128 p128 k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128. Switch to
+            black. k128 p128 k128 p128. Switch to white. k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128 k128 p128
+            k128 p128 k128 p128. Switch to black. k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128 k128 p128 k128 p128 k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128
+            k128 p128. Switch to white. k128 p128 k128 p128. Switch to black.
+            k128 p128 k128 p128 k128 p128. Switch to white. k128 p128. Switch to
+            black. k128 p128 k128 p128 k128 p128 k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128 k128 p128 k128 p128. Switch to
+            white. k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128. Switch to black. k128 p128. Switch to white. k128 p128 k128
+            p128 k128 p128 k128 p128. Switch to black. k128 p128 k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128 k128 p128
+            k128 p128 k128 p128. Switch to white. k128 p128. Switch to black.
+            k128 p128. Switch to white. k128 p128 k128 p128. Switch to black.
+            k128 p128. Switch to white. k128 p128 k128 p128. Switch to black.
+            k128 p128 k128 p128. Switch to white. k128 p128 k128 p128. Switch to
+            black. k128 p128 k128 p128 k128 p128. Switch to white. k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128. Switch to
+            black. k128 p128 k128 p128. Switch to white. k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128 k128 p128
+            k128 p128 k128 p128. Switch to black. k128 p128. Switch to white.
+            k128 p128 k128 p128 k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128
+            k128 p128. Switch to white. k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128
+            k128 p128 k128 p128 k128 p128. Switch to white. k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128. Switch to
+            black. k128 p128. Switch to white. k128 p128. Switch to black. k128
+            p128 k128 p128 k128 p128. Switch to white. k128 p128 k128 p128.
+            Switch to black. k128 p128 k128 p128. Switch to white. k128 p128
+            k128 p128. Switch to black. k128 p128 k128 p128. Switch to white.
+            k128 p128 k128 p128. Switch to black. k128 p128 k128 p128 k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128 k128 p128
+            k128 p128. Switch to white. k128 p128. Switch to black. k128 p128
+            k128 p128. Switch to white. k128 p128 k128 p128. Switch to black.
+            k128 p128 k128 p128. Switch to white. k128 p128 k128 p128. Switch to
+            black. k128 p128 k128 p128 k128 p128. Switch to white. k128 p128
+            k128 p128. Switch to black. k128 p128. Switch to white. k128 p128.
+            Switch to black. k128 p128 k128 p128. Switch to white. k128 p128.
+            Switch to black. k128 p128 k128 p128 k128 p128. Switch to white.
+            k128 p128 k128 p128. Switch to black. k128 p128. Switch to white.
+            k128 p128 k128 p128. Switch to black. k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128 k128 p128 k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128 k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128 k128 p128. Switch to black. k128 p128
+            k128 p128. Switch to white. k128 p128 k128 p128 k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128. Switch to
+            black. k128 p128. Switch to white. k128 p128 k128 p128. Switch to
+            black. k128 p128 k128 p128 k128 p128 k128 p128. Switch to white.
+            k128 p128 k128 p128. Switch to black. k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128 k128 p128. Switch to white.
+            k128 p128 k128 p128 k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128 k128 p128
+            k128 p128 k128 p128. Switch to white. k128 p128. Switch to black.
+            k128 p128. Switch to white. k128 p128 k128 p128. Switch to black.
+            k128 p128. Switch to white. k128 p128. Switch to black. k128 p128
+            k128 p128 k128 p128. Switch to white. k128 p128 k128 p128. Switch to
+            black. k128 p128 k128 p128. Switch to white. k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128 k128 p128
+            k128 p128 k128 p128. Switch to black. k128 p128 k128 p128. Switch to
+            white. k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128 k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128. Switch to black. k128 p128. Switch to white. k128 p128 k128
+            p128. Switch to black. k128 p128 k128 p128. Switch to white. k128
+            p128 k128 p128 k128 p128 k128 p128. Switch to black. k128 p128 k128
+            p128. Switch to white. k128 p128 k128 p128 k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128. Switch to
+            black. k128 p128. Switch to white. k128 p128 k128 p128 k128 p128
+            k128 p128. Switch to black. k128 p128 k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128. Switch to white. k128 p128
+            k128 p128. Switch to black. k128 p128. Switch to white. k128 p128
+            k128 p128 k128 p128 k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128 k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128 k128 p128. Switch to black. k128 p128 k128 p128. Switch to
+            white. k128 p128 k128 p128 k128 p128 k128 p128. Switch to black.
+            k128 p128. Switch to white. k128 p128. Switch to black. k128 p128
+            k128 p128. Switch to white. k128 p128 k128 p128. Switch to black.
+            k128 p128. Switch to white. k128 p128 k128 p128 k128 p128 k128 p128.
+            Switch to black. k128 p128 k128 p128 k128 p128 k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128 k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128. Switch to black. k128 p128 k128 p128. Switch to white. k128
+            p128 k128 p128. Switch to black. k128 p128. Switch to white. k128
+            p128 k128 p128 k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128 k128 p128.
+            Switch to white. k128 p128 k128 p128 k128 p128 k128 p128. Switch to
+            black. k128 p128 k128 p128. Switch to white. k128 p128 k128 p128
+            k128 p128 k128 p128. Switch to black. k128 p128. Switch to white.
+            k128 p128 k128 p128. Switch to black. k128 p128. Switch to white.
+            k128 p128. Switch to black. k128 p128 k128 p128. Switch to white.
+            k128 p128 k128 p128 k128 p128 k128 p128. Switch to black. k128 p128.
+            Switch to white. k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128. Switch to black. k128 p128. Switch to
+            white. k128 p128 k128 p128 k128 p128. Switch to black. k128 p128
+            k128 p128 k128 p128 k128 p128. Switch to white. k128 p128. Switch to
+            black. k128 p128. Switch to white. k128 p128. Switch to black. k128
+            p128. Switch to white. k128 p128 k128 p128. Switch to black. k128
+            p128 k128 p128 k128 p128 k128 p128. Switch to white. k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128 k128 p128.
+            Switch to black. k128 p128. Switch to white. k128 p128 k128 p128
+            k128 p128. Switch to black. k128 p128. Switch to white. k128 p128
+            k128 p128. Switch to black. k128 p128 k128 p128. Switch to white.
+            k128 p128 k128 p128. Switch to black. k128 p128 k128 p128. Switch to
+            white. k128 p128 k128 p128 k128 p128. Switch to black. k128 p128
+            k128 p128 k128 p128. Switch to white. k128 p128. Switch to black.
+            k128 p128. Switch to white. k128 p128. Switch to black. k128 p128
+            k128 p128. Cast off 128sts in white.
+          </p>
+        </AuthorsNoteBlock>
       )}
       <p>
         Cast on 128 sts in white. In black, k128 p128 k128 p128. In white, k128

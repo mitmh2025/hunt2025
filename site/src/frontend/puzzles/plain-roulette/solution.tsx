@@ -1,8 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote, AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import { PuzzleAnswer } from "../../components/StyledUI";
+import archiveMode from "../../utils/archiveMode";
 import rootUrl from "../../utils/rootUrl";
+import barcodeArchive from "./assets/barcode-archive.png";
 import barcode from "./assets/barcode.png";
 import chart from "./assets/chart.jpg";
 import highlightedChart from "./assets/highlighted-chart.jpg";
@@ -10,14 +13,15 @@ import mosaicRib1 from "./assets/mosaic-rib-1.jpg";
 import mosaicRib2 from "./assets/mosaic-rib-2.jpg";
 import pearlChartedSpread from "./assets/pearl-charted-spread.jpg";
 import pearlCharted from "./assets/pearl-charted.jpg";
+import qrCodeArchive from "./assets/qrcode-archive.png";
 import qrCode from "./assets/qrcode.png";
 import streetChartedSpread from "./assets/street-charted-spread.jpg";
 import streetCharted from "./assets/street-charted.jpg";
 
-const SizedImage = styled(LinkedImage)`
+const SizedImage = styled(LinkedImage)<{ $width: number }>`
   display: block;
   margin: auto;
-  width: 400px;
+  width: ${({ $width }) => $width}px;
   max-width: 100%;
 `;
 
@@ -34,6 +38,18 @@ const Solution = (): JSX.Element => {
         </a>
         .
       </p>
+      {archiveMode && (
+        <AuthorsNote>
+          For the archival version of this puzzle, that second URL is{" "}
+          <a
+            href={`${rootUrl}/i_kid_ewe_knot`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            https://puzzles.mit.edu/2025/hunt/i_kid_ewe_knot
+          </a>
+        </AuthorsNote>
+      )}
       <p>
         This URL leads to a second set of instructions, this time for a 37x37
         black-and-white swatch. If this swatch is knit (or charted), it looks
@@ -48,6 +64,18 @@ const Solution = (): JSX.Element => {
         </a>
         .
       </p>
+      {archiveMode && (
+        <AuthorsNote>
+          Again, for the archival version, the URL is slightly different:{" "}
+          <a
+            href={`${rootUrl}/stitchy_situation`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            https://puzzles.mit.edu/2025/hunt/stitchy_situation
+          </a>
+        </AuthorsNote>
+      )}
       <p>
         This URL leads to a <em>third</em> set of instructions, still in
         black-and-white. Charting these instructions will not be useful to
@@ -72,7 +100,8 @@ const Solution = (): JSX.Element => {
         hope it was intuitive. The instructions are for stockinette stitch, knit
         flat, one of the most basic knitting patterns. So every time you switch
         from knits to purls, that’s a new row. You’re knitting a scarf! A scarf
-        with nearly 1000 rows, so it’s probably best to map this one out.
+        with nearly{archiveMode && " (or, in the archival version, more than) "}{" "}
+        1000 rows, so it’s probably best to map this one out.
       </li>
       <li>
         According to the pattern, you only switch colors on the right side of
@@ -101,6 +130,29 @@ const Solution = (): JSX.Element => {
           https://two-pi-noir.agency/i_kid_ewe_knot
         </a>
       </p>
+      {archiveMode && (
+        <AuthorsNoteBlock>
+          <p>
+            For the archives, we provided a new set of knitting instructions
+            which, when constructed similarly, yield a barcode that should look
+            roughly like this:
+          </p>
+          <LinkedImage
+            src={barcodeArchive}
+            alt="The 1D barcode, regenerated for the archives"
+          />
+          <p>
+            which scans to the url:{" "}
+            <a
+              href={`${rootUrl}/i_kid_ewe_knot`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              https://puzzles.mit.edu/2025/hunt/i_kid_ewe_knot
+            </a>
+          </p>
+        </AuthorsNoteBlock>
+      )}
       <p>
         Follow that link, and you’ll find the instructions for{" "}
         <a href={`${rootUrl}/i_kid_ewe_knot`} target="_blank" rel="noreferrer">
@@ -139,7 +191,28 @@ const Solution = (): JSX.Element => {
         When you draw out the pattern (snaking back and forth across the rows)
         and force it to a square aspect ratio, it should look like this:
       </p>
-      <SizedImage src={qrCode} alt="A 2D barcode, or QR code" />
+      <SizedImage $width={400} src={qrCode} alt="A 2D barcode, or QR code" />
+      <AuthorsNoteBlock>
+        <p>
+          Again, for the archives, we provided a new set of instructions, which
+          yielded the following QR code:
+        </p>
+        <SizedImage
+          $width={314}
+          src={qrCodeArchive}
+          alt="The QR code generated from the archival knitting instructions"
+        />
+        <p>
+          scanning to the updated url:{" "}
+          <a
+            href={`${rootUrl}/i_kid_ewe_knot`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            https://puzzles.mit.edu/2025/hunt/i_kid_ewe_knot
+          </a>
+        </p>
+      </AuthorsNoteBlock>
       <p>
         Which is, of course, a QR code. Scan it, and you get:{" "}
         <a href={`${rootUrl}/stitchy_situation`}>
