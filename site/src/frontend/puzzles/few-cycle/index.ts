@@ -24,6 +24,10 @@ const puzzle: PuzzleDefinition = {
       for_what: "Fabrication",
       who: ["Emilie Josephs", "James Douberley"],
     },
+    {
+      for_what: "Gala nail salon photo",
+      who: ["Keri Ashton Fullwood"],
+    },
   ],
   content: {
     component: Puzzle,

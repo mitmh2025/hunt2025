@@ -24,6 +24,18 @@ const puzzle: PuzzleDefinition = {
         "Sarah Leadbeater",
       ],
     },
+    {
+      for_what: "Archival still photographs",
+      who: ["Sam Freilich", "Keri Ashton Fullwood", "Wesley Graybill"],
+    },
+    {
+      for_what: "Archival videography",
+      who: ["Steve Ewing of Stand Inside Media"],
+    },
+    {
+      for_what: "Archival video editing",
+      who: ["Evan Broder"],
+    },
   ],
   content: {
     component: Puzzle,

@@ -30,12 +30,6 @@ export default function Puzzle() {
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         ></iframe>
-        <p>
-          (Still photographs were taken by Sam Freilich, Keri Ashton Fullwood,
-          Wesley Graybill. Our thanks to Steve Ewing of Stand Inside Media who
-          joined us for the weekend as our official videographer; all of the
-          video footage in this recap was taken by him.)
-        </p>
       </AuthorsNoteBlock>
     </>
   );

@@ -23,6 +23,18 @@ const puzzle: PuzzleDefinition = {
         "Eric Broder",
       ],
     },
+    {
+      for_what: "Gala phone booth photo",
+      who: ["Keri Ashton Fullwood"],
+    },
+    {
+      for_what: "Archival videography",
+      who: ["Steve Ewing of Stand Inside Media"],
+    },
+    {
+      for_what: "Archival video editing",
+      who: ["rfong"],
+    },
   ],
   content: {
     component: Puzzle,

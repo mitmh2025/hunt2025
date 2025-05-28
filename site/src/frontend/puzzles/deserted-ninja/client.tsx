@@ -796,8 +796,7 @@ const App = () => {
               (Our scorekeepers added a warning on the chalkboard that
               “Irrational and imaginary numbers will be approximated and
               converted at our sole discretion,” reminding teams that we can
-              troll approximately as hard as they can. Photo by Keri Ashton
-              Fullwood)
+              troll approximately as hard as they can.)
             </em>
           </p>
         </center>

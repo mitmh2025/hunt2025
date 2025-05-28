@@ -32,6 +32,14 @@ const puzzle: PuzzleDefinition = {
       for_what: "Tech",
       who: ["Arcturus Wang", "Ariel Schwartz", "Quentin Smith"],
     },
+    {
+      for_what: "Archival videography",
+      who: ["Steve Ewing of Stand Inside Media"],
+    },
+    {
+      for_what: "Archival video editing",
+      who: ["Evan Broder"],
+    },
   ],
   content: {
     component: Puzzle,

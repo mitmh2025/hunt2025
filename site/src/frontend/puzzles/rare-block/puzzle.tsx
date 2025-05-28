@@ -63,7 +63,7 @@ const Puzzle = (): JSX.Element => {
             <br />
             <Caption>
               (It seems to be working right now, but we can assure you that it
-              wasn’t by the time you arrived. Photo by Keri Ashton Fullwood)
+              wasn’t by the time you arrived.)
             </Caption>
           </center>
         </p>

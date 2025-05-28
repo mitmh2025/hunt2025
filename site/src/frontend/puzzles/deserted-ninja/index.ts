@@ -26,6 +26,10 @@ const puzzle: PuzzleDefinition = {
       freeform:
         "Additional questions written by Steve Banzaert and Jesse Moeller",
     },
+    {
+      for_what: "Classroom photo",
+      who: ["Keri Ashton Fullwood"],
+    },
   ],
   content: {
     component: Puzzle,

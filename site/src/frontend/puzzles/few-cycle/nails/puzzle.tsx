@@ -43,10 +43,6 @@ const Puzzle = () => {
 
         <LinkedImage src={painting} alt="A team getting their nails done" />
 
-        <center>
-          <em>(Photo by Keri Ashton Fullwood)</em>
-        </center>
-
         <br />
 
         <p>
