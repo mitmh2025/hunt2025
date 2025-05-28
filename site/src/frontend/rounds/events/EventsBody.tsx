@@ -188,7 +188,7 @@ export default function EventsBody({ state }: { state: EventsState }) {
                           lockState={event.locked}
                           answer={event.answer}
                         />
-                        Submit an answer
+                        Learn more about this event (or submit an answer)
                       </a>
                     </PuzzleLink>
                   )}
