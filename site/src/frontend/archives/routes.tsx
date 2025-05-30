@@ -5,6 +5,7 @@ import { minigamesHandler } from "./minigames";
 import radioHandler from "./radio/handler";
 import statsHandler from "./stats/handler";
 import { indexHandler } from ".";
+import coinHandler from "./coin/handler";
 
 export function getArchiveRouter() {
   const router = new Router();
@@ -12,6 +13,13 @@ export function getArchiveRouter() {
     "/",
     expressAsyncHandler(async (req, res, next) => {
       await renderApp(indexHandler, req, res, next);
+    }),
+  );
+
+  router.get(
+    "/extras/coin",
+    expressAsyncHandler(async (req, res, next) => {
+      await renderApp(coinHandler, req, res, next);
     }),
   );
 

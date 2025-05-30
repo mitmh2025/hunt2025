@@ -161,6 +161,11 @@ export function indexHandler() {
 
           <ul>
             <li>
+              <a href="/2025/extras/coin">Coin</a>: A detailed look at the
+              design of our coin, highlighting some references and fun easter
+              eggs.
+            </li>
+            <li>
               <a href="/2025/extras/radio">Radio</a>: Design, schematics, and
               firmware for the radio that each on-campus team received.
             </li>
