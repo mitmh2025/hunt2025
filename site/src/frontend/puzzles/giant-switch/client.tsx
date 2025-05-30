@@ -39,6 +39,7 @@ import jazzinterrupt from "./assets/interrupt-965.mp3";
 import boybandinterrupt from "./assets/interrupt-987.mp3";
 import rickroll from "./assets/rickroll.mp3";
 import pmstatic from "./assets/static.flac";
+import rootUrl from "../../utils/rootUrl";
 
 const CambridgeFMStations = new Map<number, string>([
   [881, "https://wmbr.org:8002/hi"],
@@ -690,7 +691,11 @@ const BlacklightApp = () => {
         </MathMLMath>
         , but you can still click on the map to walk to a location and see what
         you would have heard. If you’d like to go back to the FM experience, you
-        can <a href="given_up">navigate to the original puzzle</a>.
+        can{" "}
+        <a href={`${rootUrl}/puzzles/given_up`}>
+          navigate to the original puzzle
+        </a>
+        .
       </p>
 
       <Container>

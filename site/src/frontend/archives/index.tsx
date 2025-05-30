@@ -45,7 +45,7 @@ export function indexHandler() {
             </strong>{" "}
             ran an pre-hunt as an event for students. The{" "}
             <strong>
-              <a href="heist/">MIT Mystery Heist</a>
+              <a href="/2025/heist/">MIT Mystery Heist</a>
             </strong>{" "}
             is a prequel to the story of The Case of the Shadow Diamond, where
             Papa organizes a bank robbery to steal a valuable rare coin.
@@ -91,7 +91,7 @@ export function indexHandler() {
 
           <p>
             <strong>
-              View the <a href="hunt/">Hunt website</a>
+              View the <a href="/2025/hunt/">Hunt website</a>
             </strong>{" "}
             as seen by teams.
           </p>
@@ -143,15 +143,15 @@ export function indexHandler() {
           <h2>Extras</h2>
 
           <p>
-            The <a href="hunt/">Hunt website</a> allows you to re-play the 2025
-            MIT Mystery Hunt with an in-browser re-implementation of the Hunt’s
-            unlock structure. Experience the Hunt as teams did, or skip to the
-            end to see all of the puzzles and content. We’ve also made at least
-            minor — and occasionally significant — modifications to nearly 25%
-            of the puzzles and interactions. We believe this should allow you to
-            solve (or, in a few cases, at least experience) those puzzles which
-            previously required physical components, in-person elements, or live
-            staffing.
+            The <a href={rootUrl}>Hunt website</a> allows you to re-play the
+            2025 MIT Mystery Hunt with an in-browser re-implementation of the
+            Hunt’s unlock structure. Experience the Hunt as teams did, or skip
+            to the end to see all of the puzzles and content. We’ve also made at
+            least minor — and occasionally significant — modifications to nearly
+            25% of the puzzles and interactions. We believe this should allow
+            you to solve (or, in a few cases, at least experience) those puzzles
+            which previously required physical components, in-person elements,
+            or live staffing.
           </p>
 
           <p>
@@ -161,15 +161,15 @@ export function indexHandler() {
 
           <ul>
             <li>
-              <a href="extras/radio">Radio</a>: Design, schematics, and firmware
-              for the radio that each on-campus team received.
+              <a href="/2025/extras/radio">Radio</a>: Design, schematics, and
+              firmware for the radio that each on-campus team received.
             </li>
             <li>
-              <a href="extras/stats">Statistics</a>: Stastics from the Hunt,
-              including the full activity log.
+              <a href="/2025/extras/stats">Statistics</a>: Stastics from the
+              Hunt, including the full activity log.
             </li>
             <li>
-              <a href="extras/minigames">Minigames</a>: The{" "}
+              <a href="/2025/extras/minigames">Minigames</a>: The{" "}
               <a href={`${rootUrl}/interactions/interview_at_the_boardwalk`}>
                 Interview at the Boardwalk
               </a>{" "}
