@@ -151,7 +151,7 @@ const Solution = () => {
       <h3>Song acknowledgements</h3>
       <p>
         The video walkthrough uses the following songs, all from Kevin MacLeod (
-        <a href="incompetech.com" target="_blank" rel="noreferrer">
+        <a href="https://incompetech.com" target="_blank" rel="noreferrer">
           incompetech.com
         </a>
         ), licensed under Creative Commons: By Attribution 4.0 (
