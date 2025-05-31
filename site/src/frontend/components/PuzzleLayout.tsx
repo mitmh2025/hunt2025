@@ -110,7 +110,7 @@ const AuthorsNoteBlock = styled.div`
   p:last-child {
     margin-bottom: 0;
   }
-  a {
+  && a {
     ${lightBgLinkStyles}
   }
 `;

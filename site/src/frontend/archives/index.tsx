@@ -167,7 +167,10 @@ export function indexHandler() {
             </li>
             <li>
               <a href="/2025/extras/radio">Radio</a>: Design, schematics, and
-              firmware for the radio that each on-campus team received.
+              firmware for the radio that each on-campus team received. (And
+              while we are unable to broadcast the original WDNM 2π PM radio
+              station, we have included some archival audio clips on the{" "}
+              <a href={`${rootUrl}/virtual_radio`}>virtual radio</a> page.)
             </li>
             <li>
               <a href="/2025/extras/stats">Statistics</a>: Stastics from the
