@@ -1,14 +1,14 @@
 import type { ParamsDictionary } from "express-serve-static-core";
-import type { PageRenderer } from "../../utils/renderApp";
+import { css, styled } from "styled-components";
 import {
   PageWrapper,
   PageHeader,
   PageTitle,
   PageMain,
 } from "../../components/PageLayout";
-import rootUrl from "../../utils/rootUrl";
-import { css, styled } from "styled-components";
 import { deviceMax } from "../../utils/breakpoints";
+import type { PageRenderer } from "../../utils/renderApp";
+import rootUrl from "../../utils/rootUrl";
 import obverse from "./assets/obverse.png";
 import reverse from "./assets/reverse.png";
 

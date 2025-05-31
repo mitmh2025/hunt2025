@@ -16,6 +16,7 @@ import {
 } from "../../components/MathML";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import { deviceMax } from "../../utils/breakpoints";
+import rootUrl from "../../utils/rootUrl";
 import campusmap from "./assets/campusmap.svg";
 import boyband from "./assets/complete/boyband987.mp3";
 import classical from "./assets/complete/classical905.mp3";
@@ -39,7 +40,6 @@ import jazzinterrupt from "./assets/interrupt-965.mp3";
 import boybandinterrupt from "./assets/interrupt-987.mp3";
 import rickroll from "./assets/rickroll.mp3";
 import pmstatic from "./assets/static.flac";
-import rootUrl from "../../utils/rootUrl";
 
 const CambridgeFMStations = new Map<number, string>([
   [881, "https://wmbr.org:8002/hi"],

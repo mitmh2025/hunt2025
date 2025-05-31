@@ -1,11 +1,11 @@
 import expressAsyncHandler from "express-async-handler";
 import { Router } from "websocket-express";
 import renderApp from "../utils/renderApp";
+import coinHandler from "./coin/handler";
 import { minigamesHandler } from "./minigames";
 import radioHandler from "./radio/handler";
 import statsHandler from "./stats/handler";
 import { indexHandler } from ".";
-import coinHandler from "./coin/handler";
 
 export function getArchiveRouter() {
   const router = new Router();

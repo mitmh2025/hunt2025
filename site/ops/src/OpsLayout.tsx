@@ -3,7 +3,7 @@ import AdminIcon from "@mui/icons-material/Security";
 import { Box, IconButton, Tooltip, styled } from "@mui/material";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { PageContainer } from "@toolpad/core/PageContainer";
-import { useCookies } from "react-cookie"; // eslint-disable-line import/no-unresolved -- eslint can't find it
+import { useCookies } from "react-cookie";
 import { Outlet } from "react-router-dom";
 import { OpsDataLoader } from "./OpsDataLoader";
 import { useOpsData } from "./OpsDataProvider";

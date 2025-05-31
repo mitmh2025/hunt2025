@@ -6,7 +6,7 @@ import {
   useMemo,
   useRef,
 } from "react";
-import { useCookies } from "react-cookie"; // eslint-disable-line import/no-unresolved -- eslint can't find it
+import { useCookies } from "react-cookie";
 import { type AdminClient, newAdminClient } from "../../lib/api/admin_client";
 import {
   type FrontendClient,
