@@ -338,7 +338,10 @@ const coinHandler: PageRenderer<ParamsDictionary> = () => {
                   <a href={`${rootUrl}/rounds/background_check`}>
                     The Background Check
                   </a>
-                  .
+                  . The glasses themselves are also a reference to the
+                  Background Check and a running gag that Carter always wore a
+                  different silly fake mustache in each of his adopted
+                  identities.
                 </li>
               </ul>
             </div>
