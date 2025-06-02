@@ -1940,7 +1940,12 @@ const App = ({
         This does not include in-person hints given out at the Gala by our Press
         Corps. It is also possible that there are more responses than requests,
         as our hinters were able to provide unsolicited replies (if, e.g., they
-        needed to follow up on a previous response).
+        needed to follow up on a previous response). Hints were only available
+        to a team after (a) we had released hints for that puzzle{" "}
+        <strong>and</strong> (b) that team had the puzzle unlocked for a certain
+        period of time (generally 1 hour for Missing Diamond and Stakeout
+        puzzles; 2-3 hours for other late round puzzles). This latter condition
+        is not reflected in the count of "puzzles with hints available" below.
       </p>
       <HintGraph
         activityLog={activityLog}
