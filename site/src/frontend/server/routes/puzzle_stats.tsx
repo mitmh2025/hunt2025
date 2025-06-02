@@ -1,13 +1,7 @@
-import { parse } from "csv-parse/sync";
 import { type Request } from "express";
 import { type DateTime } from "luxon";
-import React from "react";
 import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
-import {
-  ActivityLogParseOptions,
-  type ActivityLogRow,
-} from "../../archives/stats/activityLog";
-import activityLogRaw from "../../archives/stats/assets/activity_log.csv?raw";
+import parsedActivityLog from "../../archives/stats/parsedActivityLog";
 import { PUZZLE_STATS } from "../../archives/stats/puzzles";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
@@ -25,11 +19,6 @@ import { PUZZLES } from "../../puzzles";
 import archiveMode from "../../utils/archiveMode";
 import rootUrl from "../../utils/rootUrl";
 import { type PuzzleParams } from "./puzzle";
-
-const activityLog = parse(
-  activityLogRaw,
-  ActivityLogParseOptions,
-) as ActivityLogRow[];
 
 const slugToSlot = generateSlugToSlotMap(HUNT);
 
@@ -68,7 +57,7 @@ export function puzzleStatsHandler(req: Request<PuzzleParams>) {
   const isQuixoticShoe = slug === "and_now_a_puzzling_word_from_our_sponsors";
   const unlockEvent = isQuixoticShoe ? "ads_unlocked" : "puzzle_unlocked";
 
-  const log = activityLog.filter(
+  const log = parsedActivityLog.filter(
     (row) =>
       row.slug === slug || (isQuixoticShoe && row.type === "ads_unlocked"),
   );

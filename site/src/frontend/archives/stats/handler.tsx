@@ -1,16 +1,17 @@
 import type { ParamsDictionary } from "express-serve-static-core";
-import React from "react";
+import HUNT, { generateSlugToSlotMap } from "../../../huntdata";
 import {
-  PageWrapper,
   PageHeader,
-  PageTitle,
   PageMain,
+  PageTitle,
+  PageWrapper,
 } from "../../components/PageLayout";
 import { PUZZLES } from "../../puzzles";
 import { type PageRenderer } from "../../utils/renderApp";
 import rootUrl from "../../utils/rootUrl";
 import Loading from "./Loading";
 import activityLog from "./assets/activity_log.csv";
+import parsedActivityLog from "./parsedActivityLog";
 import { PUZZLE_STATS } from "./puzzles";
 
 /*
@@ -80,7 +81,49 @@ WHERE
 
 */
 
+const slugToSlot = generateSlugToSlotMap(HUNT);
+
 const statsHandler: PageRenderer<ParamsDictionary> = () => {
+  const solvedOne = new Set(
+    parsedActivityLog
+      .filter((row) => row.type === "puzzle_solved")
+      .map((row) => row.team_name),
+  ).size;
+  const solvedOneMeta = new Set(
+    parsedActivityLog
+      .filter((row) => {
+        if (row.type !== "puzzle_solved") return false;
+        const { slot } = slugToSlot.get(row?.slug ?? "") ?? {};
+        return slot?.is_meta || slot?.is_supermeta;
+      })
+      .map((row) => row.team_name),
+  ).size;
+  const solvedThief = new Set(
+    parsedActivityLog
+      .filter(
+        (row) => row.type === "puzzle_solved" && row?.slug === "the_thief",
+      )
+      .map((row) => row.team_name),
+  ).size;
+  const solvedLateSuper = new Set(
+    parsedActivityLog
+      .filter((row) => {
+        if (row.type !== "puzzle_solved") return false;
+        if (row?.slug === "the_thief") return false;
+        const { slot } = slugToSlot.get(row?.slug ?? "") ?? {};
+        return slot?.is_supermeta;
+      })
+      .map((row) => row.team_name),
+  ).size;
+  const solvedHunt = new Set(
+    parsedActivityLog
+      .filter(
+        (row) =>
+          row.type === "interaction_unlocked" && row?.slug === "the_vault",
+      )
+      .map((row) => row.team_name),
+  ).size;
+
   const node = (
     <PageWrapper fullWidth>
       <>
@@ -118,27 +161,28 @@ const statsHandler: PageRenderer<ParamsDictionary> = () => {
             </li>
 
             <li>
-              <strong>195</strong> teams solved at least 1 puzzle.
+              <strong>{solvedOne}</strong> teams solved at least 1 puzzle.
             </li>
 
             <li>
-              <strong>96</strong> teams solved at least 1 metapuzzle.
+              <strong>{solvedOneMeta}</strong> teams solved at least 1
+              metapuzzle.
             </li>
 
             <li>
-              <strong>64</strong> teams solved{" "}
+              <strong>{solvedThief}</strong> teams solved{" "}
               <a href={`${rootUrl}/puzzles/the_thief`}>The Thief</a> and learned
               who stole the Shadow Diamond.
             </li>
 
             <li>
-              <strong>34</strong> teams solved at least one late round
-              supermetapuzzle (either a character’s side investigation or The
-              Murder in MITropolis)
+              <strong>{solvedLateSuper}</strong> teams solved at least one late
+              round supermetapuzzle (either a character’s side investigation or
+              The Murder in MITropolis)
             </li>
 
             <li>
-              <strong>11</strong> teams finished the Hunt.
+              <strong>{solvedHunt}</strong> teams finished the Hunt.
             </li>
           </ul>
 
