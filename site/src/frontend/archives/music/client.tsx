@@ -441,7 +441,7 @@ const LoopingAudioPlayer = ({
   useEffect(() => {
     const audioContext = new AudioContext();
     setCtx(audioContext);
-  }, [src]);
+  }, []);
 
   useEffect(() => {
     if (!playing || !ctx || buffer) return;
@@ -479,7 +479,6 @@ const LoopingAudioPlayer = ({
 
     return () => {
       abort.abort();
-      setBuffer(null);
     };
   }, [src, playing, ctx, buffer]);
 
