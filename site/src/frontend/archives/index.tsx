@@ -166,6 +166,13 @@ export function indexHandler() {
               eggs.
             </li>
             <li>
+              <a href="/2025/extras/music">Music</a>: Original music composed
+              and arranged by the team which was featured in{" "}
+              <a href="https://www.youtube.com/watch?v=cWPZ61YgY6s">Kickoff</a>,{" "}
+              <a href={`${rootUrl}/interactions/the_vault`}>the finale</a>, and
+              each of the in-person interactions following capstone super-metas.
+            </li>
+            <li>
               <a href="/2025/extras/radio">Radio</a>: Design, schematics, and
               firmware for the radio that each on-campus team received. (And
               while we are unable to broadcast the original WDNM 2π PM radio
