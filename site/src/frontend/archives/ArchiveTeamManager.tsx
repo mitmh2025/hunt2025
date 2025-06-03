@@ -171,7 +171,7 @@ const ArchiveTeamManager = () => {
           {confirming === "reset-start"
             ? "Reset to start of Hunt?"
             : confirming === "reset-end"
-              ? "Reset to end of Hunt?"
+              ? "Reset with everything unlocked?"
               : confirming === "save"
                 ? "Reset to new state?"
                 : ""}
@@ -182,7 +182,7 @@ const ArchiveTeamManager = () => {
           {confirming === "reset-start"
             ? "reset to the start of the Hunt"
             : confirming === "reset-end"
-              ? "reset to the end of the Hunt"
+              ? "reset with everything unlocked"
               : confirming === "save"
                 ? "reset to the state you’ve pasted in"
                 : ""}
@@ -202,7 +202,8 @@ const ArchiveTeamManager = () => {
           Below you can see a compressed representation of your current progress
           through the Hunt. If you’re working with others, you can share this
           back and forth to stay in sync. You can also reset either to the
-          beginning or the end of the Hunt.
+          beginning of the Hunt, or a more traditional Hunt archive format with
+          all rounds and puzzles unlocked (but nothing solved).
         </p>
 
         <p>
@@ -222,7 +223,7 @@ const ArchiveTeamManager = () => {
             Reset to start of Hunt
           </Button>
           <Button disabled={confirming !== undefined} onClick={resetEnd}>
-            Reset to end of Hunt
+            Reset to fully unlocked state
           </Button>
           <Button onClick={copyToClipboard}>
             {copied ? "Copied!" : "Copy to clipboard"}

@@ -87,14 +87,14 @@ const InitializeActivityLogModal = ({ unmount }: { unmount: () => void }) => {
             Right now, the Hunt hasn’t started yet. If you’d like, you can start
             at the beginning of the Hunt — this archival site supports as much
             of the original unlock structure as we were able to manage.
-            Alternatively, you can skip to what the Hunt website looked like by
-            the time a team had finished.
+            Alternatively, you can unlock all rounds and puzzles for a more
+            traditional Hunt archive format.
           </p>
 
           <p>
-            If you choose to explore from the end, we will also include a
-            handful of reserve puzzles that were written and tested but never
-            released. You can find them with the other{" "}
+            If you choose to unlock everything, we will also include a handful
+            of reserve puzzles that were written and tested but never released.
+            You can find them with the other{" "}
             <a href={`${rootUrl}/rounds/stray_leads`}>Stray Leads</a>.
           </p>
 
@@ -109,7 +109,7 @@ const InitializeActivityLogModal = ({ unmount }: { unmount: () => void }) => {
               Start the Hunt from beginning
             </Button>
             <Button onClick={handleEnd} disabled={disable}>
-              Explore from the end
+              Unlock everything
             </Button>
           </div>
         </AuthorsNoteBlock>
@@ -137,8 +137,8 @@ const LockedModal = ({ unmount }: { unmount: () => void }) => {
           </p>
 
           <p>
-            If you’d like to reset your local state to the end of the Hunt,
-            ensuring that this page is unlocked, you can do so on the{" "}
+            If you’d like to reset your local state with everything unlocked,
+            including this puzzle, you can do so on the{" "}
             <a href={`${rootUrl}/team`}>Manage Team page</a>
           </p>
         </AuthorsNoteBlock>
@@ -156,7 +156,7 @@ const UninitializedPuzzleModal = ({ unmount }: { unmount: () => void }) => {
           <p>Welcome to the 2025 MIT Mystery Hunt archives!</p>
 
           <p>
-            If you’d like like to view this puzzle, feel free to close this
+            If you’d just like to view this puzzle, feel free to close this
             dialog and do so. However, this archival site also supports as much
             of the original Hunt unlock structure as we were able to manage. If
             you’d like to experience the Hunt from the beginning, you can do so
