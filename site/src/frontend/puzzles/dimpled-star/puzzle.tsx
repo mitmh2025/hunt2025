@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
 import { AuthorsNote, AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import archiveMode from "../../utils/archiveMode";
 import "./assets/waypoint0.opus";
 import "./assets/waypoint1.opus";
 import "./assets/waypoint10.opus";
@@ -108,6 +109,39 @@ const Puzzle = () => {
           they followed Billie around campus via the narration, they would
           receive additional instruction via radio voiceover.
         </p>
+
+        <p>
+          These messages were triggered by BlueTooth Low Energy beacons
+          configured as iBeacons and placed around campus. Because the beacons
+          were quite small — roughly 50mm×50mm×20mm — they could be hidden out
+          of sight, while still being detectable from a roughly 3 meter radius.
+          When tuned to{" "}
+          <Math>
+            <MFrac>
+              <MRow>
+                <MN>17</MN>
+                <MI>π</MI>
+              </MRow>
+              <MRow>
+                <MN>10</MN>
+              </MRow>
+            </MFrac>
+          </Math>
+          , the radio would aggressively scan for these beacons, keep track of
+          the highest beacon that it had seen (only incrementing the counter by
+          one at a time to avoid accidentally skipping forward), and play the
+          corresponding audio file when a new beacon was detected. In order to
+          avoid issues with wireless connectivity, all of the audio clips were
+          stored locally on the radio’s flash.
+        </p>
+
+        {archiveMode && (
+          <p>
+            (If you’d like to read more about the radio’s hardware and software
+            design, there is <a href="/2025/extras/radio">an entire page</a>{" "}
+            with additional details.)
+          </p>
+        )}
 
         <p>
           The following video shows the path around campus, with the voiceover
