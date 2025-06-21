@@ -44,13 +44,28 @@ const Interaction = () => {
           was…somewhat challenging for us to execute from a logistics and
           staffing perspective. Cardinality, as the winning team, got the full
           experience; all other teams that finished the Hunt saw an abbreviated
-          version. However, we’ve captured below the full experience as it was
-          envisioned.
+          version.
         </p>
 
         <p>
-          (Our thanks to Cardinality for sharing the linked and inline photos
-          with us)
+          You can see much of the full experience, including the dramatic
+          conclusion as performed by our cast, in this video:
+        </p>
+
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/P9xkGYV6nNg"
+          title="The Vault - MITMH2025"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+
+        <p>
+          Or if you’d prefer to read about what happened, we’ve captured below
+          the full experience as it was envisioned. (Our thanks to Cardinality
+          for sharing the linked and inline photos below with us)
         </p>
       </AuthorsNoteBlock>
 
