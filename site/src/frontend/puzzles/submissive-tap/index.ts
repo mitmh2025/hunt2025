@@ -25,6 +25,14 @@ const puzzle: PuzzleDefinition = {
       who: ["rfong"],
       for_what: "Videography",
     },
+    {
+      for_what: "Archival videography",
+      who: ["Steve Ewing of Stand Inside Media"],
+    },
+    {
+      for_what: "Archival video editing",
+      who: ["Evan Broder"],
+    },
   ],
   content: {
     component: Puzzle,
