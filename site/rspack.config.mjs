@@ -561,6 +561,7 @@ export default function createConfigs(_env, argv) {
       interaction_link: "./src/frontend/interaction_link/client.tsx",
 
       archive_flash_prevention: "./src/frontend/archives/flash_prevention.ts",
+      archive_gala: "./src/frontend/archives/gala/client.tsx",
       archive_music: "./src/frontend/archives/music/client.tsx",
       archive_stats: "./src/frontend/archives/stats/client.tsx",
       archive_puzzle_stats: "./src/frontend/archives/stats/puzzle_client.tsx",

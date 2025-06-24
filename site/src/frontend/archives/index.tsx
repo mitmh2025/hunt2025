@@ -160,6 +160,12 @@ export function indexHandler() {
               eggs.
             </li>
             <li>
+              <a href="/2025/extras/gala">Gala</a>: Learn more about the Gala,
+              which served as both the central event framing the story of the
+              Hunt and a real-world hub for a wide variety of in-person
+              activities.
+            </li>
+            <li>
               <a href="/2025/extras/music">Music</a>: Original music composed
               and arranged by the team which was featured in{" "}
               <a href="https://www.youtube.com/watch?v=cWPZ61YgY6s">Kickoff</a>,{" "}
