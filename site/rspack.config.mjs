@@ -601,6 +601,7 @@ export default function createConfigs(_env, argv) {
         "./src/frontend/puzzles/plump-himalayas/display.tsx",
       puzzle_quixotic_shoe: "./src/frontend/puzzles/quixotic-shoe/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
+      puzzle_rude_field: "./src/frontend/puzzles/rude-field/client.tsx",
       puzzle_sorrowful_glass:
         "./src/frontend/puzzles/sorrowful-glass/client.tsx",
       puzzle_sinful_turkey: "./src/frontend/puzzles/sinful-turkey/client.tsx",
