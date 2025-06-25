@@ -60,28 +60,28 @@ const handler: PageRenderer<ParamsDictionary> = () => {
           <p>
             The most prominent feature of the Gala was a 20-foot-long bar (with
             no alcohol, of course). The bar was staffed full-time with
-            team-members dressed as bartenders. They served as first
-            point-of-contact for any time solvers visited the Gala, and handled
+            team-members dressed as bartenders. They served as the first
+            point-of-contact for any solvers visiting the Gala and handled
             distribution of physical puzzles, running post-puzzle interactions,
             and collecting items that solvers had been instructed to make and
-            bring us. In addition to pure physical puzzles that needed to be
-            picked up, many of our puzzles were specifically written around
-            creating interactions at the Gala bar, and teams found themselves
-            frequently coming back to speak with the bartenders. The
-            interactions created many memorable moments and an atmosphere of
-            constant activity, as teams attempted to seduce our bar staff, beat
-            them at card games or darts, or settle their outstanding bill in
-            order to get access to answers or more puzzle content.
+            bring us. Beyond pure physical puzzle pickup, many of our puzzles
+            were specifically written around creating interactions at the Gala
+            bar, and teams found themselves frequently coming back to speak with
+            the bartenders. The interactions created many memorable moments and
+            an atmosphere of constant activity as teams attempted to seduce our
+            bar staff, beat them at card games or darts, or settle their
+            outstanding bar tab in order to get access to answers or more puzzle
+            content.
           </p>
 
           <p>
-            As for the bar itself, the bartop was built out of wood, while the
-            backbar consisted of decorative coverings over standard wire
-            shelves. The bartop was curved in order to give it more presence,
-            allow more solvers to be served at once, and to better separate the
-            spaces in front of and behind the bar. On the bar sat three “cash
-            registers,” which hid tablet computers used by the bartenders to
-            track which teams had successfully unlocked which interactions. The
+            The bar itself was custom-built out of wood, while the backbar
+            consisted of decorative coverings over standard wire shelves. The
+            bartop was curved in order to give it more presence, allow more
+            solvers to be served at once, and to better separate the spaces in
+            front of and behind the bar. On the bar sat three “cash registers,”
+            which hid tablet computers used by the bartenders to track which
+            teams had successfully unlocked which interactions. The
             diamond-shaped cutouts at the top of the backbar reflect the missing
             status of the Shadow Diamond and match the{" "}
             <a href="/2025/extras/coin">cutout in the design of the coin</a>.
@@ -94,7 +94,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
             </a>
             . The bottles were also held up with barrel bolts; when opened, they
             would flip down to allow access to physical puzzles, which were
-            stored behind the bottles. On one side the backbar, a large phone
+            stored behind the bottles. On one side of the backbar, a large phone
             was installed which the bartenders could remotely operate for{" "}
             <a href={`${rootUrl}/puzzles/in_communicado_tonight`}>
               In Communicado Tonight

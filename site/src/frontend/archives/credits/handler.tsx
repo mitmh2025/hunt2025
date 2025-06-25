@@ -119,6 +119,10 @@ const Credits = styled.div`
         text-align: center;
 
         @media ${deviceMax.md} {
+          flex-basis: 33%;
+        }
+
+        @media ${deviceMax.sm} {
           flex-basis: 50%;
         }
       }
