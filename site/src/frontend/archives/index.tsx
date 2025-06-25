@@ -94,7 +94,7 @@ export function indexHandler() {
           <p>
             In typical noir fashion, while searching for the missing diamond,
             teams learn that the situation is far more complicated than it
-            seemed on the surface. While four of characters are innocent of
+            seemed on the surface. While four characters are innocent of
             stealing the diamond, each has an unrelated dark secret of their own
             to uncover. The thief who stole the diamond turns up dead, and the
             diamond they had stolen turns out to be fake.
