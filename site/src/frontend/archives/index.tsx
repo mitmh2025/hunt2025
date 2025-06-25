@@ -47,7 +47,7 @@ export function indexHandler() {
             <strong>
               The Providence Crime Syndications and the MIT Puzzle Club
             </strong>{" "}
-            ran an pre-hunt as an event for students. The{" "}
+            ran a pre-hunt as an event for students. The{" "}
             <strong>
               <a href="/2025/heist/">MIT Mystery Heist</a>
             </strong>{" "}
@@ -163,7 +163,7 @@ export function indexHandler() {
           <ExtraList>
             <li>
               <a href="/2025/extras/credits">Credits</a>: Over 165 people worked
-              tierlessly for both a year and a weekend to bring the 2025 MIT
+              tirelessly for both a year and a weekend to bring the 2025 MIT
               Mystery Hunt to life. In addition to credits on individual puzzle
               pages, you can roll the overall credits here.
             </li>

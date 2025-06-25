@@ -73,7 +73,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
             <a href={`${rootUrl}/interactions/confront_papa`}>Papa</a>). All of
             the interactions (other than The Safehouse) included vamps, played
             on loop to underscore the activity that solvers needed to complete;
-            in in-room operator would advance the score when teams completed the
+            an in-room operator would advance the score when teams completed the
             activity.
           </p>
 
