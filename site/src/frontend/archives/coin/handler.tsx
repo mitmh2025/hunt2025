@@ -112,13 +112,25 @@ const HighlightedImage = ({
 };
 
 const CoinHighlights = styled.div<{ $highlightClasses?: string[] }>`
+  .image-row {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    @media screen {
+      background-color: var(--black);
+    }
+
+    p {
+      margin-bottom: 0.5rem;
+    }
+  }
   .coin-images {
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    position: sticky;
-    top: 0;
-    padding-bottom: 1rem;
 
     @media screen {
       background-color: var(--black);
@@ -223,26 +235,28 @@ const coinHandler: PageRenderer<ParamsDictionary> = () => {
               ]),
             ]}
           >
-            <div className="coin-images">
-              <div className="coin-image">
-                <HighlightedImage
-                  base={ObverseBase}
-                  highlights={ObverseHighlights}
-                />
+            <div className="image-row">
+              <div className="coin-images">
+                <div className="coin-image">
+                  <HighlightedImage
+                    base={ObverseBase}
+                    highlights={ObverseHighlights}
+                  />
+                </div>
+                <div className="coin-image">
+                  <HighlightedImage
+                    base={ReverseBase}
+                    highlights={ReverseHighlights}
+                  />
+                </div>
               </div>
-              <div className="coin-image">
-                <HighlightedImage
-                  base={ReverseBase}
-                  highlights={ReverseHighlights}
-                />
-              </div>
-            </div>
-            <div className="coin-details">
               <p>
                 The design of the coin features a number of details, calling
                 back to some of our favorite elements and moments from the Hunt:
               </p>
+            </div>
 
+            <div className="coin-details">
               <ul>
                 <li className="description diamond">
                   <strong>The Missing Diamond</strong>: As the Shadow Diamond
