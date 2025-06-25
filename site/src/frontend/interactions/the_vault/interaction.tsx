@@ -40,7 +40,7 @@ const Interaction = () => {
         <p>
           The 6 teams that reached this point while HQ was open during Mystery
           Hunt were able to complete some variation of our finale sequence. We
-          learned quickly that the full endgame as origianlly envisioned
+          learned quickly that the full endgame as originally envisioned
           was…somewhat challenging for us to execute from a logistics and
           staffing perspective. Cardinality, as the winning team, got the full
           experience; all other teams that finished the Hunt saw an abbreviated
