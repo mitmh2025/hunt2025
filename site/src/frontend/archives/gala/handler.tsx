@@ -128,7 +128,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
 
           <p>
             As teams reached milestones in the Hunt, they were instructed to
-            confront characters with what they’d learn. Upon showing up at the
+            confront characters with what they’d learned. Upon showing up at the
             Gala bar to do so, they were whisked away to the Speakeasy for a
             private interaction. (After all, you can’t have them blabbing out
             secrets in the middle of the party!) Each of these interactions
