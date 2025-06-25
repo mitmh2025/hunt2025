@@ -3,6 +3,8 @@ import { css, styled } from "styled-components";
 import { PuzzleMain } from "./PuzzleLayout";
 import { darkBgLinkStyles, Wrapper } from "./StyledUI";
 
+import diamondIcon from "../../assets/logo-simple.svg";
+
 const BG = "var(--black)";
 
 const StyledWrapper = styled(Wrapper)<{ $fullWidth?: boolean }>`
@@ -111,6 +113,21 @@ const ContentsWrapper = styled.div`
   grid-column: tall-start / tall-end;
   grid-row: wide-start / wide-end;
   padding: 0.5rem;
+  position: relative;
+
+  &:before {
+    content: "";
+    background: url(${diamondIcon});
+    background-repeat: no-repeat;
+    width: 5rem;
+    height: 7rem;
+    display: block;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    opacity: 0.3;
+    transform: rotate(2deg);
+  }
 `;
 
 const GoldBorderTall = styled(NoPointerEvents)`
