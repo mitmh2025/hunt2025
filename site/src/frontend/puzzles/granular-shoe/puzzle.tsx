@@ -38,8 +38,9 @@ const Puzzle = (): JSX.Element => {
           >
             digital version of the puzzle
           </a>{" "}
-          with the same 156 pieces, adapted slightly for the “single-sided”
-          nature of Google Slides.
+          with the same content, adapted slightly for the “single-sided” nature
+          of Google Slides. (There are only 109 pieces of “paper”, for a total
+          of 149 pieces.)
         </p>
 
         <p>
