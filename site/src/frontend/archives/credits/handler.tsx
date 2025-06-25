@@ -13,11 +13,18 @@ import { type PageRenderer } from "../../utils/renderApp";
 
 const Credits = styled.div`
   h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h3 {
     text-align: center;
+  }
+
+  h2 {
+    padding: 0;
+    margin: 2rem 0;
+  }
+
+  h3 {
+    padding: 0;
+    margin: 1rem 0;
   }
 
   dd {
@@ -66,6 +73,7 @@ const Credits = styled.div`
   dl.credits-list {
     dt {
       text-align: center;
+      margin-bottom: 1rem;
     }
 
     dd ul {
@@ -75,7 +83,7 @@ const Credits = styled.div`
       justify-content: flex-start;
       align-items: flex-start;
       align-content: flex-start;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
 
       li {
         flex: 0 0 25%;
@@ -781,6 +789,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                   <li>Kendra Pugh</li>
                   <li>rfong </li>
                   <li>Chris Roske</li>
+                  <li>Quentin Smith</li>
                   <li>Jason Sproul</li>
                   <li>Will Vahle</li>
                   <li>Arcturus Wang</li>
@@ -865,6 +874,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                   <li>Atul Shatavart Nadig</li>
                   <li>Jess Sheehan</li>
                   <li>Ollie Shonaldmann</li>
+                  <li>Quentin Smith</li>
                   <li>Jason Sproul</li>
                   <li>Gita Srivastava</li>
                   <li>Aletta Tibbetts</li>
@@ -1180,6 +1190,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                   <li>Michele Pratusevich</li>
                   <li>Erin Price</li>
                   <li>rfong</li>
+                  <li>Quentin Smith</li>
                   <li>Arcturus Wang</li>
                 </ul>
               </dd>
