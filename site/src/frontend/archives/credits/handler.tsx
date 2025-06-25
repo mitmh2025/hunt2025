@@ -31,7 +31,10 @@ const Credits = styled.div`
   }
 
   dl.credits-large {
-    font-size: 1.25rem;
+    dt {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
   }
 
   dl.credits-stack {
