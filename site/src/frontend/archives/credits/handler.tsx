@@ -8,7 +8,7 @@ import {
   PageTitle,
   PageMain,
 } from "../../components/PageLayout";
-import { deviceMax } from "../../utils/breakpoints";
+import { deviceMax, sizeMax } from "../../utils/breakpoints";
 import { type PageRenderer } from "../../utils/renderApp";
 
 const Credits = styled.div`
@@ -19,12 +19,38 @@ const Credits = styled.div`
 
   h2 {
     padding: 0;
-    margin: 2rem 0;
+    margin: 3rem auto 1rem auto;
+    font-size: 1.75rem;
+    display: table;
+    white-space: nowrap;
+    max-width: ${sizeMax.sm};
+    width: 100%;
+
+    &:before,
+    &:after {
+      border-top: 5px double var(--gold-800);
+      content: "";
+      display: table-cell;
+      position: relative;
+      top: calc(1rem + 3px);
+      width: 45%;
+    }
+    &:before {
+      right: 1.5%;
+    }
+    &:after {
+      left: 1.5%;
+    }
   }
 
   h3 {
     padding: 0;
-    margin: 1rem 0;
+    margin: 1rem 0 0.5rem 0;
+  }
+
+  dl {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
   }
 
   dd {
@@ -41,6 +67,7 @@ const Credits = styled.div`
     dt {
       font-size: 1.25rem;
       font-weight: bold;
+      margin-top: 1.5rem;
     }
   }
 
@@ -73,7 +100,9 @@ const Credits = styled.div`
   dl.credits-list {
     dt {
       text-align: center;
-      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      margin: 1rem 0 0.5rem 0;
+      font-family: var(--headline-font);
     }
 
     dd ul {
@@ -99,7 +128,8 @@ const Credits = styled.div`
   .credits-blurb {
     text-align: center;
     max-width: 600px;
-    margin: 0 auto;
+    margin: 0 auto 1.5rem auto;
+    font-style: italic;
   }
 `;
 
@@ -683,8 +713,8 @@ const handler: PageRenderer<ParamsDictionary> = () => {
               <dt>Colt Sidecar</dt>
               <dd>Atul Shatavart Nadig</dd>
 
-              <dt>James Douberley</dt>
-              <dd>Himself</dd>
+              <dt>James Bluebook</dt>
+              <dd>James Douberley</dd>
 
               <dt>Heckler</dt>
               <dd>John Silvio</dd>
@@ -705,7 +735,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
               <dt>Roger the Sailor</dt>
               <dd>Elan Blaustein</dd>
 
-              <dt>The Arcade Owner</dt>
+              <dt>Arcade Owner</dt>
               <dd>Molly Frey</dd>
 
               <dt>Judith Calvert the Gallery Owner</dt>
@@ -714,7 +744,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
               <dt>Micah Flint the Gemcutter</dt>
               <dd>Andrew Russell</dd>
 
-              <dt>The Card Sharks</dt>
+              <dt>Card Sharks</dt>
               <dd>
                 <ul>
                   <li>Alex Churchill</li>
@@ -1155,7 +1185,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
               <dt>Archive Lead</dt>
               <dd>Evan Broder</dd>
             </dl>
-
+            <h3>Radio</h3>
             <dl className="credits-row credits-compact">
               <dt>Radio Lead</dt>
               <dd>Evan Broder</dd>
@@ -1195,7 +1225,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                 </ul>
               </dd>
             </dl>
-
+            <h3>Typesetting</h3>
             <dl className="credits-row credits-compact">
               <dt>Lead Typesetter</dt>
               <dd>Ariel Schwartz</dd>
