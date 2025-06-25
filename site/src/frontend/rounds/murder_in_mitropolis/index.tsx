@@ -1,7 +1,7 @@
 import { type Placement } from "@floating-ui/react";
 import React from "react";
 import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
-import { teamIsImmutableForSSR } from "../../../utils/teamIsImmutable";
+import { teamIsImmutableForForcedUnlock } from "../../../utils/teamIsImmutable";
 import { PUZZLES } from "../../puzzles";
 import MurderBody from "./MurderBody";
 // pages for meta
@@ -770,7 +770,10 @@ export function murderState(
   teamState: TeamHuntState,
   { username }: { username: string },
 ): MurderState {
-  const immutable = teamIsImmutableForSSR(username);
+  const immutable = teamIsImmutableForForcedUnlock(
+    username,
+    teamState.gates_satisfied.includes("hunt_closed"),
+  );
   const epoch = teamState.epoch;
   const round = teamState.rounds.murder_in_mitropolis;
   if (!round) return { epoch, items: [], imagery: [], pdfImagery: [] };

@@ -5,8 +5,12 @@ export default function teamIsImmutable(username: string): boolean {
   return (IMMUTABLE_TEAM_USERNAMES as readonly string[]).includes(username);
 }
 
-export function teamIsImmutableForSSR(username: string): boolean {
+export function teamIsImmutableForForcedUnlock(
+  username: string,
+  force: boolean,
+): boolean {
   return (
-    teamIsImmutable(username) && (!archiveMode || typeof window === "undefined")
+    teamIsImmutable(username) &&
+    (!archiveMode || typeof window === "undefined" || force)
   );
 }

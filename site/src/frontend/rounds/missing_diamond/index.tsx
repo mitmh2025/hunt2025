@@ -1,6 +1,6 @@
 import React from "react";
 import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
-import { teamIsImmutableForSSR } from "../../../utils/teamIsImmutable";
+import { teamIsImmutableForForcedUnlock } from "../../../utils/teamIsImmutable";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 import MissingDiamondBody from "./MissingDiamondBody";
@@ -1095,7 +1095,10 @@ export function missingDiamondState(
   teamState: TeamHuntState,
   { username }: { username: string },
 ): MissingDiamondState {
-  const immutable = teamIsImmutableForSSR(username);
+  const immutable = teamIsImmutableForForcedUnlock(
+    username,
+    teamState.gates_satisfied.includes("hunt_closed"),
+  );
 
   const speechBubbles = genSpeechBubbles(teamState);
   const locations = genLocations(teamState);

@@ -1,6 +1,6 @@
 import React from "react";
 import { type TeamInfo, type TeamHuntState } from "../../../../lib/api/client";
-import { teamIsImmutableForSSR } from "../../../utils/teamIsImmutable";
+import { teamIsImmutableForForcedUnlock } from "../../../utils/teamIsImmutable";
 import { PUZZLES } from "../../puzzles";
 import BackgroundCheckBody from "./BackgroundCheckBody";
 import { Background } from "./Layout";
@@ -575,7 +575,10 @@ export function backgroundCheckState(
   teamState: TeamHuntState,
   { username }: { username: string },
 ): BackgroundCheckState {
-  const immutable = teamIsImmutableForSSR(username);
+  const immutable = teamIsImmutableForForcedUnlock(
+    username,
+    teamState.gates_satisfied.includes("hunt_closed"),
+  );
   const epoch = teamState.epoch;
   const items = SLOTS.flatMap((slot: string) => itemForSlot(slot, teamState));
   const imagery = genObjects(teamState, { immutable });
