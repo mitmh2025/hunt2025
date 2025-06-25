@@ -26,7 +26,16 @@ const puzzle: PuzzleDefinition = {
     "Nathan Fung",
     "Robin Deits",
   ],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Archival videography",
+      who: ["Steve Ewing of Stand Inside Media"],
+    },
+    {
+      for_what: "Archival video editing",
+      who: ["Evan Broder"],
+    },
+  ],
   content: {
     component: Puzzle,
   },
