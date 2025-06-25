@@ -1209,12 +1209,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
               <Math>
                 <MI>2π</MI>
               </Math>{" "}
-              radio broadcast during Mystery Hunt featured the following music,
-              also available in{" "}
-              <a href="https://drive.google.com/drive/folders/10DpW_xEtxgsa42OmK4zcH6xImdD3KZnb">
-                a Google Drive folder
-              </a>
-              :
+              radio broadcast during Mystery Hunt featured the following music:
             </p>
 
             <ul>
