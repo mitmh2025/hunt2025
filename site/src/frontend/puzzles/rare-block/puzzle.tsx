@@ -88,6 +88,7 @@ const Puzzle = (): JSX.Element => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
+          style={{ width: "100%", height: "100%", aspectRatio: "16 / 9" }}
         ></iframe>
 
         <p>
