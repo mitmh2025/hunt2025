@@ -29,8 +29,11 @@ const ModalBackdrop = styled.div`
 `;
 
 const ModalContent = styled.div`
-  width: 50%;
+  width: 80%;
+  max-height: 80%;
+  max-width: 500px;
   position: relative;
+  overflow-y: auto;
 
   ${AuthorsNoteBlock} {
     margin: 0;
@@ -45,6 +48,16 @@ const CloseButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+`;
+
+const InitializeButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+
+  flex-direction: row;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 const InitializeActivityLogModal = ({ unmount }: { unmount: () => void }) => {
@@ -104,14 +117,14 @@ const InitializeActivityLogModal = ({ unmount }: { unmount: () => void }) => {
             <a href={`${rootUrl}/team`}>Manage Team page</a>.
           </p>
 
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <InitializeButtonWrapper>
             <Button onClick={handleReset} disabled={disable}>
               Start the Hunt from beginning
             </Button>
             <Button onClick={handleEnd} disabled={disable}>
               Unlock everything
             </Button>
-          </div>
+          </InitializeButtonWrapper>
         </AuthorsNoteBlock>
       </ModalContent>
     </ModalBackdrop>
