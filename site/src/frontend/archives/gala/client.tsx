@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
-import { Lightbox, type Render, type Slide } from "yet-another-react-lightbox";
+import {
+  Lightbox,
+  type Render,
+  type Slide,
+  type ThumbnailsRef,
+} from "yet-another-react-lightbox";
 import Captions from "yet-another-react-lightbox/plugins/captions";
+import "yet-another-react-lightbox/plugins/captions.css";
 import Inline from "yet-another-react-lightbox/plugins/inline";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
-import "yet-another-react-lightbox/styles.css";
-import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
+import "yet-another-react-lightbox/styles.css";
 import renderRoot from "../../../utils/renderRoot";
+import { deviceMax } from "../../utils/breakpoints";
 import rootUrl from "../../utils/rootUrl";
 import ambiance0 from "./assets/ambiance/ambiance0.jpg";
 import ambiance1 from "./assets/ambiance/ambiance1.jpg";
@@ -391,7 +397,6 @@ const renderSlide: Render["slide"] = ({ slide }) => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
-          style={{ width: "100%", height: "100%", aspectRatio: "16 / 9" }}
         />
       );
     default:
@@ -402,6 +407,24 @@ const renderSlide: Render["slide"] = ({ slide }) => {
 const Carousel = ({ slides }: { slides: Slide[] }) => {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
+  const thumbnails = useRef<ThumbnailsRef>(null);
+
+  useEffect(() => {
+    const smallScreen = window.matchMedia(deviceMax.md);
+    const handleSizeChange = (evt: MediaQueryList | MediaQueryListEvent) => {
+      if (!thumbnails.current) return;
+      if (evt.matches) {
+        thumbnails.current.hide();
+      } else {
+        thumbnails.current.show();
+      }
+    };
+    handleSizeChange(smallScreen);
+    smallScreen.addEventListener("change", handleSizeChange);
+    return () => {
+      smallScreen.removeEventListener("change", handleSizeChange);
+    };
+  }, []);
 
   return (
     <>
@@ -411,6 +434,7 @@ const Carousel = ({ slides }: { slides: Slide[] }) => {
           index={index}
           slides={slides}
           render={{ slide: renderSlide }}
+          thumbnails={{ ref: thumbnails }}
           on={{
             view: ({ index }) => {
               if (!open) {
