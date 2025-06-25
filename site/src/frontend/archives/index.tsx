@@ -193,7 +193,7 @@ export function indexHandler() {
               <a href={`${rootUrl}/virtual_radio`}>virtual radio</a> page.)
             </li>
             <li>
-              <a href="/2025/extras/stats">Statistics</a>: Stastics from the
+              <a href="/2025/extras/stats">Statistics</a>: Statistics from the
               Hunt, including the full activity log.
             </li>
             <li>
@@ -202,8 +202,8 @@ export function indexHandler() {
                 Interview at the Boardwalk
               </a>{" "}
               featured three minigames that you had to play on Roger’s behalf.
-              If you’d like to just play the games without the full interview,
-              you can do so here.
+              If you’d like to play the games without the full interview, you
+              can do so here.
             </li>
           </ExtraList>
         </PageMain>

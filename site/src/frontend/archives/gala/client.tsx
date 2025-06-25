@@ -173,7 +173,7 @@ const ambianceSlides: Slide[] = [
     src: ambiance0,
     description: (
       <>
-        The Providence Crime Transplantations setup for a dashing team photo at
+        The Providence Crime Transplantations pose for a dashing team photo at
         the photo booth
       </>
     ),
@@ -228,7 +228,7 @@ const ambianceSlides: Slide[] = [
     src: ambiance4,
     description: (
       <>
-        Teams often setup at the Gala for short (or sometimes long) periods of
+        Teams often sat at the Gala for short (or sometimes long) periods of
         time to work on puzzles
       </>
     ),
@@ -267,14 +267,15 @@ const speakeasySlides: Slide[] = [
     description: (
       <>
         The primary location of the Speakeasy, better known as the Stata Center
-        Patil/Kiva Seminar Room, setup as it was for most of the weekend, a{" "}
+        Patil/Kiva Seminar Room, set up as{" "}
         <a
           href={`${rootUrl}/interactions/the_crime_scene`}
           target="_blank"
           rel="noreferrer"
         >
-          Crime Scene
-        </a>
+          The Crime Scene
+        </a>{" "}
+        (as it was for most of the weekend)
       </>
     ),
   },

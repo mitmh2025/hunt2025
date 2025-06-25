@@ -203,7 +203,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
 
           <p>
             And finally, after Baby slammed the vault door shut for her grand
-            denoument, Katrina’s theme faded out and was replaced with a new
+            denouement, Katrina’s theme faded out and was replaced with a new
             dissonant variation on “Hush Little Baby”, which vamped in the
             background as the characters tied up the loose ends of the plot,
             before the police sirens of Katrina’s backup faded in from the
