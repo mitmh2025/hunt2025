@@ -147,7 +147,7 @@ export function indexHandler() {
           </p>
           <p>
             We’ve also collated video footage taken during Hunt into recaps of{" "}
-            <a href={`${rootUrl}/rounds/events`}>several of the events</a>,{" "}
+            <a href={`${rootUrl}/rounds/events`}>the events</a>,{" "}
             <a href={`${rootUrl}/interactions/the_vault`}>the finale</a>, and a
             few particularly dramatic puzzles such as{" "}
             <a href={`${rootUrl}/puzzles/control_room`}>Control Room</a> and{" "}
