@@ -26,8 +26,8 @@ const puzzle: PuzzleDefinition = {
       ],
     },
     {
-      who: ["Font Awesome"],
-      for_what: "Person icons used under CC BY 4.0 license",
+      for_what: "Post-solve Campus Photos",
+      who: ["Arcturus Wang", "Jesse Moeller", "Robert “Fro” Myers"],
     },
   ],
   content: {
