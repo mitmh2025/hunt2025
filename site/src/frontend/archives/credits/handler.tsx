@@ -636,7 +636,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
               <dd>
                 <ul>
                   <li>Denis Auroux</li>
-                  <li>Karen Tingly</li>
+                  <li>Karen Tingley</li>
                   <li>Kat Allen</li>
                 </ul>
               </dd>
