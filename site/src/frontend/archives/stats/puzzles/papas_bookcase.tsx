@@ -8,7 +8,7 @@ import React, { useMemo } from "react";
 import { Bar, Chart as ReactChart, Scatter } from "react-chartjs-2";
 import { ErrorText } from "../../../components/StyledUI";
 import { PUZZLES } from "../../../puzzles";
-import Loading from "../Loading";
+import Loading from "../../components/Loading";
 import { useActivityLog } from "../activityLog";
 import {
   Chart,

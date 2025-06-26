@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import { styled } from "styled-components";
 import { StyledPuzzleStatsTable } from "../../../components/StatsLayout";
 import { ErrorText } from "../../../components/StyledUI";
-import Loading from "../Loading";
+import Loading from "../../components/Loading";
 import instructionsCsvUrl from "../assets/control_room_instructions.csv";
 import useCSV from "../useCSV";
 

@@ -12,7 +12,7 @@ import {
 } from "../../../components/StatsLayout";
 import { ErrorText, Mono } from "../../../components/StyledUI";
 import { SUBPUZZLES } from "../../../puzzles";
-import Loading from "../Loading";
+import Loading from "../../components/Loading";
 import { useActivityLog, type ActivityLogRow } from "../activityLog";
 import {
   Chart,

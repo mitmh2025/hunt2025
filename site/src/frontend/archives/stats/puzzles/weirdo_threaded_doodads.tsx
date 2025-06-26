@@ -3,7 +3,7 @@ import { type DateTime } from "luxon";
 import React, { useMemo } from "react";
 import { Scatter } from "react-chartjs-2";
 import { ErrorText } from "../../../components/StyledUI";
-import Loading from "../Loading";
+import Loading from "../../components/Loading";
 import { useActivityLog, type ActivityLogRow } from "../activityLog";
 import { Chart, generateTruncatedTick } from "../charts";
 

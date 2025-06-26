@@ -8,7 +8,7 @@ import canonicalizeInput from "../../../../../lib/canonicalizeInput";
 import { StyledPuzzleStatsTable } from "../../../components/StatsLayout";
 import { ErrorText, Mono } from "../../../components/StyledUI";
 import { FirstPerson, type Person } from "../../../puzzles/new-ketchup/data";
-import Loading from "../Loading";
+import Loading from "../../components/Loading";
 import { HuntEnd, HuntStart } from "../activityLog";
 import whatDoTheyCallYouLogUrl from "../assets/what_do_they_call_you_log.csv";
 import {

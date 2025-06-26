@@ -9,7 +9,7 @@ import { Flow, SankeyController } from "chartjs-chart-sankey";
 import React, { useCallback, useMemo } from "react";
 import { Chart as ReactChart } from "react-chartjs-2";
 import { ErrorText } from "../../../components/StyledUI";
-import Loading from "../Loading";
+import Loading from "../../components/Loading";
 import { useActivityLog } from "../activityLog";
 import { Chart } from "../charts";
 

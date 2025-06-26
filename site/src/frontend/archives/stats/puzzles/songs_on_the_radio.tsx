@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 import { Bar, Scatter } from "react-chartjs-2";
 import { MI, Math as MathML } from "../../../components/MathML";
 import { ErrorText, Mono } from "../../../components/StyledUI";
-import Loading from "../Loading";
+import Loading from "../../components/Loading";
 import { type ActivityLogRow, useActivityLog } from "../activityLog";
 import songsLogCsvUrl from "../assets/songs_on_the_radio_log.csv";
 import { Chart, generateTruncatedTick } from "../charts";

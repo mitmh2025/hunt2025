@@ -37,7 +37,7 @@ import { ErrorText, Mono } from "../../components/StyledUI";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 import rootUrl from "../../utils/rootUrl";
-import Loading from "./Loading";
+import Loading from "../components/Loading";
 import {
   HuntEnd,
   HuntHQClose,

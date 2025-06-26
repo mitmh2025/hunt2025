@@ -14,7 +14,7 @@ import LinkedImage from "../../../components/LinkedImage";
 import { StyledPuzzleStatsTable } from "../../../components/StatsLayout";
 import { ErrorText } from "../../../components/StyledUI";
 import { ALL_GEOGUESSR_LOCATIONS } from "../../../puzzles/deserted-ninja/solution";
-import Loading from "../Loading";
+import Loading from "../../components/Loading";
 import { useActivityLog, type ActivityLogRow } from "../activityLog";
 import puzzleLogUrl from "../assets/estimation_dot_jpg_log.csv";
 import { Chart, generateTruncatedTick } from "../charts";

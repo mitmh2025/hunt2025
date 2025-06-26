@@ -9,7 +9,7 @@ import {
 import { PUZZLES } from "../../puzzles";
 import { type PageRenderer } from "../../utils/renderApp";
 import rootUrl from "../../utils/rootUrl";
-import Loading from "./Loading";
+import Loading from "../components/Loading";
 import activityLog from "./assets/activity_log.csv";
 import parsedActivityLog from "./parsedActivityLog";
 import { PUZZLE_STATS } from "./puzzles";
