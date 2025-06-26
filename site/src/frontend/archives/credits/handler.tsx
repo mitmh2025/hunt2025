@@ -221,6 +221,29 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                   <li>Melanie Matchett Wood</li>
                 </ul>
               </dd>
+
+              <dt>MITropolis Press Corps</dt>
+              <dd>
+                <ul>
+                  <li>Leland Aldridge</li>
+                  <li>Steve Banzaert</li>
+                  <li>Anna Brunner</li>
+                  <li>Rebecca Chang</li>
+                  <li>Robin Deits</li>
+                  <li>James Douberley</li>
+                  <li>Drew Fisher</li>
+                  <li>Nathan Fung</li>
+                  <li>Hubert Hwang</li>
+                  <li>Kevin Hwang</li>
+                  <li>Li-Mei Lim</li>
+                  <li>Jesse Moeller</li>
+                  <li>Atul Shatavart Nadig</li>
+                  <li>Erin Price</li>
+                  <li>Arcturus Wang</li>
+                  <li>Henry Wong</li>
+                  <li>Melanie Matchett Wood</li>
+                </ul>
+              </dd>
             </dl>
 
             <dl className="credits-list">
