@@ -55,7 +55,7 @@ const Interaction = () => {
         <iframe
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/BLo3LVkh51Y"
+          src="https://www.youtube.com/embed/WAU_DmX5Y5E"
           title="The Vault - MITMH2025"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
