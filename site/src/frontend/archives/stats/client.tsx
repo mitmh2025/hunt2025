@@ -1941,7 +1941,7 @@ const App = ({
         <strong>and</strong> (b) that team had the puzzle unlocked for a certain
         period of time (generally 1 hour for Missing Diamond and Stakeout
         puzzles; 2-3 hours for other late round puzzles). This latter condition
-        is not reflected in the count of "puzzles with hints available" below.
+        is not reflected in the count of “puzzles with hints available” below.
       </p>
       <HintGraph
         activityLog={activityLog}
