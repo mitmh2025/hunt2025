@@ -60,6 +60,19 @@ import image from "./assets/radio-photo.jpg";
 import triangleSticker from "./assets/triangle-sticker.svg";
 import warningSticker from "./assets/warning-sticker.svg";
 
+const RadioPuzzles: [slug: string, title: string][] = [
+  ["songs_on_the_radio", "Songs on the Radio"],
+  [
+    "and_now_a_puzzling_word_from_our_sponsors",
+    "And Now, a Puzzling Word From Our Sponsors",
+  ],
+  ["the_thief", "The Thief"],
+  ["a_weathered_note", "A Weathered Note"],
+  ["can_do_transmissions", "Can-Do Transmissions"],
+  ["given_up", "Given Up"],
+  ["given_up_blacklight", "Given Up (Under Blacklight)"],
+];
+
 type Board = { width: number; height: number; url: string };
 type BoardHiglight = {
   x: number;
@@ -486,8 +499,26 @@ const handler: PageRenderer<ParamsDictionary> = () => {
             off-the-shelf and custom components assembled by us. If you’d like
             more information about how teams interacted with the radio, you can
             see the <a href={`${rootUrl}/radio`}>Radio Instruction Booklet</a>{" "}
-            (which was also distributed to teams in physical form).
+            (which was also distributed to teams in physical form). You can also
+            check out the <a href={`${rootUrl}/virtual_radio`}>virtual radio</a>{" "}
+            page, which during Hunt allowed teams to tune in to the WDNM 2π
+            “radio” station or the individual puzzles which utilized the radio
+            (listed in roughly the order we expected teams to encounter them):
           </p>
+
+          <ul>
+            {RadioPuzzles.map(([slug, title]) => (
+              <li key={slug}>
+                <a
+                  href={`${rootUrl}/puzzles/${slug}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {title}
+                </a>
+              </li>
+            ))}
+          </ul>
 
           <p>
             The radio was a complex device, housing three custom PCBs, a
