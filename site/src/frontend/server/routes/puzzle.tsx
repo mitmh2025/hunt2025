@@ -173,7 +173,10 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
 
   // Select content component.
   const content = subpuzzle.content;
-  const ContentComponent = content.component;
+  const ContentComponent =
+    typeof content.component === "object"
+      ? await content.component.lazy().then((m) => m.default)
+      : content.component;
   const title = subpuzzle.title;
 
   const manifest = getComponentManifestForPuzzle(
@@ -405,7 +408,10 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
 
   // Select content component.
   const content = puzzle.content;
-  const ContentComponent = content.component;
+  const ContentComponent =
+    typeof content.component === "object"
+      ? await content.component.lazy().then((m) => m.default)
+      : content.component;
   const title = puzzle.title;
 
   // Use the components for the relevant round.
@@ -626,7 +632,7 @@ function formatList(things: string[]): string {
   return things[0] ?? "";
 }
 
-export function solutionHandler(req: Request<PuzzleParams>) {
+export async function solutionHandler(req: Request<PuzzleParams>) {
   if (!req.teamState) {
     return undefined;
   }
@@ -660,7 +666,10 @@ export function solutionHandler(req: Request<PuzzleParams>) {
 
   // TODO: look up round-specific solution page layout if applicable.
   const content = puzzle.solution;
-  const SolutionComponent = content.component;
+  const SolutionComponent =
+    typeof content.component === "object"
+      ? await content.component.lazy().then((m) => m.default)
+      : content.component;
 
   // Use the entrypoint for pages in the relevant round.
   const manifest = getComponentManifestForPuzzle(

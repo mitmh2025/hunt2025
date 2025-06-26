@@ -80,7 +80,9 @@ type ContentProps<T extends "puzzle" | "subpuzzle" | "solution"> =
 
 export type Content<T extends "puzzle" | "subpuzzle" | "solution"> = {
   // TODO: figure out what props get passed to this FunctionComponent
-  component: FunctionComponent<ContentProps<T>>;
+  component:
+    | FunctionComponent<ContentProps<T>>
+    | { lazy: () => Promise<{ default: FunctionComponent<ContentProps<T>> }> };
 };
 
 type EnrichedPuzzleContentProps = {
