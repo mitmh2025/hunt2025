@@ -132,6 +132,7 @@ const ButtonContainer = styled.div`
   padding: 0;
   border-radius: 1.5rem;
   margin-inline: -0.5rem;
+  min-width: 2rem;
 
   &:hover {
     background: var(--gray-200);
