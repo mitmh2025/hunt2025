@@ -332,7 +332,7 @@ const SolveGraph = ({
           checked={mode === "metas"}
           onChange={setModeMetas}
         />
-        <label htmlFor="metas">Metapuzzless</label>
+        <label htmlFor="metas">Metapuzzles</label>
         <input
           type="radio"
           id="supermetas"
@@ -1548,27 +1548,23 @@ const InteractionResultGraph = ({
       } =>
         row.type === "interaction_completed" &&
         row.slug !== undefined &&
-        row.result !== undefined,
+        row.result !== undefined &&
+        row.result !== "",
     );
 
-    const allResults = new Map<
+    const results = new Map<
       string /* slug */,
       Map<string /* result */, number>
     >();
     resultLogs.forEach(({ slug, result }) => {
-      if (!allResults.has(slug)) {
-        allResults.set(slug, new Map());
+      if (!results.has(slug)) {
+        results.set(slug, new Map());
       }
-      const resultMap = allResults.get(slug);
+      const resultMap = results.get(slug);
       if (resultMap) {
         resultMap.set(result, (resultMap.get(result) ?? 0) + 1);
       }
     });
-
-    // Filter to just slugs that have more than one result
-    const results = new Map(
-      [...allResults.entries()].filter(([_, resultMap]) => resultMap.size > 1),
-    );
 
     const label = (slug: string) => INTERACTIONS[slug]?.title ?? slug;
     const labels = [...results.keys()].map((slug) => label(slug)).sort();
@@ -1956,8 +1952,7 @@ const App = ({
       <p>
         Each of the virtual witness interviews gave teams an item that remained
         pinned to their cork board, based on the choices they made. Here is the
-        breakdown of results for each of the three interactions with multiple
-        potential rewards (the{" "}
+        breakdown of results for each of those interactions (note that the{" "}
         <a href={`${rootUrl}/interactions/interview_at_the_jewelry_store`}>
           Interview at the Jewelry Store
         </a>{" "}

@@ -556,8 +556,8 @@ const PuzzleStats = () => {
         the radio may not have been able to connect to our servers at critical
         moments, or we may have improperly tracked radios that were reassigned
         due to failure during Mystery Hunt weekend. This goes double for any log
-        entries claiming to the the first time a team interacted with a given
-        input (button, touch, etc.) on the radio.
+        entries claiming to the first time a team interacted with a given input
+        (button, touch, etc.) on the radio.
       </p>
 
       <p>
