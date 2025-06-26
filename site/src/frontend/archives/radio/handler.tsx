@@ -56,7 +56,7 @@ import mainPCBCPL from "./assets/main-pcb-cpl.csv";
 import mainPCBGerber from "./assets/main-pcb-gerber.zip";
 import mainPCBSchematic from "./assets/main-pcb-schematic.pdf";
 import mainPCBTopSVG from "./assets/main-pcb-top.svg";
-import image from "./assets/radio-render.png";
+import image from "./assets/radio-photo.jpg";
 import triangleSticker from "./assets/triangle-sticker.svg";
 import warningSticker from "./assets/warning-sticker.svg";
 
@@ -359,8 +359,9 @@ const Command = styled.pre`
 const RadioImage = styled.img`
   display: block;
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  mask-image: radial-gradient(black 40%, transparent 70%);
 `;
 
 const WhiteBackgroundImage = styled.img`
