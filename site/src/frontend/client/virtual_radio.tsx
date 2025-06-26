@@ -1,6 +1,6 @@
 import React from "react";
-import ArchiveRadioPlayer from "../components/ArchiveRadioPlayer";
 import renderRoot from "../../utils/renderRoot";
+import ArchiveRadioPlayer from "../components/ArchiveRadioPlayer";
 
 const VirtualRadioManager = () => {
   return <ArchiveRadioPlayer />;

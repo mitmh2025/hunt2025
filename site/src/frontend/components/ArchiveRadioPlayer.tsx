@@ -2,10 +2,12 @@ import Crunker from "crunker";
 import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { newClient } from "../../../lib/api/client";
+import radioImg from "../archives/radio/assets/radio-render.png";
 import apiUrl from "../utils/apiUrl";
 import { deviceMax } from "../utils/breakpoints";
 import rootUrl from "../utils/rootUrl";
 import { PageHeader, PageMain, PageTitle, PageWrapper } from "./PageLayout";
+import { AuthorsNote } from "./PuzzleLayout";
 import { Button } from "./StyledUI";
 import breakingApple from "./radioPlayerAssets/audio/radio-breaking-apple.mp3";
 import breakingCrimeScene from "./radioPlayerAssets/audio/radio-breaking-crime-scene.mp3";
@@ -28,19 +30,35 @@ import confidentialSIGladys from "./radioPlayerAssets/audio/radio-confidential-s
 import confidentialSIIntro from "./radioPlayerAssets/audio/radio-confidential-si-intro.mp3";
 import confidentialSIKatrina from "./radioPlayerAssets/audio/radio-confidential-si-katrina.mp3";
 import confidentialSIPapa from "./radioPlayerAssets/audio/radio-confidential-si-papa.mp3";
+import eventSchedule from "./radioPlayerAssets/audio/radio-event-schedule.mp3";
 import confidentialHandoffA from "./radioPlayerAssets/audio/radio-handoff-confidential-a.mp3";
 import confidentialHandoffB from "./radioPlayerAssets/audio/radio-handoff-confidential-b.mp3";
 import confidentialHandoffC from "./radioPlayerAssets/audio/radio-handoff-confidential-c.mp3";
 import confidentialHandoffD from "./radioPlayerAssets/audio/radio-handoff-confidential-d.mp3";
 import confidentialHandoffE from "./radioPlayerAssets/audio/radio-handoff-confidential-e.mp3";
 import confidentialHandoffF from "./radioPlayerAssets/audio/radio-handoff-confidential-f.mp3";
-import eventSchedule from "./radioPlayerAssets/audio/radio-event-schedule.mp3";
+import sponsorsHandoffA from "./radioPlayerAssets/audio/radio-handoff-sponsors-a.mp3";
+import sponsorsHandoffB from "./radioPlayerAssets/audio/radio-handoff-sponsors-b.mp3";
+import sponsorsHandoffC from "./radioPlayerAssets/audio/radio-handoff-sponsors-c.mp3";
+import sponsorsHandoffD from "./radioPlayerAssets/audio/radio-handoff-sponsors-d.mp3";
+import sponsorsHandoffE from "./radioPlayerAssets/audio/radio-handoff-sponsors-e.mp3";
+import sponsorsHandoffF from "./radioPlayerAssets/audio/radio-handoff-sponsors-f.mp3";
+import sponsorsHandoffG from "./radioPlayerAssets/audio/radio-handoff-sponsors-g.mp3";
+import sponsorsHandoffH from "./radioPlayerAssets/audio/radio-handoff-sponsors-h.mp3";
+import weatherHandoffA from "./radioPlayerAssets/audio/radio-handoff-weather-a.mp3";
+import weatherHandoffB from "./radioPlayerAssets/audio/radio-handoff-weather-b.mp3";
+import weatherHandoffC from "./radioPlayerAssets/audio/radio-handoff-weather-c.mp3";
+import weatherHandoffD from "./radioPlayerAssets/audio/radio-handoff-weather-d.mp3";
+import weatherHandoffE from "./radioPlayerAssets/audio/radio-handoff-weather-e.mp3";
+import weatherHandoffF from "./radioPlayerAssets/audio/radio-handoff-weather-f.mp3";
+import weatherHandoffG from "./radioPlayerAssets/audio/radio-handoff-weather-g.mp3";
+import weatherHandoffH from "./radioPlayerAssets/audio/radio-handoff-weather-h.mp3";
 import lastCallFriday from "./radioPlayerAssets/audio/radio-last-call-friday.mp3";
 import lastCallSaturday from "./radioPlayerAssets/audio/radio-last-call-saturday.mp3";
 import lastCallSunday from "./radioPlayerAssets/audio/radio-last-call-sunday.mp3";
+import morningMonday from "./radioPlayerAssets/audio/radio-morning-monday.mp3";
 import morningSaturday from "./radioPlayerAssets/audio/radio-morning-saturday.mp3";
 import morningSunday from "./radioPlayerAssets/audio/radio-morning-sunday.mp3";
-import morningMonday from "./radioPlayerAssets/audio/radio-morning-monday.mp3";
 import musicIntroA from "./radioPlayerAssets/audio/radio-music-intro-a.mp3";
 import musicIntroB from "./radioPlayerAssets/audio/radio-music-intro-b.mp3";
 import musicIntroC from "./radioPlayerAssets/audio/radio-music-intro-c.mp3";
@@ -59,14 +77,6 @@ import signonA from "./radioPlayerAssets/audio/radio-signon-a.mp3";
 import signonB from "./radioPlayerAssets/audio/radio-signon-b.mp3";
 import signonC from "./radioPlayerAssets/audio/radio-signon-c.mp3";
 import signonD from "./radioPlayerAssets/audio/radio-signon-d.mp3";
-import sponsorsHandoffA from "./radioPlayerAssets/audio/radio-handoff-sponsors-a.mp3";
-import sponsorsHandoffB from "./radioPlayerAssets/audio/radio-handoff-sponsors-b.mp3";
-import sponsorsHandoffC from "./radioPlayerAssets/audio/radio-handoff-sponsors-c.mp3";
-import sponsorsHandoffD from "./radioPlayerAssets/audio/radio-handoff-sponsors-d.mp3";
-import sponsorsHandoffE from "./radioPlayerAssets/audio/radio-handoff-sponsors-e.mp3";
-import sponsorsHandoffF from "./radioPlayerAssets/audio/radio-handoff-sponsors-f.mp3";
-import sponsorsHandoffG from "./radioPlayerAssets/audio/radio-handoff-sponsors-g.mp3";
-import sponsorsHandoffH from "./radioPlayerAssets/audio/radio-handoff-sponsors-h.mp3";
 import stationIdA from "./radioPlayerAssets/audio/radio-station-id-a.mp3";
 import stationIdB from "./radioPlayerAssets/audio/radio-station-id-b.mp3";
 import stationIdC from "./radioPlayerAssets/audio/radio-station-id-c.mp3";
@@ -74,16 +84,6 @@ import stationIdD from "./radioPlayerAssets/audio/radio-station-id-d.mp3";
 import stationIdE from "./radioPlayerAssets/audio/radio-station-id-e.mp3";
 import stationIdF from "./radioPlayerAssets/audio/radio-station-id-f.mp3";
 import stationIdG from "./radioPlayerAssets/audio/radio-station-id-g.mp3";
-import radioImg from "./radioPlayerAssets/radio-render.png";
-import weatherHandoffA from "./radioPlayerAssets/audio/radio-handoff-weather-a.mp3";
-import weatherHandoffB from "./radioPlayerAssets/audio/radio-handoff-weather-b.mp3";
-import weatherHandoffC from "./radioPlayerAssets/audio/radio-handoff-weather-c.mp3";
-import weatherHandoffD from "./radioPlayerAssets/audio/radio-handoff-weather-d.mp3";
-import weatherHandoffE from "./radioPlayerAssets/audio/radio-handoff-weather-e.mp3";
-import weatherHandoffF from "./radioPlayerAssets/audio/radio-handoff-weather-f.mp3";
-import weatherHandoffG from "./radioPlayerAssets/audio/radio-handoff-weather-g.mp3";
-import weatherHandoffH from "./radioPlayerAssets/audio/radio-handoff-weather-h.mp3";
-import { AuthorsNote } from "./PuzzleLayout";
 
 const ConfidentialHandoffs = [
   confidentialHandoffA,
@@ -383,7 +383,7 @@ const ArchiveRadioPlayer = () => {
         confidentialSequence.push(confidentialSIIntro);
         ConfidentialSIOrder.forEach((si) => {
           if (sideInvestigations.has(si)) {
-            confidentialSequence.push(ConfidentialSIs[si]!);
+            confidentialSequence.push(ConfidentialSIs[si]);
           }
         });
       }
