@@ -422,8 +422,9 @@ const PuzzleImage = ({
 
 const App = () => {
   const [index, setIndex] = useState(-1);
-  const [puzzleLightboxSlide, setPuzzleLightboxSlide] =
-    useState<SlideImage | null>(null);
+  const [puzzleLightboxSlide, setPuzzleLightboxSlide] = useState<Slide | null>(
+    null,
+  );
   const onClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     const index = parseInt(e.currentTarget.dataset.index ?? "-1", 10);
     if (index >= 0) {

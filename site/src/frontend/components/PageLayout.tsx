@@ -1,9 +1,7 @@
-import React from "react";
 import { css, styled } from "styled-components";
-import { PuzzleMain } from "./PuzzleLayout";
-import { darkBgLinkStyles, Wrapper } from "./StyledUI";
-
 import diamondIcon from "../../assets/logo-simple.svg";
+import { PuzzleMain } from "./PuzzleLayout";
+import { Wrapper, darkBgLinkStyles } from "./StyledUI";
 
 const BG = "var(--black)";
 

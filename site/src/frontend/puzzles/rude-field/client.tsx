@@ -287,11 +287,11 @@ const BubbleActive = (
         y="-.18992"
         width="1.3798"
         height="1.3798"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
         <feFlood
-          flood-color="var(--teal-400)"
-          flood-opacity=".49804"
+          floodColor="var(--teal-400)"
+          floodOpacity=".49804"
           in="SourceGraphic"
           result="flood"
         />
@@ -309,8 +309,8 @@ const BubbleActive = (
           values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
         />
         <feFlood
-          flood-color="var(--teal-400)"
-          flood-opacity=".49804"
+          floodColor="var(--teal-400)"
+          floodOpacity=".49804"
           in="fbSourceGraphic"
           result="flood"
         />
@@ -331,9 +331,9 @@ const BubbleActive = (
       fill="var(--gold-500)"
       filter="url(#a)"
       stroke="var(--teal-400)"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
     />
   </svg>
 );
@@ -353,11 +353,11 @@ const BubbleInactive = (
         y="-.18992"
         width="1.3798"
         height="1.3798"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
         <feFlood
-          flood-color="var(--teal-400)"
-          flood-opacity=".49804"
+          floodColor="var(--teal-400)"
+          floodOpacity=".49804"
           in="SourceGraphic"
           result="flood"
         />
@@ -375,8 +375,8 @@ const BubbleInactive = (
           values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
         />
         <feFlood
-          flood-color="var(--teal-400)"
-          flood-opacity=".49804"
+          floodColor="var(--teal-400)"
+          floodOpacity=".49804"
           in="fbSourceGraphic"
           result="flood"
         />
@@ -398,9 +398,9 @@ const BubbleInactive = (
       fill="var(--teal-100)"
       filter="url(#a)"
       stroke="var(--teal-400)"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
     />
   </svg>
 );
@@ -1471,15 +1471,18 @@ const CampusMap = ({
 }) => {
   const onClickOutside = useCallback(() => {
     setSelected(undefined);
-  }, []);
-  const onClickFloor = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.currentTarget;
-    const floor = target.dataset.floor;
-    if (floor) {
-      setFloor(Number(floor) as Floor);
-      setSelected(undefined);
-    }
-  }, []);
+  }, [setSelected]);
+  const onClickFloor = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const target = e.currentTarget;
+      const floor = target.dataset.floor;
+      if (floor) {
+        setFloor(Number(floor) as Floor);
+        setSelected(undefined);
+      }
+    },
+    [setFloor, setSelected],
+  );
   const onClickBubble = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       const target = e.currentTarget;
@@ -1489,18 +1492,28 @@ const CampusMap = ({
         setSelected({ index: Number(bubble), direction });
       }
     },
-    [],
+    [setSelected],
   );
 
   return (
     <MapContainer>
-      <img
-        style={{ width: "100%" }}
-        src={campusmap}
-        alt="Campus Map"
+      <button
+        style={{
+          width: "100%",
+          border: 0,
+          background: "none",
+          padding: 0,
+          margin: 0,
+        }}
         onClick={onClickOutside}
-        draggable={false}
-      />
+      >
+        <img
+          style={{ width: "100%" }}
+          src={campusmap}
+          alt="Campus Map"
+          draggable={false}
+        />
+      </button>
       <div className="floor-buttons">
         {Floors.map((f) => (
           <button
@@ -1526,6 +1539,7 @@ const CampusMap = ({
             data-first-direction={Directions.find((d) => bubble.images[d])}
             onClick={onClickBubble}
             className={classNames.join(" ")}
+            tabIndex={bubble.floor === floor ? 0 : -1}
             style={{
               left: `${((bubble.x - BubbleDiameter / 2) / MapWidth) * 100}%`,
               top: `${((bubble.y - BubbleDiameter / 2) / MapHeight) * 100}%`,
@@ -1561,7 +1575,7 @@ const App = () => {
 
       const { index, direction } = prev;
       let newDirectionIndex = Directions.indexOf(direction);
-      while (true) {
+      for (;;) {
         if (clockwise) {
           newDirectionIndex = (newDirectionIndex + 1) % Directions.length;
         } else {

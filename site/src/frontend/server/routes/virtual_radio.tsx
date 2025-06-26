@@ -1,7 +1,7 @@
 import { type Request } from "express";
 import React from "react";
-import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import ArchiveRadioPlayer from "../../components/ArchiveRadioPlayer";
+import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 
 export function virtualRadioHandler(req: Request) {
   const teamState = req.teamState;

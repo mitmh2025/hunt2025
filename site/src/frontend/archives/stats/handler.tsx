@@ -93,24 +93,22 @@ const statsHandler: PageRenderer<ParamsDictionary> = () => {
     parsedActivityLog
       .filter((row) => {
         if (row.type !== "puzzle_solved") return false;
-        const { slot } = slugToSlot.get(row?.slug ?? "") ?? {};
-        return slot?.is_meta || slot?.is_supermeta;
+        const { slot } = slugToSlot.get(row.slug ?? "") ?? {};
+        return slot?.is_meta ?? slot?.is_supermeta ?? false;
       })
       .map((row) => row.team_name),
   ).size;
   const solvedThief = new Set(
     parsedActivityLog
-      .filter(
-        (row) => row.type === "puzzle_solved" && row?.slug === "the_thief",
-      )
+      .filter((row) => row.type === "puzzle_solved" && row.slug === "the_thief")
       .map((row) => row.team_name),
   ).size;
   const solvedLateSuper = new Set(
     parsedActivityLog
       .filter((row) => {
         if (row.type !== "puzzle_solved") return false;
-        if (row?.slug === "the_thief") return false;
-        const { slot } = slugToSlot.get(row?.slug ?? "") ?? {};
+        if (row.slug === "the_thief") return false;
+        const { slot } = slugToSlot.get(row.slug ?? "") ?? {};
         return slot?.is_supermeta;
       })
       .map((row) => row.team_name),
@@ -119,7 +117,7 @@ const statsHandler: PageRenderer<ParamsDictionary> = () => {
     parsedActivityLog
       .filter(
         (row) =>
-          row.type === "interaction_unlocked" && row?.slug === "the_vault",
+          row.type === "interaction_unlocked" && row.slug === "the_vault",
       )
       .map((row) => row.team_name),
   ).size;
