@@ -1,6 +1,4 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Beyond a Shadow of a Doubt",
@@ -12,11 +10,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Erin Price", "Henry Wong", "Laura Nicholson", "Teddy McArthur"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

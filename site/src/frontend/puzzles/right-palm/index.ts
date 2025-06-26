@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
 import router from "./server";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Follow The Rules",
@@ -24,12 +22,12 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     entrypoint: "puzzle_right_palm",
     copyable: false,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

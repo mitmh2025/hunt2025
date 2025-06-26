@@ -5,8 +5,6 @@ import {
   geoguessrLookup as _geoguessrLookup,
 } from "../../../../ops/src/opsdata/desertedNinjaImages";
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "esTIMation dot jpg",
@@ -32,12 +30,12 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     entrypoint: "puzzle_deserted_ninja",
     copyable: false,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [],
   canned_responses: [],

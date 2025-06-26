@@ -1,6 +1,4 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "The 10000-Sheet Excel File",
@@ -12,11 +10,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Melanie Matchett Wood", "Steve Banzaert", "Teddy McArthur"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: false,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

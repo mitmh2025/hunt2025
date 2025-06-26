@@ -1,7 +1,5 @@
 import rootUrl from "../../utils/rootUrl";
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 import staticSubpuzzle from "./static";
 
 const puzzle: PuzzleDefinition = {
@@ -20,12 +18,12 @@ const puzzle: PuzzleDefinition = {
   editors: ["Chris Pringle", "Hubert Hwang", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: false,
     entrypoint: "puzzle_diligent_spy",
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

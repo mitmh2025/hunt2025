@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
 import adam from "./assets/adam.mp3";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "He Shouldn’t Have Eaten The Apple",
@@ -23,11 +21,11 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

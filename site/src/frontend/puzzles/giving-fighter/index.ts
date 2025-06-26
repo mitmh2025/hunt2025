@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
 import router from "./server";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "ChatGPT",
@@ -13,11 +11,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Henry Wong", "Robin Deits", "Sid Creutz"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     entrypoint: "puzzle_giving_fighter",
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

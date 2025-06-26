@@ -1,6 +1,4 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "It’s All Cheep (And a Sheep) to Me",
@@ -12,11 +10,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Joanna Murray", "Kevin Hwang", "Melanie Matchett Wood"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {
