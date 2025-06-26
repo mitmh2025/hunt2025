@@ -182,7 +182,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
               <dt>Deputy Head of Operations</dt>
               <dd>Molly Frey</dd>
 
-              <dt>Deputy Experience &amp; Liaison to Puzzles</dt>
+              <dt>Deputy Head of Experience &amp; Liaison to Puzzles</dt>
               <dd>Erin Price</dd>
             </dl>
 
@@ -467,7 +467,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
               <dt>Head of Experience</dt>
               <dd>Grant Elliott</dd>
 
-              <dt>Deputy Experience &amp; Liaison to Puzzles</dt>
+              <dt>Deputy Head of Experience &amp; Liaison to Puzzles</dt>
               <dd>Erin Price</dd>
 
               <dt>Event Leads</dt>
