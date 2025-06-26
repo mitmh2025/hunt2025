@@ -24,6 +24,21 @@ const puzzle: PuzzleDefinition = {
       ],
     },
     {
+      for_what: "Voice acting",
+      who: [
+        "Arcturus Wang",
+        "Molly Frey",
+        "Tucker Elliott",
+        "Drew Fisher",
+        "Cyrus Eyster",
+        "Alex Churchill",
+        "Andrew Russell",
+        "Steve Banzaert",
+        "Karen Rustad Tolva",
+        "Luiza Elliott",
+      ],
+    },
+    {
       for_what: "Gala phone booth photo",
       who: ["Keri Ashton Fullwood"],
     },

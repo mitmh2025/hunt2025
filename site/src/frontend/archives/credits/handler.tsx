@@ -361,7 +361,6 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                   <li>Caroline Elliott</li>
                   <li>Grant Elliott</li>
                   <li>Rebecca Engelke</li>
-                  <li>Cyrus Ester</li>
                   <li>Zachary Eucker</li>
                   <li>Cyrus Eyster</li>
                   <li>Alex Fernandes</li>
