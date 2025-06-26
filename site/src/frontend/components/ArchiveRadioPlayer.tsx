@@ -396,12 +396,12 @@ const ArchiveRadioPlayer = () => {
         const crunker = new Crunker();
 
         const files = await crunker.fetchAudio(...confidentialSequence);
-        const concat = await crunker.concatAudio(files);
+        const concat = crunker.concatAudio(files);
         const { url } = crunker.export(concat, "audio/mpeg");
 
         if (audio.current) {
           audio.current.src = url;
-          audio.current.play().catch((error) => {
+          audio.current.play().catch((error: unknown) => {
             console.error("Error playing audio:", error);
           });
         }
