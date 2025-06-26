@@ -107,7 +107,7 @@ const Puzzle = (): JSX.Element => {
         </p>
 
         {/* eslint-disable-next-line jsx-a11y/media-has-caption -- transcription below */}
-        <audio src={game} controls loop />
+        <audio src={game} controls />
         <details>
           <summary>Transcription</summary>
 
