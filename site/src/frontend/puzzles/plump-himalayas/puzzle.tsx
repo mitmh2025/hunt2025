@@ -23,7 +23,7 @@ const Puzzle = () => {
         <iframe
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/6cJsoOdI_zU"
+          src="https://www.youtube.com/embed/5E__SIVPxqo"
           title="Control Room (Recap) - MITMH2025"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
