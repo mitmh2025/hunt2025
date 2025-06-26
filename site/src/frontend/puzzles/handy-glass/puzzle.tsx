@@ -78,8 +78,9 @@ const Puzzle = (): JSX.Element => {
     <>
       <AuthorsNote>
         This puzzle was written and tested but held in reserve in case we needed
-        to make a last-minute swap. As such, it has a placeholder answer and
-        will not grant you a key for solving.
+        to make a last-minute swap, but was not released during Mystery Hunt. As
+        such, it has a placeholder answer and will not grant you a key for
+        solving.
       </AuthorsNote>
       <StyledCrossword
         labels={LABELS}
