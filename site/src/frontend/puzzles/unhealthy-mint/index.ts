@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
 import router from "./server";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "_land",
@@ -13,10 +11,10 @@ const puzzle: PuzzleDefinition = {
   editors: ["Chris Gatesman", "Melanie Matchett Wood", "Michele Pratusevich"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

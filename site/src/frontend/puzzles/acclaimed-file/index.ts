@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
 import image from "./assets/magic_i.svg";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 export const CANONICALIZED_PARTIALS = [
   "LOOK A LITTLE CLOSER",
@@ -18,11 +16,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["James Douberley", "Li-Mei Lim", "Michele Pratusevich"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: false,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

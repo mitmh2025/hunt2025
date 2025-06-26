@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
 import finalAnswer from "./assets/finalanswer.mp3";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "In Communicado Tonight",
@@ -52,11 +50,11 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: false,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

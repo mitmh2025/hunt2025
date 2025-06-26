@@ -1,6 +1,4 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Do The Manual Calculations (Don’t Try Monte Carlo)",
@@ -12,11 +10,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Julian West", "Michele Pratusevich", "Teddy McArthur"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

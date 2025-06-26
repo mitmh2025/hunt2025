@@ -1,6 +1,4 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "\u0c95\u0cbe\u0cac\u0cb5\u0ca6\u0ccb\u0cc0\u0ccd",
@@ -12,11 +10,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["J. Heléne Andersson", "Joanna Murray", "Robin Deits"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

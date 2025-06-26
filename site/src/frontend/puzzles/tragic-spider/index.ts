@@ -1,6 +1,4 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "\u7687\u5e1d\u306e\u6697\u53f7",
@@ -18,11 +16,11 @@ const puzzle: PuzzleDefinition = {
   ],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: false,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

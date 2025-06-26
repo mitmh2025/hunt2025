@@ -1,6 +1,4 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "The Tunnels Beneath the Institute",
@@ -13,11 +11,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Anna Brunner", "Michele Pratusevich", "Teddy McArthur"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

@@ -1,6 +1,4 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 7: Shingles, Ltd.",
@@ -11,11 +9,11 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [],
   answer: "PENROSE",
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

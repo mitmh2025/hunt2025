@@ -1,12 +1,11 @@
 import type { SubpuzzleDefinition } from "../../types";
-import Puzzle from "./puzzle";
 
 const puzzle: SubpuzzleDefinition = {
   title: "HardlySafe",
   slug: "hardlysafe",
   answer: "IMAGE",
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
 };

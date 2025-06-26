@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
 import IKidEweKnot from "./i-kid-ewe-knot";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 import StitchySituation from "./stitchy-situation";
 
 const puzzle: PuzzleDefinition = {
@@ -14,11 +12,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Henry Wong", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

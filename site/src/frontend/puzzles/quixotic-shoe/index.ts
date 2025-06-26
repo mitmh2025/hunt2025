@@ -8,9 +8,7 @@ import BetterOprah from "./betteroprah";
 import DraughtQueens from "./draughtqueens";
 import HardlySafe from "./hardlysafe";
 import HellFresh from "./hellfresh";
-import Puzzle from "./puzzle";
 import router from "./server";
-import Solution from "./solution";
 import TownSquareSpace from "./townsquarespace";
 
 export const orderedQuixoticSubpuzzleSlugs = [
@@ -111,11 +109,11 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     entrypoint: "puzzle_quixotic_shoe",
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

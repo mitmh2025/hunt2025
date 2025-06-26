@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
 import logician from "./assets/kakuro7.png";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Smoke ’Em If You’ve Got ’Em",
@@ -52,10 +50,10 @@ const puzzle: PuzzleDefinition = {
     },
   ],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

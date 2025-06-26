@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
 import teamPhoto from "./assets/team-photo.jpg";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "No Notes",
@@ -13,11 +11,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Anna Brunner", "Erin Price", "J. Heléne Andersson", "Robin Deits"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

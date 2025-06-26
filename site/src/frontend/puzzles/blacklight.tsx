@@ -16,9 +16,6 @@ export function blacklightPuzzle(
   answer: string,
   extra: ModalInternalExtra,
 ): PuzzleDefinition {
-  const Puzzle = base.content.component;
-  const Solution = base.solution.component;
-
   return {
     ...base,
     title: `${base.title} (Under Blacklight)`,
@@ -26,22 +23,43 @@ export function blacklightPuzzle(
     slug: `${base.slug}_blacklight`,
     content: {
       ...base.content,
-      component: function BlacklightPuzzle(props) {
-        return (
-          <>
-            <StyledLinkedImage src={extra.asset} alt={extra.altText} />
-            <div className={COPY_ONLY_CLASS}>{extra.altText}</div>
-            <Puzzle {...props} />
-          </>
-        );
+      component: {
+        lazy: async () => {
+          const Puzzle =
+            typeof base.content.component === "object"
+              ? await base.content.component.lazy().then((m) => m.default)
+              : base.content.component;
+
+          return {
+            default: (props) => {
+              return (
+                <>
+                  <StyledLinkedImage src={extra.asset} alt={extra.altText} />
+                  <div className={COPY_ONLY_CLASS}>{extra.altText}</div>
+                  <Puzzle {...props} />
+                </>
+              );
+            },
+          };
+        },
       },
       copyable: true,
     },
     solution: {
       ...base.solution,
-      component: function BlacklightSolution(props) {
-        // TODO: blacklight-specific solution?
-        return <Solution {...props} />;
+      component: {
+        lazy: async () => {
+          const Solution =
+            typeof base.solution.component === "object"
+              ? await base.solution.component.lazy().then((m) => m.default)
+              : base.solution.component;
+
+          return {
+            default: (props) => {
+              return <Solution {...props} />;
+            },
+          };
+        },
       },
     },
     answer: answer,

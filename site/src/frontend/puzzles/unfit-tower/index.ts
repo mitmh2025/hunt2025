@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
 import router from "./server";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Maze of Lies",
@@ -13,12 +11,12 @@ const puzzle: PuzzleDefinition = {
   editors: ["Arcturus Wang", "James Douberley", "tinaun"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     entrypoint: "puzzle_unfit_tower_parent",
     copyable: false,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

@@ -1,6 +1,4 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "(A Puzzle of the Dead)",
@@ -12,11 +10,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Hubert Hwang", "Robin Deits", "Steve Banzaert"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     entrypoint: "puzzle_sorrowful_glass",
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

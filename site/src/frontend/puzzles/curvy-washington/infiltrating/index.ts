@@ -1,7 +1,5 @@
 import { type PuzzleDefinition } from "../../types";
 import { CURVY_WASHINGTON_AUTHORS, CURVY_WASHINGTON_EDITORS } from "../shared";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Infiltrating the Criminal Underworld",
@@ -12,10 +10,10 @@ const puzzle: PuzzleDefinition = {
   editors: CURVY_WASHINGTON_EDITORS,
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [],
   canned_responses: [],

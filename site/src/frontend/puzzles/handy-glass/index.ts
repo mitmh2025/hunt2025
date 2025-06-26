@@ -2,8 +2,6 @@ import rootUrl from "../../utils/rootUrl";
 import { type PuzzleDefinition } from "../types";
 import { HANDY_GLASS_SLUG } from "./constants";
 import CsorrowsdGird from "./csorrowsd-gird";
-import Puzzle from "./puzzle";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Wouthit Porbelm", // If this gets moved into Dead Thief, A Csorrowsd Otsefuabcd or Sdntardas Hvae Selppid
@@ -15,11 +13,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["James Douberley", "Sid Creutz", "Steve Banzaert"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {

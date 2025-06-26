@@ -1,8 +1,6 @@
 import rootUrl from "../../utils/rootUrl";
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./puzzle";
 import Receipt from "./receipt";
-import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Drunkens and Flagons",
@@ -14,11 +12,11 @@ const puzzle: PuzzleDefinition = {
   editors: ["Chris Gatesman", "Erin Price", "Hubert Hwang", "Robin Deits"],
   additional_credits: [],
   content: {
-    component: Puzzle,
+    component: { lazy: () => import("./puzzle") },
     copyable: true,
   },
   solution: {
-    component: Solution,
+    component: { lazy: () => import("./solution") },
   },
   hints: [
     {
