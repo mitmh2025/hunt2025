@@ -4,6 +4,7 @@ import {
   offset,
   safePolygon,
   shift,
+  useDismiss,
   useFloating,
   useFocus,
   useHover,
@@ -71,11 +72,13 @@ const MurderWindow = ({
   const hover = useHover(context, { move: false, handleClose: safePolygon() });
   const focus = useFocus(context);
   const role = useRole(context, { role: "label" });
+  const dismiss = useDismiss(context);
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
     focus,
     role,
+    dismiss,
   ]);
 
   const unlockModalRef = useRef<HTMLDialogElement>(null);
