@@ -168,7 +168,7 @@ const Dropdown = styled.li<{ $alignRight?: boolean }>`
   position: relative;
 
   > a,
-  button {
+  > button {
     height: 100%;
     cursor: pointer;
   }
