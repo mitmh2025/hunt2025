@@ -54,7 +54,8 @@ const NavItems = styled.ul`
   > li:last-child {
     margin-right: -1rem;
 
-    a {
+    a,
+    button {
       padding-right: 1rem;
     }
   }
@@ -67,7 +68,8 @@ const NavItems = styled.ul`
     width: calc(1080px - 1rem);
     padding: 0 2rem;
 
-    a {
+    a,
+    button {
       padding: 0 1rem;
     }
 
@@ -79,7 +81,8 @@ const NavItems = styled.ul`
     > li:last-child {
       margin-right: -2rem;
 
-      a {
+      a,
+      button {
         padding-right: 2rem;
       }
     }
@@ -110,6 +113,17 @@ const NavLink = styled.a`
   inline-size: min-content;
   white-space: nowrap;
   min-height: 3rem;
+
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--headline-font);
+
+  &:hover,
+  &:focus-within {
+    color: var(--true-white);
+    text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.4);
+    text-decoration-color: var(--gold-400);
+  }
 
   max-width: calc(480px - 3rem);
 
@@ -153,7 +167,8 @@ const TeamNameNavLink = styled(NavLink)`
 const Dropdown = styled.li<{ $alignRight?: boolean }>`
   position: relative;
 
-  > a {
+  > a,
+  > button {
     height: 100%;
     cursor: pointer;
   }
@@ -178,7 +193,8 @@ const Dropdown = styled.li<{ $alignRight?: boolean }>`
         props.$alignRight ? "flex-end" : "flex-start"};
     }
 
-    > li > a {
+    > li > a,
+    > li > button {
       height: 3rem;
       cursor: pointer;
       text-align: ${(props) => (props.$alignRight ? "right" : "left")};
@@ -210,7 +226,8 @@ const Dropdown = styled.li<{ $alignRight?: boolean }>`
 
 const TopLevelDropdown = styled(Dropdown)`
   @media ${deviceMin.lg} {
-    > a {
+    > a,
+    > button {
       display: none;
     }
 
@@ -245,7 +262,8 @@ const SubDropdown = styled(Dropdown)`
       width: 50vw;
 
       > li,
-      > li > a {
+      > li > a,
+      > li > button {
         max-width: 50vw;
         width: 50vw;
       }
@@ -420,6 +438,7 @@ const NavBar = ({
                 <ul>
                   <li>
                     <NavLink
+                      as="button"
                       onClick={() => {
                         exchangeModalRef.current?.showModal();
                       }}
@@ -429,6 +448,7 @@ const NavBar = ({
                   </li>
                   <li>
                     <NavLink
+                      as="button"
                       onClick={() => {
                         buyAnswerModalRef.current?.showModal();
                       }}
