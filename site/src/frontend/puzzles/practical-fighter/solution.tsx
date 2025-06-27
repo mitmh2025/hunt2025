@@ -367,6 +367,24 @@ const Solution = () => {
         unlocks one additional feature: the radio’s tilt sensor now acts as a
         pitch bend, allowing them to play notes outside of the major scale.
       </p>
+
+      <p>
+        If you’d like to see what this entire experience looked like, we’ve
+        taken a video of a member of Death &amp; Mayhem first “activating” the
+        new musical instrument mode and subsequently playing through the
+        challenges in order to get the final answer:
+      </p>
+
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/CRRfQoh0Nik"
+        title="Songs on the Radio - MITMH2025"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+        style={{ width: "100%", height: "100%", aspectRatio: "16 / 9" }}
+      />
     </>
   );
 };
