@@ -619,7 +619,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
               <dt>Build Team</dt>
               <dd>
                 <ul>
-                  <li>Rachel Bowens-Rubin</li>
+                  <li>dRachel Bowens-Rubin</li>
                   <li>Steve Banzaert</li>
                   <li>Sid Creutz</li>
                   <li>Sam Duffley</li>

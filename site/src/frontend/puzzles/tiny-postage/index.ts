@@ -43,7 +43,7 @@ const puzzle: PuzzleDefinition = {
         "Joanna Murray",
         "Gita Srivastava",
         "Nine Morch",
-        "Rachel Bowens-Rubin",
+        "dRachel Bowens-Rubin",
         "rfong",
         "Sue Broder",
       ],
