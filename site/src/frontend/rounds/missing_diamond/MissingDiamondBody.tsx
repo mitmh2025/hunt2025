@@ -1,9 +1,11 @@
 import {
   autoUpdate,
   flip,
+  FloatingFocusManager,
   offset,
   safePolygon,
   shift,
+  useDismiss,
   useFloating,
   useFocus,
   useHover,
@@ -322,11 +324,13 @@ const MissingDiamondMapEntity = ({
 
   const hover = useHover(context, { move: false, handleClose: safePolygon() });
   const focus = useFocus(context);
+  const dismiss = useDismiss(context);
   const role = useRole(context, { role: "label" });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
     focus,
+    dismiss,
     role,
   ]);
 
@@ -358,13 +362,7 @@ const MissingDiamondMapEntity = ({
 
   const image = (
     <>
-      <img
-        ref={refs.setReference}
-        {...getReferenceProps()}
-        src={entity.asset}
-        alt={entity.alt}
-        style={imageStyle}
-      />
+      <img src={entity.asset} alt={entity.alt} style={imageStyle} />
     </>
   );
 
@@ -380,17 +378,24 @@ const MissingDiamondMapEntity = ({
   const puzzleState = entity.puzzle ? puzzleStateHandle[0] : undefined;
 
   const tooltip = showTooltip && (
-    <PuzzleTooltipComponent
-      innerRef={refs.setFloating}
-      style={{ ...floatingStyles, visibility: "visible" }}
-      title={puzzleState?.title ?? entity.alt}
-      answer={puzzleState?.answer}
-      desc={puzzleState?.desc}
-      lockState={puzzleState?.state ?? "locked"}
-      {...getFloatingProps()}
+    <FloatingFocusManager
+      context={context}
+      modal={false}
+      closeOnFocusOut
+      order={["reference", "content"]}
     >
-      {tooltipChildren}
-    </PuzzleTooltipComponent>
+      <PuzzleTooltipComponent
+        innerRef={refs.setFloating}
+        style={{ ...floatingStyles, visibility: "visible" }}
+        title={puzzleState?.title ?? entity.alt}
+        answer={puzzleState?.answer}
+        desc={puzzleState?.desc}
+        lockState={puzzleState?.state ?? "locked"}
+        {...getFloatingProps()}
+      >
+        {tooltipChildren}
+      </PuzzleTooltipComponent>
+    </FloatingFocusManager>
   );
 
   if (puzzleState?.state === "unlockable") {
@@ -398,6 +403,8 @@ const MissingDiamondMapEntity = ({
       <>
         <EntityContainer
           as="button"
+          ref={refs.setReference}
+          {...getReferenceProps()}
           style={containerStyle}
           onClick={showUnlockModal}
           $clickable={true}
@@ -419,6 +426,8 @@ const MissingDiamondMapEntity = ({
       <>
         <EntityContainer
           as="a"
+          ref={refs.setReference}
+          {...getReferenceProps()}
           style={containerStyle}
           href={`${rootUrl}/puzzles/${puzzleState.slug}`}
         >
@@ -431,7 +440,13 @@ const MissingDiamondMapEntity = ({
 
   return (
     <>
-      <EntityContainer style={containerStyle}>{image}</EntityContainer>
+      <EntityContainer
+        ref={refs.setReference}
+        {...getReferenceProps()}
+        style={containerStyle}
+      >
+        {image}
+      </EntityContainer>
       {tooltip}
     </>
   );
@@ -475,11 +490,13 @@ const MissingDiamondInteraction = ({
 
   const hover = useHover(context, { move: false, handleClose: safePolygon() });
   const focus = useFocus(context);
+  const dismiss = useDismiss(context);
   const role = useRole(context, { role: "label" });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
     focus,
+    dismiss,
     role,
   ]);
 
@@ -495,19 +512,14 @@ const MissingDiamondInteraction = ({
 
   const image = (
     <>
-      <img
-        ref={refs.setReference}
-        {...getReferenceProps()}
-        src={interaction.asset}
-        alt={interaction.alt}
-        style={imageStyle}
-      />
+      <img src={interaction.asset} alt={interaction.alt} style={imageStyle} />
     </>
   );
   const tooltip = showTooltip && (
     <Tooltip
+      className="tooltip"
       ref={refs.setFloating}
-      style={floatingStyles}
+      style={{ ...floatingStyles, visibility: "visible" }}
       {...getFloatingProps()}
     >
       <span>{interaction.alt}</span>
@@ -518,6 +530,8 @@ const MissingDiamondInteraction = ({
     <>
       <EntityContainer
         as="a"
+        ref={refs.setReference}
+        {...getReferenceProps()}
         style={containerStyle}
         href={`${rootUrl}/interactions/${interaction.slug}`}
         $clickable={true}
