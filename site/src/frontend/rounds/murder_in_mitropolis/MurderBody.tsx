@@ -179,7 +179,7 @@ const MurderPdf = ({
   } else {
     return (
       <img
-        style={{ ...position, ...imgStyle }}
+        style={{ ...position, ...imgStyle, position: "absolute" }}
         src={item.asset}
         alt={item.alt}
       />
