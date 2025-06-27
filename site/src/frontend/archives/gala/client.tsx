@@ -179,8 +179,8 @@ const ambianceSlides: Slide[] = [
     src: ambiance0,
     description: (
       <>
-        The Providence Crime Transplantations pose for a dashing team photo at
-        the photo booth
+        The Providence Crime Syndication poses for a dashing team photo at the
+        photo booth
       </>
     ),
   },
