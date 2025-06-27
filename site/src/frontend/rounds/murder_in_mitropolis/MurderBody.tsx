@@ -113,22 +113,21 @@ const MurderWindow = ({
   );
   const itemContents = (
     <>
-      <img
-        ref={refs.setReference}
-        {...getReferenceProps()}
-        src={item.asset}
-        alt={item.alt}
-        style={{ ...position, ...imgStyle }}
-      />
+      <img src={item.asset} alt={item.alt} style={{ ...imgStyle }} />
     </>
   );
 
   if (puzzleState.state === "unlockable") {
     return (
       <>
-        <MurderWindowComponent as="button" onClick={showUnlockModal}>
+        <MurderWindowComponent
+          as="button"
+          style={position}
+          ref={refs.setReference}
+          {...getReferenceProps()}
+          onClick={showUnlockModal}
+        >
           {itemContents}
-          {tooltip}
         </MurderWindowComponent>
         <PuzzleUnlockModal
           ref={unlockModalRef}
@@ -137,15 +136,21 @@ const MurderWindow = ({
           currency={currency}
           stateHandle={puzzleStateHandle}
         />
+        {tooltip}
       </>
     );
   } else {
     return (
       <>
-        <MurderWindowComponent href={`${rootUrl}/puzzles/${puzzleState.slug}`}>
+        <MurderWindowComponent
+          href={`${rootUrl}/puzzles/${puzzleState.slug}`}
+          style={position}
+          ref={refs.setReference}
+          {...getReferenceProps()}
+        >
           {itemContents}
-          {tooltip}
         </MurderWindowComponent>
+        {tooltip}
       </>
     );
   }

@@ -40,9 +40,9 @@ export const MurderWindowComponent = styled.a`
   border: none;
   background-color: transparent;
   padding: 0;
+  position: absolute;
 
   & img {
-    position: absolute;
     -webkit-filter: brightness(0.8);
     filter: brightness(0.8);
   }
