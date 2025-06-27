@@ -9,6 +9,7 @@ import {
   useFocus,
   useRole,
   useInteractions,
+  useDismiss,
 } from "@floating-ui/react";
 import React, {
   Fragment,
@@ -96,11 +97,13 @@ const PaperTrailDeskItem = ({
 
   const hover = useHover(context, { move: false, handleClose: safePolygon() });
   const focus = useFocus(context);
+  const dismiss = useDismiss(context);
   const role = useRole(context, { role: "label" });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
     focus,
+    dismiss,
     role,
   ]);
 
@@ -138,20 +141,20 @@ const PaperTrailDeskItem = ({
   );
   const itemContents = (
     <>
-      <img
-        ref={refs.setReference}
-        {...getReferenceProps()}
-        src={item.asset}
-        alt={item.alt}
-        style={imgStyle}
-      />
+      <img src={item.asset} alt={item.alt} style={imgStyle} />
     </>
   );
 
   if (puzzleState.state === "unlockable") {
     return (
       <>
-        <DeskItem as="button" style={position} onClick={showUnlockModal}>
+        <DeskItem
+          as="button"
+          style={position}
+          onClick={showUnlockModal}
+          ref={refs.setReference}
+          {...getReferenceProps()}
+        >
           {itemContents}
           {tooltip}
         </DeskItem>
@@ -167,7 +170,12 @@ const PaperTrailDeskItem = ({
   } else {
     return (
       <>
-        <DeskItem style={position} href={`${rootUrl}/puzzles/${item.slug}`}>
+        <DeskItem
+          style={position}
+          href={`${rootUrl}/puzzles/${item.slug}`}
+          ref={refs.setReference}
+          {...getReferenceProps()}
+        >
           {itemContents}
           {tooltip}
         </DeskItem>
@@ -176,13 +184,44 @@ const PaperTrailDeskItem = ({
   }
 };
 
-const PaperTrailBody = ({
-  state,
-  teamState,
+const PaperTrailNotes = ({
+  item,
+  aStyle,
+  imgStyle,
 }: {
-  state: PaperTrailState;
-  teamState: TeamHuntState;
+  item: PaperTrailObject;
+  aStyle: {
+    left?: string;
+    right?: string;
+    top?: string;
+    bottom?: string;
+  };
+  imgStyle: {
+    width: string;
+  };
 }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const { refs, floatingStyles, context } = useFloating({
+    placement: item.tooltip_placement ?? "top",
+    open: showTooltip,
+    onOpenChange: setShowTooltip,
+    middleware: [offset(5), flip(), shift()],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const hover = useHover(context, { move: false, handleClose: safePolygon() });
+  const focus = useFocus(context);
+  const dismiss = useDismiss(context);
+  const role = useRole(context, { role: "label" });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    dismiss,
+    role,
+  ]);
+
   const modalRef = useRef<HTMLDialogElement>(null);
   const showModal: MouseEventHandler<HTMLButtonElement> = useCallback((e) => {
     e.stopPropagation();
@@ -192,6 +231,51 @@ const PaperTrailBody = ({
   const dismissModal = useCallback(() => {
     modalRef.current?.close();
   }, []);
+
+  if ("state" in item) return undefined;
+
+  return (
+    <React.Fragment key={item.title}>
+      <DeskItem
+        as="button"
+        style={aStyle}
+        onClick={(e) => {
+          if (item.notes.length > 0) showModal(e);
+        }}
+        disabled={item.notes.length === 0}
+        ref={refs.setReference}
+        {...getReferenceProps()}
+      >
+        <img src={item.asset} alt={item.alt} style={imgStyle} />
+      </DeskItem>
+      {showTooltip && (
+        <Tooltip
+          className="tooltip"
+          ref={refs.setFloating}
+          style={{ ...floatingStyles, visibility: "visible" }}
+          {...getFloatingProps}
+        >
+          Notes
+        </Tooltip>
+      )}
+      {item.notes.length > 0 && (
+        <NotesModal
+          ref={modalRef}
+          notes={item.notes}
+          onDismiss={dismissModal}
+        />
+      )}
+    </React.Fragment>
+  );
+};
+
+const PaperTrailBody = ({
+  state,
+  teamState,
+}: {
+  state: PaperTrailState;
+  teamState: TeamHuntState;
+}) => {
   const objects = state.imagery.map((item: PaperTrailObject) => {
     const aStyle = {
       left:
@@ -229,26 +313,12 @@ const PaperTrailBody = ({
       );
     } else {
       return (
-        <React.Fragment key={item.title}>
-          <DeskItem
-            as="button"
-            style={aStyle}
-            onClick={(e) => {
-              if (item.notes.length > 0) showModal(e);
-            }}
-            disabled={item.notes.length === 0}
-          >
-            <img src={item.asset} alt={item.alt} style={imgStyle} />
-            <Tooltip>Notes</Tooltip>
-          </DeskItem>
-          {item.notes.length > 0 && (
-            <NotesModal
-              ref={modalRef}
-              notes={item.notes}
-              onDismiss={dismissModal}
-            />
-          )}
-        </React.Fragment>
+        <PaperTrailNotes
+          key="notes"
+          item={item}
+          aStyle={aStyle}
+          imgStyle={imgStyle}
+        />
       );
     }
   });
