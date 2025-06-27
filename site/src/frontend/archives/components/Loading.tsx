@@ -44,7 +44,7 @@ const Spinner = styled.div`
 
 const Loading = () => (
   <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-    <Spinner /> Computing additional statistics...
+    <Spinner /> Loading...
   </div>
 );
 
