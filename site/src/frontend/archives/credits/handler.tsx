@@ -298,6 +298,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                   <li>Leland Aldridge</li>
                   <li>J. Heléne Andersson</li>
                   <li>Mark Asdoorian</li>
+                  <li>Steve Banzaert</li>
                   <li>Jeremy Braun</li>
                   <li>Anna Brunner</li>
                   <li>Joseph Timothy Foley</li>
