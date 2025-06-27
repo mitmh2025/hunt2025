@@ -307,11 +307,8 @@ const RoomComponent = ({ id }: { id: string }) => {
 };
 
 const router = new Router();
-router.get("/rooms/", (_, res) => {
-  res.redirect(`${mazeRoot}${startRoom?.lookId}`);
-});
-router.get("/rooms/:id", (req, res) => {
-  const reactRoot = <RoomComponent id={req.params.id} />;
+const renderRoom = (id: string) => {
+  const reactRoot = <RoomComponent id={id} />;
 
   const sheet = new ServerStyleSheet();
   let styleElements;
@@ -319,14 +316,6 @@ router.get("/rooms/:id", (req, res) => {
   try {
     innerHTML = renderToString(sheet.collectStyles(reactRoot));
     styleElements = sheet.getStyleElement();
-  } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .send(
-        "<html><body><h1>500 Service Temporarily Unavailable</h1></body></html>",
-      );
-    return;
   } finally {
     sheet.seal();
   }
@@ -344,6 +333,42 @@ router.get("/rooms/:id", (req, res) => {
       />,
     ) +
     "\n";
+  return html;
+};
+router.get("/rooms/", (_, res) => {
+  // This double-renders the index page, but means that it will get served at both /index and its /:id
+  let html;
+  try {
+    html = renderRoom(startRoom?.lookId ?? "");
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send(
+        "<html><body><h1>500 Service Temporarily Unavailable</h1></body></html>",
+      );
+    return;
+  }
+
+  res.set({
+    "Content-Type": "text/html; charset=utf-8",
+  });
+  res.status(200);
+  res.send(html);
+});
+router.get("/rooms/:id", (req, res) => {
+  let html;
+  try {
+    html = renderRoom(req.params.id);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send(
+        "<html><body><h1>500 Service Temporarily Unavailable</h1></body></html>",
+      );
+    return;
+  }
 
   res.set({
     "Content-Type": "text/html; charset=utf-8",
