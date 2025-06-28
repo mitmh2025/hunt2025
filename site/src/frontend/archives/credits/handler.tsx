@@ -1125,7 +1125,6 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                   <li>Andrew Russell</li>
                   <li>Dee Ruttenberg</li>
                   <li>Michael Scarito</li>
-                  <li>Ben Schaffner</li>
                   <li>Anisa Schardl</li>
                   <li>Ariel Schwartz</li>
                   <li>“Curly” Ben Sena</li>
@@ -1139,6 +1138,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                   <li>Gita Srivastava</li>
                   <li>Aletta Tibbetts</li>
                   <li>Richard Tibbetts</li>
+                  <li>tinaun</li>
                   <li>Karen Rustad Tolva</li>
                   <li>John Toomey</li>
                   <li>EmFay Urban</li>
