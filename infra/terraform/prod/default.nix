@@ -49,11 +49,6 @@
     domain = "two-pi-noir.agency";
   };
 
-  route53.two-pi-noir-com = {
-    provider = "puzzup";
-    domain = "two-pi-noir.com";
-  };
-
   gce.nix.image = {
     bucket.name = "cvqb2gwr-gce-images";
     nixosConfiguration = self.nixosConfigurations.gce-image;
