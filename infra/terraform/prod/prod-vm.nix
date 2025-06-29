@@ -32,6 +32,11 @@
 
   sops.keys.deploy.users = [(lib.tfRef "google_service_account.prod-vm.member")];
 
+  route53.mitmh2025.rr.ops = {
+    type = "A";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_address.prod.address")];
+  };
   route53.two-pi-noir.rr.root = {
     name = lib.tfRef "data.aws_route53_zone.two-pi-noir.name";
     type = "A";
