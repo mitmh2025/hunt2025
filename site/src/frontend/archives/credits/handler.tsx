@@ -582,6 +582,7 @@ const handler: PageRenderer<ParamsDictionary> = () => {
                 <ul>
                   <li>Simone Agha</li>
                   <li>Kat Allen</li>
+                  <li>Brad Johnson</li>
                   <li>Jess Knapp</li>
                   <li>Teddy McArthur</li>
                   <li>Karen Rustad Tolva</li>
