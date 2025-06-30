@@ -297,8 +297,10 @@ const PuzzleGuessSection = ({
   const solved = guesses.some((g) => g.status === "correct");
   const puzzleState = teamState.puzzles[slug];
 
+  const unstartedArchive = archiveMode && teamState.epoch === -1;
   const solutionAvailable =
-    teamState.gates_satisfied.includes("solutions_released");
+    teamState.gates_satisfied.includes("solutions_released") ||
+    unstartedArchive;
 
   return (
     <GuessSectionWrapper id="puzzle-guess-section">
