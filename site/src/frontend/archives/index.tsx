@@ -193,8 +193,12 @@ export function indexHandler() {
               <a href={`${rootUrl}/virtual_radio`}>virtual radio</a> page.)
             </li>
             <li>
-              <a href="/2025/extras/stats">Statistics</a>: Statistics from the
-              Hunt, including the full activity log.
+              <a href="/2025/extras/stats">Statistics</a>: Overall statistics
+              from the Hunt, including the full activity log. Each individual
+              puzzle page also links to statistics for that particular puzzle,
+              and for a handful of puzzles we have added some bonus statistics
+              that we think are especially interesting. (Those puzzles are
+              listed on the overall statistics page.)
             </li>
             <li>
               <a href="/2025/extras/minigames">Minigames</a>: The{" "}
