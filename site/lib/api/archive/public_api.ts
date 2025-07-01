@@ -148,11 +148,11 @@ const clientApiMethods: {
     const strongCurrencyPrize = slot.strong_currency_prize ?? 0;
 
     const log = fetchActivityLog();
-    if (!reduceTeamStateIntermediate(log).puzzles_unlocked.has(slug)) {
-      return {
-        status: 404,
-      };
-    }
+    // Normally if the puzzle was locked, we would 404 here, but in archive mode
+    // we want this to work in the case where the user hasn't initialized the
+    // log yet
+    const unlocked =
+      reduceTeamStateIntermediate(log).puzzles_unlocked.has(slug);
 
     let canonical_input = canonicalizeInput(guess);
 
@@ -179,6 +179,32 @@ const clientApiMethods: {
       link = correct_partial.link;
       responseText = correct_partial.reply;
       status = "other";
+    }
+
+    // If the puzzle is not unlocked, then the user is solving this puzzle out
+    // of sequence somehow, so don't mutate the activity log, just synthesize a
+    // response
+    if (!unlocked) {
+      return {
+        status: 200,
+        body: {
+          guesses: [
+            {
+              id: 0,
+              canonical_input,
+              link,
+              status,
+              response: responseText,
+              timestamp: new Date().toISOString(),
+            },
+          ],
+
+          epoch: 0,
+          round: "stray_leads",
+          locked: "unlocked",
+          hints: [],
+        },
+      };
     }
 
     await mutateActivityLog(log, async (mutator) => {

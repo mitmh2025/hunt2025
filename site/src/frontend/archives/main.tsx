@@ -114,6 +114,7 @@ const watchBacklinks = async () => {
     { epoch: -1 },
     (update) => {
       const teamState = update as TeamHuntState;
+      if (teamState.epoch === -1) return;
 
       const roundSlug = teamState.puzzles[puzzleSlug ?? ""]?.round;
       const round = teamState.rounds[roundSlug ?? ""];
