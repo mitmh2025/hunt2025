@@ -50,7 +50,7 @@
 
   imports = [
     ../base.nix
-    ./ci.nix
+    #disabled ./ci.nix
     #disabled ./staging.nix
     ./mail.nix
     #disabled ./staticsite.nix
@@ -61,10 +61,10 @@
     domain = "mitmh2025.com";
   };
 
-  gce.nix.image = {
-    bucket.name = "rb8tcjeo-gce-images";
-    nixosConfiguration = self.nixosConfigurations.gce-image;
-  };
+  # gce.nix.image = {
+  #   bucket.name = "rb8tcjeo-gce-images";
+  #   nixosConfiguration = self.nixosConfigurations.gce-image;
+  # };
 
   sops.keys.staging.users = [
     (lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.prod-vm.member")
