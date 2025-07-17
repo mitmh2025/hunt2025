@@ -32,12 +32,12 @@
   provider.sops = {};
 
   state.bucket.name = "cvqb2gwr-tfstate";
-  state.bucket.users = [
-    (lib.tfRef "google_service_account.prod-vm.member")
-  ];
+  # state.bucket.users = [
+  #   (lib.tfRef "google_service_account.prod-vm.member")
+  # ];
 
-  gcp.services.servicenetworking.enable = true;
-  gcp.vpc.default.googleManagedServices.enable = true;
+  # gcp.services.servicenetworking.enable = true;
+  # gcp.vpc.default.googleManagedServices.enable = true;
 
   route53.mitmh2025 = {
     provider = "puzzup";
@@ -49,15 +49,15 @@
     domain = "two-pi-noir.agency";
   };
 
-  gce.nix.image = {
-    bucket.name = "cvqb2gwr-gce-images";
-    nixosConfiguration = self.nixosConfigurations.gce-image;
-  };
+  # gce.nix.image = {
+  #   bucket.name = "cvqb2gwr-gce-images";
+  #   nixosConfiguration = self.nixosConfigurations.gce-image;
+  # };
 
-  gcp.ar.images = {
-    repoId = "cvqb2gwr-images";
-    location = "us";
-  };
+  # gcp.ar.images = {
+  #   repoId = "cvqb2gwr-images";
+  #   location = "us";
+  # };
 
   imports = [
     ../base.nix
@@ -65,12 +65,12 @@
     #disabled ./database.nix
     #disabled ./gke.nix
     #disabled ./gclb.nix
-    ./assets.nix
+    #disabled ./assets.nix
     #disabled ./site.nix
     ./site-secrets.nix
     #disabled ./redis.nix
     ./mail.nix
     ./scaling.nix
-    ./prod-vm.nix
+    #disabled ./prod-vm.nix
   ];
 }

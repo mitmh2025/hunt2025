@@ -1,6 +1,5 @@
 { config, lib, pkgs, ... }:
 {
-  sops.keys.site = {};
   resource.tls_private_key.jwt_secret = {
     algorithm = "RSA";
   };
